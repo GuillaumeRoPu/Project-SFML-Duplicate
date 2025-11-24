@@ -73,6 +73,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>..\Project_SFML\external\SFML-2.5.1\include;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>..\Project_SFML\external\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Project_SFML\GameClass\HEADER;$(IncludePath)</IncludePath>
+    <PublicIncludeDirectories>..\Project_SFML\GameClass\HEADER;$(PublicIncludeDirectories)</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>..\Project_SFML\external\SFML-2.5.1\include;$(ExternalIncludePath)</ExternalIncludePath>
@@ -110,13 +112,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../external/SFML-2.5.1/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\GameClass\HEADER;../external/SFML-2.5.1/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../external/SFML-2.5.1/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-main-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -137,7 +140,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameClass\CPP\Components\Camera.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\Component.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\ParticleSystem.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\Physics\BoxCollider2D.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\Physics\CircleCollider2D.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\Physics\Collider2D.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\Physics\PolygonCollider2D.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\Physics\Rigidbody2D.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\Transform.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\Gradient.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\Lerp.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\Mathf.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\Physics.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\Random.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\SceneManager.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\Vector2.cpp" />
+    <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
+    <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
+    <ClCompile Include="GameClass\CPP\Scene.cpp" />
     <ClCompile Include="Project_SFML.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameClass\HEADER\Components\Camera.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Component.h" />
+    <ClInclude Include="GameClass\HEADER\Components\ParticleSystem.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Physics\BoxCollider2D.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Physics\CircleCollider2D.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Physics\Collider2D.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Physics\PolygonCollider2D.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Physics\Rigidbody2D.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Scripting.h" />
+    <ClInclude Include="GameClass\HEADER\Components\Transform.h" />
+    <ClInclude Include="GameClass\HEADER\Engine\FryEngine.h" />
+    <ClInclude Include="GameClass\HEADER\Engine\Mathf.h" />
+    <ClInclude Include="GameClass\HEADER\Engine\Physics2D.h" />
+    <ClInclude Include="GameClass\HEADER\Engine\Time.h" />
+    <ClInclude Include="GameClass\HEADER\InputSystem.h" />
+    <ClInclude Include="GameClass\HEADER\Manager\FontManager.h" />
+    <ClInclude Include="GameClass\HEADER\Manager\SceneManager.h" />
+    <ClInclude Include="GameClass\HEADER\Object\GameObject.h" />
+    <ClInclude Include="GameClass\HEADER\Scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

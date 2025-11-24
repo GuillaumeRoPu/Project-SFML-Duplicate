@@ -6,57 +6,58 @@ InputSystem::InputSystem()
     button.any = button.left = button.right = button.up = button.down = false;
 }
 
-void InputSystem::CheckEventInput(std::optional<sf::Event> event, sf::RenderWindow& window)
+void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
 {
     // Regarde quand une touche est préssé
-    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+    if (event.type == sf::Event::KeyPressed)
     {
+        const sf::Event::KeyEvent& keyPressed = event.key;
         button.any = true;
-        switch (keyPressed->scancode)
+        switch (keyPressed.code)
         {
             // Ferme la fenêtre
-            case sf::Keyboard::Scancode::Escape:
+            case sf::Keyboard::Escape:
                 window.close();
                 break;
 
-            case sf::Keyboard::Scancode::Right:
+            case sf::Keyboard::Right:
                 button.right = true;
                 break;
 
-            case sf::Keyboard::Scancode::Left:
+            case sf::Keyboard::Left:
                 button.left = true;
                 break;
 
-            case sf::Keyboard::Scancode::Up:
+            case sf::Keyboard::Up:
                 button.up = true;
                 break;
 
-            case sf::Keyboard::Scancode::Down:
+            case sf::Keyboard::Down:
                 button.down = true;
                 break;
         }
     }
 
     // Regarde quand une touche est laché
-    if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
+    if (event.type == sf::Event::KeyReleased)
     {
         button.any = false;
-       
-        switch (keyReleased->scancode)
+        const sf::Event::KeyEvent& keyReleased = event.key;
+        switch (keyReleased.code)
         {
-            case sf::Keyboard::Scancode::Right:
+            case sf::Keyboard::Right:
                 button.right = false;
                 break;
 
-            case sf::Keyboard::Scancode::Left:
+            case sf::Keyboard::Left:
                 button.left = false;
                 break;
 
-            case sf::Keyboard::Scancode::Up:
+            case sf::Keyboard::Up:
                 button.up = false;
                 break;
 
-            case sf::Keyboard::Scancode::Down:
+            case sf::Keyboard::Down:
                 button.down = false;
                 break;
         }
@@ -70,8 +71,10 @@ void InputSystem::CheckEventInput(std::optional<sf::Event> event, sf::RenderWind
     }
 
     // Regarde quand un bouton de la souris est pressée
-    if (const auto* buttonPressed = event->getIf<sf::Event::MouseButtonPressed>())
-        std::cout << buttonPressed->position.x << std::endl;
+    if (event.type == sf::Event::MouseButtonPressed)
+    {
+
+    }
 }
 
 InputSystem::Button InputSystem::getButton()

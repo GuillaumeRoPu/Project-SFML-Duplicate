@@ -51,9 +51,9 @@ void ParticleSystem::UpdateParticleSystem()
 		p->shape.setScale(sf::Vector2f(scale,scale));*/
 		//p->shape.setScale(sf::Vector2f(1 - ratio, 1 - ratio));
 
-		// Move particles
-		sf::Vector2f dir = sf::Vector2f((pos.x() - (*p).shape.getPosition().x) * -1, (pos.y() - (*p).shape.getPosition().y) * -1);
-		if (dir != sf::Vector2f(0, 0))
+		// Move particle
+		Vector2 dir = Vector2((pos.x() - (*p).shape.getPosition().x) * -1, (pos.y() - (*p).shape.getPosition().y) * -1);
+		if (dir != Vector2(0, 0))
 			dir = dir.normalized();
 		(*p).shape.setPosition((*p).shape.getPosition() + sf::Vector2f{(*p).direction.x(), (*p).direction.y()} * speed * Time::fixedDeltaTime * fry::pixelPerPoint);
 

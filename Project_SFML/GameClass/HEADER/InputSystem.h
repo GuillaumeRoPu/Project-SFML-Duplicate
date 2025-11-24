@@ -11,7 +11,7 @@ class InputSystem
 public:
 	InputSystem();
 
-	void CheckEventInput(std::optional<sf::Event> event, sf::RenderWindow& window);
+	void CheckEventInput(sf::Event event, sf::RenderWindow& window);
 
 	Button getButton();
 

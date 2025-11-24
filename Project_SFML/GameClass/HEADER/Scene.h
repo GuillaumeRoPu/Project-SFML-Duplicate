@@ -1,6 +1,4 @@
 #pragma once
-#include "Effects/TextEffect.h"
-#include "Effects/Transition.h"
 #include "Manager/FontManager.h"
 #include "Object/GameObject.h"
 #include "InputSystem.h"

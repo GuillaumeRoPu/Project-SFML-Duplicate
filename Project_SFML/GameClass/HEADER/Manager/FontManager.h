@@ -13,6 +13,6 @@ public:
 
 private:
 
-	static void LoadFont(sf::Font& font, std::filesystem::path path);
+	static void LoadFont(sf::Font& font, std::string path);
 
 };

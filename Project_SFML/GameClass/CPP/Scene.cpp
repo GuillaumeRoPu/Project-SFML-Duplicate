@@ -72,20 +72,6 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             }
         }
 
-        // Sprites
-        auto renderer = obj.get()->GetComponent<SpriteRenderer>();
-        if (renderer != nullptr)
-        {
-            sf::Texture tex(renderer->GetTexture());
-            sf::Sprite sprite(tex);
-            sprite.setOrigin({ (float)tex.getSize().x / 2, (float)tex.getSize().y / 2 });
-            sprite.setPosition({ transform.position.x() * pixelPerPoint, transform.position.y() * pixelPerPoint});
-            sprite.setScale({transform.scale.x(), transform.scale.y()});
-            sprite.scale({pixelPerPoint/ (float)tex.getSize().y , pixelPerPoint / (float)tex.getSize().y });
-            sprite.setColor(renderer->color);
-            window.draw(sprite);
-        }
-
         // Particles
         auto p = obj.get()->GetComponent<ParticleSystem>();
         if (p != nullptr)

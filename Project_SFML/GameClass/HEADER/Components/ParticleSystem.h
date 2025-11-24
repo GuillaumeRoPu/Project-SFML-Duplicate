@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Components/Component.h"
-
+#include <list>
 #include "Engine/FryEngine.h"
 
 struct Particle

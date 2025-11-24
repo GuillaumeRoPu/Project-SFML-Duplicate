@@ -8,8 +8,8 @@ void FontManager::InitFonts()
 	LoadFont(f_pixelify, "res/pixelify_regular.ttf");
 }
 
-void FontManager::LoadFont(sf::Font& font, std::filesystem::path path)
+void FontManager::LoadFont(sf::Font& font, std::string path)
 {
-	if (!font.openFromFile(path))
+	if (!font.loadFromFile(path))
 		std::cout << "Erreur de chargement de la police" << std::endl;
 }

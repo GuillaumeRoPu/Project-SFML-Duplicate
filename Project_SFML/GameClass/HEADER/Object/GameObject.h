@@ -9,7 +9,6 @@
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components/Physics/PolygonCollider2D.h"
 #include "Components/ParticleSystem.h"
-#include "Components/SpriteRenderer.h"
 #include "Components/Camera.h"
 #include "Components/Scripting.h"
 
