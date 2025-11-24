@@ -6,6 +6,7 @@
 #include <deque>
 
 #pragma region  INCLUT TES SCENES ICI
+#include "Scenes/lascen.h"
 
 #pragma endregion
 
@@ -30,7 +31,7 @@ int main()
     FontManager::InitFonts();
 
     // Build tes scènes ici
-    
+    SceneManager::BuildScene<lascen>();
 
     // Class pour gerer les inputs
     InputSystem input;
