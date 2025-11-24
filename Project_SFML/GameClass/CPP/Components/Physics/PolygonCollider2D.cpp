@@ -1,0 +1,342 @@
+#include "Components/Physics/PolygonCollider2D.h"
+#include "Components/Physics/CircleCollider2D.h"
+#include "Components/Physics/BoxCollider2D.h"
+#include "Object/GameObject.h"
+
+void PolygonCollider2D::Start()
+{
+	if (vertices.size() == 0)
+	{
+		vertices = { Vector2{-.5f, .5f} * transform().scale,
+				Vector2{.5f, .5f} * transform().scale,
+				Vector2{ 0.f, -.5f} * transform().scale };
+	}
+
+	body = owner->GetComponent<Rigidbody2D>();
+}
+
+void PolygonCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
+{
+	auto& _collider = *collider;
+	auto _c = _collider.GetComponent<Collider2D>();
+	auto& _target = *owner;
+	auto& _body = *body;
+
+	auto it = std::find(_collision.begin(), _collision.end(), _c);
+
+	if (findIntersection(owner->GetComponent<Collider2D>(), _c))
+	{
+
+		if (_collider.GetComponent<BoxCollider2D>())
+			AABBWithPolygon(*_collider.GetComponent<BoxCollider2D>());
+
+		if (_collider.GetComponent<CircleCollider2D>())
+			CircleWithPolygon(*_collider.GetComponent<CircleCollider2D>());
+
+		if (_collider.GetComponent<PolygonCollider2D>())
+			PolygonWithPolygon(*_collider.GetComponent<PolygonCollider2D>());
+
+		if (it == _collision.end())
+		{
+			_collision.push_back(_collider.GetComponent<Collider2D>());
+
+			if (isTrigger)
+				owner->OnTriggerEnter2D(_collider.GetComponent<Collider2D>());
+			else
+				owner->OnCollisionEnter2D(_collider.GetComponent<Collider2D>());
+		}
+		else
+		{
+			if (isTrigger)
+				owner->OnTriggerStay2D(_collider.GetComponent<Collider2D>());
+			else
+				owner->OnCollisionStay2D(_collider.GetComponent<Collider2D>());
+		}
+	}
+	else if (it != _collision.end())
+	{
+		_collision.erase(it);
+		if (isTrigger)
+			owner->OnTriggerExit2D(_collider.GetComponent<Collider2D>());
+		else
+			owner->OnCollisionExit2D(_collider.GetComponent<Collider2D>());
+	}
+}
+
+bool PolygonCollider2D::isPointInside(Vector2 point)
+{
+	bool isInside = true;
+
+	for (int i = 0; i < vertices.size(); i++ )
+	{
+		int j = i + 1 == vertices.size() ? 0 : i + 1;
+
+		float area = (vertices[j].x() - vertices[i].x()) * (vertices[j].y() + vertices[i].y());
+
+		// Calcul la distance entre la vertice currente et la suivante
+		Vector2 v = Vector2::Edge(vertices[i], vertices[j]);
+
+		// Calcul de la normal perpendiculaire de cette distance
+		Vector2 n = v.normal();
+		if (area < 0.f)
+			n *= -1;
+
+		// Calcul de la distance entre le point et la vertice currente
+		Vector2 p = Vector2::Edge(vertices[i] + transform().position, point);
+
+		isInside = Vector2::Dot(p, n) <= 0;
+
+		if (!isInside)
+			break;
+	}
+
+	return isInside;
+}
+
+Vector2 PolygonCollider2D::GetProjectInterval(Vector2 normal)
+{
+	float min = INFINITY;
+	float max = -INFINITY;
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		float dot = Vector2::Dot(normal, vertices[i] + transform().position);
+
+		min = dot < min ? dot : min;
+		max = max < dot ? dot : max;
+	}
+
+	return Vector2(min, max);
+}
+
+Vector2 PolygonCollider2D::center()
+{
+	Vector2 som;
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		som += vertices[i];
+	}
+	return som / (float)vertices.size();
+}
+
+void PolygonCollider2D::AABBWithPolygon(BoxCollider2D& collider)
+{
+	float minSepa = INFINITY;
+	Vector2 minSepaNormal = Vector2::zero();
+	bool polyColl = false;
+	bool boxColl = false;
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		int j = i + 1 == vertices.size() ? 0 : i + 1;
+
+		Vector2 edge = Vector2::Edge(vertices[i], vertices[j]);
+		Vector2 n = edge.normal();
+
+		Vector2 polyInter = GetProjectInterval(n);
+
+		Vector2 boxInter = collider.GetProjectInterval(n);
+
+		polyColl = polyInter.y() >= boxInter.x() && boxInter.y() >= polyInter.x();
+		if (!polyColl)
+			break;
+		else
+		{
+			float sepa = Mathf::Min(polyInter.y(), boxInter.y()) - Mathf::Max(polyInter.x(), boxInter.x());
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal =  n;
+
+				float d = (polyInter.x() + polyInter.y()) / 2 - (boxInter.x() + boxInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
+	}
+
+	const Vector2 boxAxes[] = { Vector2(0,1), Vector2(1,0) };
+	for (Vector2 axe : boxAxes)
+	{
+		Vector2 polyInter = GetProjectInterval(axe);
+
+		Vector2 boxInter = collider.GetProjectInterval(axe);
+
+		boxColl = polyInter.y() >= boxInter.x() && boxInter.y() >= polyInter.x();
+		if (!boxColl)
+			break;
+		else
+		{
+			float sepa = Mathf::Min(polyInter.y(), boxInter.y()) - Mathf::Max(polyInter.x(), boxInter.x());
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = axe;
+
+				float d = (polyInter.x() + polyInter.y()) / 2 - (boxInter.x() + boxInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
+	}
+
+	if (boxColl && polyColl)
+	{
+		Vector2 normal = minSepaNormal.normalized();
+		bool isBoxAxis = (Mathf::abs(normal.x()) < 0.01f || Mathf::abs(normal.y()) < 0.01f);
+
+		bool isCornerCollision = !isBoxAxis;
+
+		float correctionFactor = isCornerCollision ? 0.5f : 1.0f;
+
+		if (collider.owner->GetComponent<Rigidbody2D>())
+		{
+			Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
+
+			float invMassA = 1.f / body->mass;
+			float invMassB = 1.f / _otherRb.mass;
+			float invMassSum = invMassA + invMassB;
+
+			Vector2 correction = normal * ((minSepa * correctionFactor) / invMassSum);
+			transform().position += correction * invMassA;
+			collider.transform().position -= correction * invMassB;
+		}
+		else
+		{
+			transform().position += normal * (minSepa * correctionFactor);
+		}
+	}
+
+}
+
+void PolygonCollider2D::CircleWithPolygon(CircleCollider2D& collider)
+{
+	bool isCollide = false;
+	Vector2 closet;
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		int j = i + 1 == vertices.size() ? 0 : i + 1;
+
+		closet = Vector2::ClosetPointOnSegment(collider.transform().position,
+			vertices[i] + transform().position,
+			vertices[j] + transform().position);
+
+		isCollide = collider.isPointInside(closet);
+		if (isCollide)
+			break;
+	}
+
+	if (isCollide)
+	{
+		Vector2 dir = Vector2::Edge(collider.transform().position, closet);
+
+		float penetration = collider.radius - dir.magnitude();
+		dir.normalize();
+
+		if (collider.owner->GetComponent<Rigidbody2D>())
+		{
+			Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
+
+			float invMassA = 1.f / body->mass;
+			float invMassB = 1.f / _otherRb.mass;
+			float invMassSum = invMassA + invMassB;
+
+			Vector2 correction = dir * (penetration / invMassSum);
+			transform().position += correction * invMassA;
+			collider.transform().position -= correction * invMassB;
+		}
+		else
+			transform().position += dir * penetration;
+	}
+}
+
+void PolygonCollider2D::PolygonWithPolygon(PolygonCollider2D& collider)
+{
+	float minSepa = INFINITY;
+	Vector2 minSepaNormal = Vector2::zero();
+	bool polyColl1 = false;
+	bool polyColl2 = false;
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		int j = i + 1 == vertices.size() ? 0 : i + 1;
+
+		Vector2 edge = Vector2::Edge(vertices[i], vertices[j]);
+		Vector2 n = edge.normal();
+
+		Vector2 polyInter = GetProjectInterval(n);
+
+		Vector2 poly2Inter = collider.GetProjectInterval(n);
+
+		polyColl1 = polyInter.y() >= poly2Inter.x() && poly2Inter.y() >= polyInter.x();
+		if (!polyColl1)
+			break;
+		else
+		{
+			float sepa = Mathf::Min(polyInter.y(), poly2Inter.y()) - Mathf::Max(polyInter.x(), poly2Inter.x());
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (polyInter.x() + polyInter.y()) / 2 - (poly2Inter.x() + poly2Inter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
+	}
+
+	for (int i = 0; i < collider.vertices.size(); i++)
+	{
+		int j = i + 1 == collider.vertices.size() ? 0 : i + 1;
+
+		Vector2 edge = Vector2::Edge(collider.vertices[i], collider.vertices[j]);
+		Vector2 n = edge.normal();
+
+		Vector2 polyInter = GetProjectInterval(n);
+
+		Vector2 poly2Inter = collider.GetProjectInterval(n);
+
+		polyColl2 = polyInter.y() >= poly2Inter.x() && poly2Inter.y() >= polyInter.x();
+		if (!polyColl2)
+			break;
+		else
+		{
+			float sepa = Mathf::Min(polyInter.y(), poly2Inter.y()) - Mathf::Max(polyInter.x(), poly2Inter.x());
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (polyInter.x() + polyInter.y()) / 2 - (poly2Inter.x() + poly2Inter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
+	}
+
+	if (polyColl1 && polyColl2)
+	{
+		Vector2 normal = minSepaNormal.normalized();
+
+		const float correctionFactor = .5f;
+
+		if (collider.owner->GetComponent<Rigidbody2D>())
+		{
+			Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
+
+			float invMassA = 1.f / body->mass;
+			float invMassB = 1.f / _otherRb.mass;
+			float invMassSum = invMassA + invMassB;
+
+			Vector2 correction = normal * ((minSepa * correctionFactor) / invMassSum);
+			transform().position += correction * invMassA;
+			collider.transform().position -= correction * invMassB;
+		}
+		else
+			transform().position += normal * (minSepa * correctionFactor);
+
+	}
+}
