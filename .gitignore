@@ -40,3 +40,6 @@
 
 # visual studio files
 *.vs
+
+# debug folder
+Project_SFML/Project_SFML/x64/Debug
