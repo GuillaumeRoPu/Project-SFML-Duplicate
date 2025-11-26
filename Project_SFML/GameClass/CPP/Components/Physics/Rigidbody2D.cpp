@@ -1,12 +1,9 @@
 #include <Components/Physics/Rigidbody2D.h>
-#include "Object/GameObject.h"
+#include "Objects/GameObject.h"
 #include "Engine/FryEngine.h"
 
 void Rigidbody2D::Awake()
 {
-    if (owner->GetComponent<Collider2D>() == nullptr)
-        owner->AddComponent<Collider2D>();
-
     Vector2 size = transform().scale;
     mass = autoMass ? size.x() * size.y() : mass;
 }
@@ -17,7 +14,7 @@ void Rigidbody2D::FixedUpdate()
     if (gravity)
         AddForce(Vector2(0.f, gravityForce * mass));
 
-    (*owner).transform.position += (appliedForce + velocity) * Time::fixedDeltaTime;
+    owner->transform->position += (appliedForce + velocity) * Time::FixedDeltaTime();
 
     velocity -= velocity * damping * Time::DeltaTime();
 

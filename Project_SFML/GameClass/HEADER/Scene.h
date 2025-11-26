@@ -1,6 +1,6 @@
 #pragma once
 #include "Manager/FontManager.h"
-#include "Object/GameObject.h"
+#include "Objects/GameObject.h"
 #include "InputSystem.h"
 
 #include <SFML/Graphics.hpp>

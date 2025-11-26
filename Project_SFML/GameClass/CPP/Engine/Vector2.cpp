@@ -29,7 +29,9 @@ float Vector2::Angle(Vector2 from, Vector2 to)
 
 Vector2 fry::Vector2::RotateAngle(Vector2 vector, float angle)
 {
-	vector += {Mathf::cos(angle), Mathf::sin(angle)};
+	float currentAngle = Vector2::Angle(Vector2::right(), vector.normalized());
+	Vector2 a = { Mathf::cos(currentAngle + angle), Mathf::sin(currentAngle + angle) };
+	vector = a * vector.magnitude();
 	return vector;
 }
 

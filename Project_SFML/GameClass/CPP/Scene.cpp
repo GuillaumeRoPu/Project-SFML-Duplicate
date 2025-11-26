@@ -1,4 +1,10 @@
 #include "Scene.h"
+#include "Components\Camera.h"
+#include "Components\ParticleSystem.h"
+#include "Components\SpriteRenderer.h"
+#include "Components/Physics/Rigidbody2D.h"
+#include "Components/Physics/Collider2D.h"
+#include "Components\UI\Text.h"
 #include "Engine/Time.h"
 
 Scene::Scene(std::string n)
@@ -28,12 +34,49 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     accumulator += frameTime;
 
     // Fixed Update : Physics
-    while (accumulator >= Time::fixedDeltaTime)
+    while (accumulator >= Time::FixedDeltaTime())
     {
         for (auto& obj : SceneObjects)
+        {
+            if (!obj.get()->active) continue;
+
             obj->FixedUpdate();
 
-        accumulator -= Time::fixedDeltaTime;
+            auto& transform = *(obj.get()->transform);
+
+            transform.ApplyTransformToParent();
+
+            // Apply Collision Transform
+            auto* coll = obj.get()->GetComponent<Collider2D>();
+            if (coll)
+            {
+                coll->ApplyRotation();
+            }
+
+            // Rigidbody
+            auto rb = obj.get()->GetComponent<Rigidbody2D>();
+            if (rb != nullptr) // Regarde si l'objet à un rigidbody
+            {
+                auto* target = obj.get()->GetComponent<Collider2D>();
+
+                for (auto& coll : SceneObjects) // Boucle sur tout les autres objets
+                {
+
+                    if (obj == coll || !coll.get()->active)
+                        continue;
+
+                    auto* collider = coll.get()->GetComponent<Collider2D>();
+
+                    if (collider != nullptr) // Regarder s'il a un collider
+                    {
+                        target->UpdateCollision(coll); // Créé la collision
+                    }
+                }
+            }
+        }
+
+        accumulator -= Time::FixedDeltaTime();
+
     }
 
     //// Crée la collision entre un game object ayant un rigidbody et tout les colliders de la scène
@@ -48,30 +91,9 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
         // Update : Logic
         obj->Update();
 
-        auto& transform = obj.get()->transform;
+        auto& transform = *(obj.get()->transform);
 
-        //transform.ApplyTransformToParent();
-
-        // Rigidbody
-        auto rb = obj.get()->GetComponent<Rigidbody2D>();
-        if (rb != nullptr) // Regarde si l'objet à un rigidbody
-        {
-            auto* target = obj.get()->GetComponent<Collider2D>();
-
-            for (auto& coll : SceneObjects) // Boucle sur tout les autres objets
-            {
-
-                if (obj == coll || !coll.get()->active)
-                    continue;
-
-                auto* collider = coll.get()->GetComponent<Collider2D>();
-
-                if (collider != nullptr) // Regarder s'il a un collider
-                {
-                    target->UpdateCollision(coll); // Créé la collision
-                }
-            }
-        }
+        transform.ApplyTransformToParent();
 
         // Particles
         auto p = obj.get()->GetComponent<ParticleSystem>();
@@ -80,12 +102,26 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             p->PlayParticleSystem();
             p->UpdateParticleSystem();
         }
+
+        //UI
+         
+        //Text
+        auto txt = obj.get()->GetComponent<Text>();
+        if (txt)
+        {
+            sf::Text text;
+            text.setFont(txt->font);
+            text.setFillColor(txt->color);
+            text.setString(txt->text);
+        }
     }
 
     // Late Update
     for (auto& obj : SceneObjects)
     {
-        auto& transform = obj.get()->transform;
+        if (!obj.get()->active) continue;
+
+        auto& transform = *(obj.get()->transform);
 
         transform.ApplyTransformToParent();
 
@@ -94,6 +130,21 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
         if (cam)
         {
             cam->SetCameraView(window);
+        }
+
+        // Sprites
+        auto renderer = obj.get()->GetComponent<SpriteRenderer>();
+        if (renderer != nullptr)
+        {
+            sf::Texture tex(renderer->GetTexture());
+            sf::Sprite sprite(tex);
+            sprite.setOrigin({ (float)tex.getSize().x / 2, (float)tex.getSize().y / 2 });
+            sprite.setPosition({ transform.position.x() * pixelPerPoint, transform.position.y() * pixelPerPoint });
+            sprite.setScale({ transform.scale.x(), transform.scale.y() });
+            sprite.scale({ pixelPerPoint / (float)tex.getSize().y , pixelPerPoint / (float)tex.getSize().y });
+            sprite.setRotation(transform.rotation);
+            sprite.setColor(renderer->color);
+            window.draw(sprite);
         }
     }
 
