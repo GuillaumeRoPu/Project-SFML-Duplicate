@@ -21,6 +21,7 @@ int main()
     // Creation de la fenetre
     sf::RenderWindow window(sf::VideoMode({ 800,800 }), "2D Game");
     window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(60);
 
     // Met l'icône de ton jeu ici !
     //window.setIcon(sf::Image(""));
