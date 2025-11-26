@@ -1,8 +1,9 @@
 #include "Scene.h"
 #include "Engine/Time.h"
 
-Scene::Scene()
+Scene::Scene(std::string n)
 {
+    name = n;
     CreateGameObject<GameObject>("MainCamera")->tag = "MainCamera";
     FindFirstObjectWithTag("MainCamera")->AddComponent<Camera>();
 }
