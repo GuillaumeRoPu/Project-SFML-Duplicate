@@ -10,9 +10,9 @@ class Scene
 {
 public:
 
-	Scene();
+	Scene(std::string name = "Scene");
 
-	std::string name = "Scene";
+	std::string name;
 
 	virtual void PlayScene(sf::RenderWindow& window, InputSystem& input);
 
