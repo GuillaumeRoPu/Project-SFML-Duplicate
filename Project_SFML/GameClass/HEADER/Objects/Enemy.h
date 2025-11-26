@@ -1,8 +1,9 @@
 #pragma once
 #include "Objects/GameObject.h"
 #include "Scripts/EnemyController.h"
+#include "Components/Physics/BoxCollider2D.h"
 
-class Enemy : public GameObject 
+class Enemy : public GameObject
 {
 public:
 	Rigidbody2D* _rb;

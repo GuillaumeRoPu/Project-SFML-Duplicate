@@ -161,7 +161,10 @@
     <ClCompile Include="GameClass\CPP\Engine\Vector2.cpp" />
     <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
+    <ClCompile Include="GameClass\CPP\Objects\Enemy.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
+    <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
+    <ClCompile Include="GameClass\CPP\Scripts\EnemyController.cpp" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +188,12 @@
     <ClInclude Include="GameClass\HEADER\InputSystem.h" />
     <ClInclude Include="GameClass\HEADER\Manager\FontManager.h" />
     <ClInclude Include="GameClass\HEADER\Manager\SceneManager.h" />
+    <ClInclude Include="GameClass\HEADER\Objects\Enemy.h" />
     <ClInclude Include="GameClass\HEADER\Objects\GameObject.h" />
     <ClInclude Include="GameClass\HEADER\Object\GameObject.h" />
     <ClInclude Include="GameClass\HEADER\Scene.h" />
+    <ClInclude Include="GameClass\HEADER\Scenes\lascen.h" />
+    <ClInclude Include="GameClass\HEADER\Scripts\EnemyController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
