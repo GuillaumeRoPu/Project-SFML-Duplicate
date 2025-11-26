@@ -11,11 +11,11 @@ class SceneManager
 public:
 
 
-	template <typename T>
-	static void BuildScene()
+	template <typename T, typename... Args>
+	static void BuildScene(Args&&... args)
 	{
 		static_assert(std::is_base_of<Scene, T>::value, "T must inherit Scene");
-		auto obj = std::make_unique<T>();
+		auto obj = std::make_unique<T>(std::forward<Args>(args)...);
 
 		_scenes.push_back(std::move(obj));
 
