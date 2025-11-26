@@ -5,7 +5,7 @@
 
 void CircleCollider2D::Start()
 {
-	radius = Mathf::Max(owner->transform.scale.x()/2, owner->transform.scale.y() / 2);
+	radius = Mathf::Max(owner->transform->scale.x()/2, owner->transform->scale.y() / 2);
 	body = owner->GetComponent<Rigidbody2D>();
 }
 

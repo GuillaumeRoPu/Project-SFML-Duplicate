@@ -148,7 +148,10 @@
     <ClCompile Include="GameClass\CPP\Components\Physics\Collider2D.cpp" />
     <ClCompile Include="GameClass\CPP\Components\Physics\PolygonCollider2D.cpp" />
     <ClCompile Include="GameClass\CPP\Components\Physics\Rigidbody2D.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\RectTransform.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\SpriteRenderer.cpp" />
     <ClCompile Include="GameClass\CPP\Components\Transform.cpp" />
+    <ClCompile Include="GameClass\CPP\Components\UI\Text.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Gradient.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Lerp.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Mathf.cpp" />
@@ -158,11 +161,7 @@
     <ClCompile Include="GameClass\CPP\Engine\Vector2.cpp" />
     <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
-    <ClCompile Include="GameClass\CPP\Objects\Enemy.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
-    <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
-    <ClCompile Include="GameClass\CPP\Scripts\EnemyController.cpp" />
-    <ClCompile Include="GameClass\HEADER\Objects\Enemy.h" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,8 +173,11 @@
     <ClInclude Include="GameClass\HEADER\Components\Physics\Collider2D.h" />
     <ClInclude Include="GameClass\HEADER\Components\Physics\PolygonCollider2D.h" />
     <ClInclude Include="GameClass\HEADER\Components\Physics\Rigidbody2D.h" />
+    <ClInclude Include="GameClass\HEADER\Components\RectTransform.h" />
     <ClInclude Include="GameClass\HEADER\Components\Scripting.h" />
+    <ClInclude Include="GameClass\HEADER\Components\SpriteRenderer.h" />
     <ClInclude Include="GameClass\HEADER\Components\Transform.h" />
+    <ClInclude Include="GameClass\HEADER\Components\UI\Text.h" />
     <ClInclude Include="GameClass\HEADER\Engine\FryEngine.h" />
     <ClInclude Include="GameClass\HEADER\Engine\Mathf.h" />
     <ClInclude Include="GameClass\HEADER\Engine\Physics2D.h" />
@@ -184,9 +186,8 @@
     <ClInclude Include="GameClass\HEADER\Manager\FontManager.h" />
     <ClInclude Include="GameClass\HEADER\Manager\SceneManager.h" />
     <ClInclude Include="GameClass\HEADER\Objects\GameObject.h" />
+    <ClInclude Include="GameClass\HEADER\Object\GameObject.h" />
     <ClInclude Include="GameClass\HEADER\Scene.h" />
-    <ClInclude Include="GameClass\HEADER\Scenes\lascen.h" />
-    <ClInclude Include="GameClass\HEADER\Scripts\EnemyController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

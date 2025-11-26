@@ -1,20 +1,9 @@
 #pragma once
 #include "Components/Component.h"
 
-#pragma region COMPONENTS INCLUDE
 #include "Components/Transform.h"
-#include "Components/Physics/Rigidbody2D.h"
 #include "Components/Physics/Collider2D.h"
-#include "Components/Physics/BoxCollider2D.h"
-#include "Components/Physics/CircleCollider2D.h"
-#include "Components/Physics/PolygonCollider2D.h"
-#include "Components/ParticleSystem.h"
-#include "Components/Camera.h"
-#include "Components/Scripting.h"
 
-#pragma endregion
-
-#include <iostream>
 #include <vector>
 
 class GameObject
@@ -33,10 +22,10 @@ public:
     // Tag of the game object
     std::string tag = "Untagged";
 
-    Transform& transform;
+    Transform* transform;
 
-    GameObject() : transform(*AddComponent<Transform>()) {}
-    GameObject(std::string name) : transform(*AddComponent<Transform>()) { this->name = name; }
+    GameObject() : transform(AddComponent<Transform>()) {}
+    GameObject(std::string name) : transform(AddComponent<Transform>()) { this->name = name; }
 
     void Awake()
     {
@@ -75,7 +64,8 @@ public:
 
     // Add a component to your game object
     template <typename T, typename... Args>
-    T* AddComponent(Args&&... args) {
+    T* AddComponent(Args&&... args) 
+    {
         static_assert(std::is_base_of<Component, T>::value, "T must inherit Component");
         auto comp = std::make_unique<T>(std::forward<Args>(args)...);
         comp->owner = this;
@@ -87,7 +77,8 @@ public:
 
     // Get a component to your game object
     template <typename T>
-    T* GetComponent() {
+    T* GetComponent() 
+    {
         static_assert(std::is_base_of<Component, T>::value, "T must inherit Component");
         for (auto& comp : components) {
             if (auto casted = dynamic_cast<T*>(comp.get())) {

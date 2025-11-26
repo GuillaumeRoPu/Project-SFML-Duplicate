@@ -75,16 +75,13 @@
     <ClCompile Include="GameClass\CPP\Scene.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp">
+    <ClCompile Include="GameClass\CPP\Components\RectTransform.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameClass\HEADER\Objects\Enemy.h">
+    <ClCompile Include="GameClass\CPP\Components\SpriteRenderer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameClass\CPP\Objects\Enemy.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClass\CPP\Scripts\EnemyController.cpp">
+    <ClCompile Include="GameClass\CPP\Components\UI\Text.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,7 +134,7 @@
     <ClInclude Include="GameClass\HEADER\Manager\SceneManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="GameClass\HEADER\Objects\GameObject.h">
+    <ClInclude Include="GameClass\HEADER\Object\GameObject.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="GameClass\HEADER\InputSystem.h">
@@ -146,10 +143,16 @@
     <ClInclude Include="GameClass\HEADER\Scene.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="GameClass\HEADER\Scenes\lascen.h">
+    <ClInclude Include="GameClass\HEADER\Components\RectTransform.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="GameClass\HEADER\Scripts\EnemyController.h">
+    <ClInclude Include="GameClass\HEADER\Components\SpriteRenderer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClass\HEADER\Components\UI\Text.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClass\HEADER\Objects\GameObject.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

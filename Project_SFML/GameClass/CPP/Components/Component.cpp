@@ -4,7 +4,7 @@
 
 Transform& Component::transform()
 {
-    return owner->transform;
+    return *(owner->transform);
 }
 
 // Collision methods

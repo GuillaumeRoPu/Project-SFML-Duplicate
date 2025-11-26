@@ -11,15 +11,20 @@ public:
         totalTime += deltaTime;
     }
 
-    static float DeltaTime() { return deltaTime; }
+    static float DeltaTime() { return deltaTime * timeScale; }
+    static float FixedDeltaTime() { return fixedDeltaTime * timeScale; }
+    static float UnscaledDeltaTime() { return deltaTime; }
+    static float UnscaledFixedDeltaTime() { return fixedDeltaTime; }
     static float FPS() { return fps; }
     static float TotalTime() { return totalTime; }
 
-    inline static float fixedDeltaTime = 1.0f / 60.0f;
+
+    inline static float timeScale = 1.f;
 
 private:
     inline static sf::Clock clock;
     inline static float deltaTime = 0.0f;
     inline static float totalTime = 0.0f;
     inline static float fps = 0.0f;
+    inline static float fixedDeltaTime = 1.0f / 60.0f;
 };

@@ -5,8 +5,20 @@
 
 void BoxCollider2D::Start()
 {
-	bounds.setSize(owner->transform.scale);
+	bounds.setSize(owner->transform->scale);
 	body = owner->GetComponent<Rigidbody2D>();
+}
+
+void BoxCollider2D::ApplyRotation()
+{
+	Rect boxBounds({ transform().position.x() + bounds.center().x(),
+								transform().position.y() + bounds.center().y() },
+		{ bounds.width(), bounds.height() });
+
+	OBBRect = { Vector2::RotateAngle({boxBounds.left(), boxBounds.top()}, transform().rotation),
+	Vector2::RotateAngle({boxBounds.left(), boxBounds.bottom()}, transform().rotation) ,
+	Vector2::RotateAngle({boxBounds.right(), boxBounds.bottom()}, transform().rotation) ,
+	Vector2::RotateAngle({boxBounds.right(), boxBounds.top()}, transform().rotation) };
 }
 
 void BoxCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
@@ -15,6 +27,10 @@ void BoxCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 	auto _c = _collider.GetComponent<Collider2D>();
 	auto& _target = *owner;
 	auto& _body = *body;
+
+	Rect boxBounds({ transform().position.x() + bounds.center().x(),
+								transform().position.y() + bounds.center().y() },
+		{ bounds.width(), bounds.height() });
 
 	auto it = std::find(_collision.begin(), _collision.end(), _c);
 

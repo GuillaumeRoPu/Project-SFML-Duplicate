@@ -7,8 +7,6 @@
 
 namespace fry
 {
-	inline float deltaTime = 0;
-    inline float fps = 0;
 	const float pixelPerPoint = 50;
 
     class Vector2
@@ -22,7 +20,6 @@ namespace fry
         Vector2(int x, int y);
 
         // ---STATIC---
-
         // Get vector (0,1)
         static Vector2 up() { return { 0,1 }; }
         // Get vector (0,-1)
