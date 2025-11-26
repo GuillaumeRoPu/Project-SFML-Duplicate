@@ -1,5 +1,5 @@
 #include "Components/Camera.h"
-#include "Object/GameObject.h"
+#include "Objects/GameObject.h"
 
 void Camera::SetCameraView(sf::RenderWindow& window)
 {

@@ -1,5 +1,5 @@
 #include <Components/ParticleSystem.h>
-#include "Object/GameObject.h"
+#include "Objects/GameObject.h"
 
 void ParticleSystem::AddParticleToSystem(float lifetime)
 {

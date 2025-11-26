@@ -1,12 +1,15 @@
 #include "Scenes/lascen.h"
-#include "Object/gmtest.h"
 
 lascen::lascen()
 {
-	auto a = CreateGameObject<gmtest>();
+	caca = CreateGameObject<Enemy>();
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
 	window.clear(sf::Color::Red);
+	sf::RectangleShape grocaca(sf::Vector2f(100,100));
+	grocaca.setFillColor(sf::Color::Black);
+	grocaca.setPosition(sf::Vector2f(caca->transform.position.x(), caca->transform.position.y()));
+	window.draw(grocaca);
 }

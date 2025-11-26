@@ -1,5 +1,5 @@
 #include "Components/Component.h"
-#include "Object\GameObject.h"
+#include "Objects\GameObject.h"
 #include "Components\Transform.h"
 
 Transform& Component::transform()
