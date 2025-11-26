@@ -159,6 +159,8 @@
     <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
+    <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
+    <ClCompile Include="GameClass\HEADER\Object\gmtest.h" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +183,7 @@
     <ClInclude Include="GameClass\HEADER\Manager\SceneManager.h" />
     <ClInclude Include="GameClass\HEADER\Object\GameObject.h" />
     <ClInclude Include="GameClass\HEADER\Scene.h" />
+    <ClInclude Include="GameClass\HEADER\Scenes\lascen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
