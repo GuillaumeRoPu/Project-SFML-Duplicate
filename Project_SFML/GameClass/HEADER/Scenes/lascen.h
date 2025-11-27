@@ -6,8 +6,8 @@
 class lascen : public Scene
 {
 public:
-	Player* p;
 	Enemy* caca;
+	Player* p;
 public:
 	lascen();
 	void PlayScene(sf::RenderWindow& window, InputSystem& input) override;
