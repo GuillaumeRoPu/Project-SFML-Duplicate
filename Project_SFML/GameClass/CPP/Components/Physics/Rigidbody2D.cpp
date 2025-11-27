@@ -1,5 +1,5 @@
 #include <Components/Physics/Rigidbody2D.h>
-#include "Object/GameObject.h"
+#include "Objects/GameObject.h"
 #include "Engine/FryEngine.h"
 
 void Rigidbody2D::Awake()

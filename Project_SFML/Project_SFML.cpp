@@ -15,7 +15,6 @@ float GetSmoothedFPS();
 
 int main()
 {
-
     // Initialisation du moteur
     fry::Random::Init();
 

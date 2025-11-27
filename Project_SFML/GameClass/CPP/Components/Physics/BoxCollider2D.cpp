@@ -1,7 +1,7 @@
 #include "Components/Physics/BoxCollider2D.h"
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components\Physics\PolygonCollider2D.h"
-#include "Object/GameObject.h"
+#include "Objects/GameObject.h"
 
 void BoxCollider2D::Start()
 {

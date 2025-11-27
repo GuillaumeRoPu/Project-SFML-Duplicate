@@ -160,10 +160,13 @@
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
     <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
-    <ClCompile Include="GameClass\HEADER\Object\gmtest.h" />
+    <ClCompile Include="GameClass\CPP\Scripts\PlayerController.cpp" />
+    <ClCompile Include="GameClass\HEADER\Objects\gmtest.h" />
+    <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameClass\HEADER\Objects\Player.h" />
     <ClInclude Include="GameClass\HEADER\Components\Camera.h" />
     <ClInclude Include="GameClass\HEADER\Components\Component.h" />
     <ClInclude Include="GameClass\HEADER\Components\ParticleSystem.h" />
@@ -181,9 +184,10 @@
     <ClInclude Include="GameClass\HEADER\InputSystem.h" />
     <ClInclude Include="GameClass\HEADER\Manager\FontManager.h" />
     <ClInclude Include="GameClass\HEADER\Manager\SceneManager.h" />
-    <ClInclude Include="GameClass\HEADER\Object\GameObject.h" />
+    <ClInclude Include="GameClass\HEADER\Objects\GameObject.h" />
     <ClInclude Include="GameClass\HEADER\Scene.h" />
     <ClInclude Include="GameClass\HEADER\Scenes\lascen.h" />
+    <ClInclude Include="GameClass\HEADER\Scripts\PlayerController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
