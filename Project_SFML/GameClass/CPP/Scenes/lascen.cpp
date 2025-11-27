@@ -29,22 +29,22 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	int sizePlayer = 25;
 	sf::CircleShape pshape(sizePlayer);
 	pshape.setOrigin(sizePlayer, sizePlayer);
-	pshape.setPosition({ p->transform->position.x(), p->transform->position.y() });
+	pshape.setPosition({ p->transform->position.x() * pixelPerPoint, p->transform->position.y() * pixelPerPoint });
 
 	float wsx = window.getSize().x;
 	float wsy = window.getSize().y;
-	if (p->transform->position.x() - sizePlayer < -wsx / 2 || p->transform->position.x() + sizePlayer > wsx / 2) {
+	if (p->transform->position.x()* pixelPerPoint - sizePlayer < -wsx / 2 || p->transform->position.x()* pixelPerPoint + sizePlayer > wsx / 2) {
 		p->_rb->velocity = Vector2(-p->_rb->velocity.x(), p->_rb->velocity.y());
 	}
-	if (p->transform->position.y() - sizePlayer < -wsy / 2 || p->transform->position.y() + sizePlayer > wsy / 2) {
+	if (p->transform->position.y()* pixelPerPoint - sizePlayer < -wsy / 2 || p->transform->position.y()* pixelPerPoint + sizePlayer > wsy / 2) {
 		p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
 	}
 
 	sf::RectangleShape grocaca(sf::Vector2f(100, 100));
 	grocaca.setFillColor(sf::Color::Black);
+	grocaca.setOrigin({ 50,50 });
 	caca->_rb->mass = 1;
-	std::cout << caca->_rb->transform().position.x() << std::endl;
-	grocaca.setPosition(sf::Vector2f(caca->transform->position.x(), caca->transform->position.y()));
+	grocaca.setPosition(sf::Vector2f(caca->transform->position.x() * pixelPerPoint, caca->transform->position.y() * pixelPerPoint));
 
 	window.draw(grocaca);
 
