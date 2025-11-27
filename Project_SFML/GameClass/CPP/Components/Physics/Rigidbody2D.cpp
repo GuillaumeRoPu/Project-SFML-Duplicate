@@ -13,13 +13,11 @@ void Rigidbody2D::FixedUpdate()
 
     if (gravity)
         AddForce(Vector2(0.f, gravityForce * mass));
-
-    owner->transform->position += (appliedForce + velocity) * Time::FixedDeltaTime();
+    
+    velocity += appliedForce * Time::FixedDeltaTime();
+    owner->transform->position += velocity * Time::FixedDeltaTime();
 
     velocity -= velocity * damping * Time::DeltaTime();
-
-    if (Mathf::abs(velocity.x()) < 0.01f) velocity = { 0.f, velocity.y() };
-    if (Mathf::abs(velocity.y()) < 0.01f) velocity = { velocity.x(), 0.f };
 
     appliedForce = Vector2(0, 0);
 }
