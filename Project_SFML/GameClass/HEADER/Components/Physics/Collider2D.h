@@ -8,6 +8,7 @@ public:
 	
 	void Start() override;
 
+	virtual void ApplyRotation() {};
 	virtual void UpdateCollision(std::unique_ptr<GameObject>& collider);
 	virtual bool isPointInside(Vector2 point);
 	bool findIntersection(Collider2D* c1, Collider2D* c2);

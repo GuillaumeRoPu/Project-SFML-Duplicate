@@ -61,11 +61,11 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 
 			bool polyColl = false;
 			bool boxColl = false;
-			for (int i = 0; i < polygon.vertices.size(); i++)
+			for (int i = 0; i < polygon.OBBvertices.size(); i++)
 			{
 				int j = i + 1 == polygon.vertices.size() ? 0 : i + 1;
 
-				Vector2 edge = Vector2::Edge(polygon.vertices[i], polygon.vertices[j]);
+				Vector2 edge = Vector2::Edge(polygon.OBBvertices[i], polygon.OBBvertices[j]);
 				Vector2 n = edge.normal();
 
 				Vector2 polyInter = polygon.GetProjectInterval(n);
@@ -129,13 +129,13 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 		{
 			auto polygon = c2.owner->GetComponent<PolygonCollider2D>();
 
-			for (int i = 0; i < polygon->vertices.size(); i++)
+			for (int i = 0; i < polygon->OBBvertices.size(); i++)
 			{
-				int j = i + 1 == polygon->vertices.size() ? 0 : i + 1;
+				int j = i + 1 == polygon->OBBvertices.size() ? 0 : i + 1;
 
 				Vector2 closet = Vector2::ClosetPointOnSegment(circle->transform().position,
-					polygon->vertices[i] + polygon->transform().position,
-					polygon->vertices[j] + polygon->transform().position);
+					polygon->OBBvertices[i] + polygon->transform().position,
+					polygon->OBBvertices[j] + polygon->transform().position);
 
 				isCollide = circle->isPointInside(closet);
 				if (isCollide)
@@ -155,11 +155,11 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 
 			bool polyColl = false;
 			bool boxColl = false;
-			for (int i = 0; i < polygon->vertices.size(); i++)
+			for (int i = 0; i < polygon->OBBvertices.size(); i++)
 			{
-				int j = i + 1 == polygon->vertices.size() ? 0 : i + 1;
+				int j = i + 1 == polygon->OBBvertices.size() ? 0 : i + 1;
 
-				Vector2 edge = Vector2::Edge(polygon->vertices[i], polygon->vertices[j]);
+				Vector2 edge = Vector2::Edge(polygon->OBBvertices[i], polygon->OBBvertices[j]);
 				Vector2 n = edge.normal();
 
 				Vector2 polyInter = polygon->GetProjectInterval(n);
@@ -190,13 +190,13 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 		{
 			auto circle = c2.owner->GetComponent<CircleCollider2D>();
 
-			for (int i = 0; i < polygon->vertices.size(); i++)
+			for (int i = 0; i < polygon->OBBvertices.size(); i++)
 			{
-				int j = i + 1 == polygon->vertices.size() ? 0 : i + 1;
+				int j = i + 1 == polygon->OBBvertices.size() ? 0 : i + 1;
 
 				Vector2 closet = Vector2::ClosetPointOnSegment(circle->transform().position, 
-															polygon->vertices[i] + polygon->transform().position, 
-															polygon->vertices[j] + polygon->transform().position);
+															polygon->OBBvertices[i] + polygon->transform().position,
+															polygon->OBBvertices[j] + polygon->transform().position);
 
 				isCollide = circle->isPointInside(closet);
 				if (isCollide)
@@ -210,11 +210,11 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 
 			bool polyColl1 = false;
 			bool polyColl2 = false;
-			for (int i = 0; i < polygon->vertices.size(); i++)
+			for (int i = 0; i < polygon->OBBvertices.size(); i++)
 			{
-				int j = i + 1 == polygon->vertices.size() ? 0 : i + 1;
+				int j = i + 1 == polygon->OBBvertices.size() ? 0 : i + 1;
 
-				Vector2 edge = Vector2::Edge(polygon->vertices[i], polygon->vertices[j]);
+				Vector2 edge = Vector2::Edge(polygon->OBBvertices[i], polygon->OBBvertices[j]);
 				Vector2 n = edge.normal();
 
 				Vector2 polyInter = polygon->GetProjectInterval(n);
@@ -226,11 +226,11 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 					break;
 			}
 
-			for (int i = 0; i < polygon2->vertices.size(); i++)
+			for (int i = 0; i < polygon2->OBBvertices.size(); i++)
 			{
-				int j = i + 1 == polygon2->vertices.size() ? 0 : i + 1;
+				int j = i + 1 == polygon2->OBBvertices.size() ? 0 : i + 1;
 
-				Vector2 edge = Vector2::Edge(polygon2->vertices[i], polygon2->vertices[j]);
+				Vector2 edge = Vector2::Edge(polygon2->OBBvertices[i], polygon2->OBBvertices[j]);
 				Vector2 n = edge.normal();
 
 				Vector2 polyInter = polygon->GetProjectInterval(n);

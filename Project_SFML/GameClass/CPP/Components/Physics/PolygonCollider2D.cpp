@@ -1,4 +1,4 @@
-#include "Components/Physics/PolygonCollider2D.h"
+#include "Components\Physics\PolygonCollider2D.h"
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components/Physics/BoxCollider2D.h"
 #include "Objects/GameObject.h"
@@ -10,9 +10,19 @@ void PolygonCollider2D::Start()
 		vertices = { Vector2{-.5f, .5f} * transform().scale,
 				Vector2{.5f, .5f} * transform().scale,
 				Vector2{ 0.f, -.5f} * transform().scale };
+
 	}
 
 	body = owner->GetComponent<Rigidbody2D>();
+}
+
+void PolygonCollider2D::ApplyRotation()
+{
+	OBBvertices.clear();
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		OBBvertices.push_back(Vector2::RotateAngle(vertices[i], transform().rotation));
+	}
 }
 
 void PolygonCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
@@ -67,14 +77,14 @@ bool PolygonCollider2D::isPointInside(Vector2 point)
 {
 	bool isInside = true;
 
-	for (int i = 0; i < vertices.size(); i++ )
+	for (int i = 0; i < OBBvertices.size(); i++ )
 	{
-		int j = i + 1 == vertices.size() ? 0 : i + 1;
+		int j = i + 1 == OBBvertices.size() ? 0 : i + 1;
 
-		float area = (vertices[j].x() - vertices[i].x()) * (vertices[j].y() + vertices[i].y());
+		float area = (OBBvertices[j].x() - OBBvertices[i].x()) * (OBBvertices[j].y() + OBBvertices[i].y());
 
 		// Calcul la distance entre la vertice currente et la suivante
-		Vector2 v = Vector2::Edge(vertices[i], vertices[j]);
+		Vector2 v = Vector2::Edge(OBBvertices[i], OBBvertices[j]);
 
 		// Calcul de la normal perpendiculaire de cette distance
 		Vector2 n = v.normal();
@@ -82,7 +92,7 @@ bool PolygonCollider2D::isPointInside(Vector2 point)
 			n *= -1;
 
 		// Calcul de la distance entre le point et la vertice currente
-		Vector2 p = Vector2::Edge(vertices[i] + transform().position, point);
+		Vector2 p = Vector2::Edge(OBBvertices[i] + transform().position, point);
 
 		isInside = Vector2::Dot(p, n) <= 0;
 
@@ -97,9 +107,9 @@ Vector2 PolygonCollider2D::GetProjectInterval(Vector2 normal)
 {
 	float min = INFINITY;
 	float max = -INFINITY;
-	for (int i = 0; i < vertices.size(); i++)
+	for (int i = 0; i < OBBvertices.size(); i++)
 	{
-		float dot = Vector2::Dot(normal, vertices[i] + transform().position);
+		float dot = Vector2::Dot(normal, OBBvertices[i] + transform().position);
 
 		min = dot < min ? dot : min;
 		max = max < dot ? dot : max;
@@ -111,11 +121,11 @@ Vector2 PolygonCollider2D::GetProjectInterval(Vector2 normal)
 Vector2 PolygonCollider2D::center()
 {
 	Vector2 som;
-	for (int i = 0; i < vertices.size(); i++)
+	for (int i = 0; i < OBBvertices.size(); i++)
 	{
-		som += vertices[i];
+		som += OBBvertices[i];
 	}
-	return som / (float)vertices.size();
+	return som / (float)OBBvertices.size();
 }
 
 void PolygonCollider2D::AABBWithPolygon(BoxCollider2D& collider)
@@ -124,11 +134,11 @@ void PolygonCollider2D::AABBWithPolygon(BoxCollider2D& collider)
 	Vector2 minSepaNormal = Vector2::zero();
 	bool polyColl = false;
 	bool boxColl = false;
-	for (int i = 0; i < vertices.size(); i++)
+	for (int i = 0; i < OBBvertices.size(); i++)
 	{
-		int j = i + 1 == vertices.size() ? 0 : i + 1;
+		int j = i + 1 == OBBvertices.size() ? 0 : i + 1;
 
-		Vector2 edge = Vector2::Edge(vertices[i], vertices[j]);
+		Vector2 edge = Vector2::Edge(OBBvertices[i], OBBvertices[j]);
 		Vector2 n = edge.normal();
 
 		Vector2 polyInter = GetProjectInterval(n);
@@ -213,13 +223,13 @@ void PolygonCollider2D::CircleWithPolygon(CircleCollider2D& collider)
 {
 	bool isCollide = false;
 	Vector2 closet;
-	for (int i = 0; i < vertices.size(); i++)
+	for (int i = 0; i < OBBvertices.size(); i++)
 	{
-		int j = i + 1 == vertices.size() ? 0 : i + 1;
+		int j = i + 1 == OBBvertices.size() ? 0 : i + 1;
 
 		closet = Vector2::ClosetPointOnSegment(collider.transform().position,
-			vertices[i] + transform().position,
-			vertices[j] + transform().position);
+			OBBvertices[i] + transform().position,
+			OBBvertices[j] + transform().position);
 
 		isCollide = collider.isPointInside(closet);
 		if (isCollide)
@@ -257,11 +267,11 @@ void PolygonCollider2D::PolygonWithPolygon(PolygonCollider2D& collider)
 	bool polyColl1 = false;
 	bool polyColl2 = false;
 
-	for (int i = 0; i < vertices.size(); i++)
+	for (int i = 0; i < OBBvertices.size(); i++)
 	{
-		int j = i + 1 == vertices.size() ? 0 : i + 1;
+		int j = i + 1 == OBBvertices.size() ? 0 : i + 1;
 
-		Vector2 edge = Vector2::Edge(vertices[i], vertices[j]);
+		Vector2 edge = Vector2::Edge(OBBvertices[i], OBBvertices[j]);
 		Vector2 n = edge.normal();
 
 		Vector2 polyInter = GetProjectInterval(n);
@@ -287,11 +297,11 @@ void PolygonCollider2D::PolygonWithPolygon(PolygonCollider2D& collider)
 		}
 	}
 
-	for (int i = 0; i < collider.vertices.size(); i++)
+	for (int i = 0; i < collider.OBBvertices.size(); i++)
 	{
-		int j = i + 1 == collider.vertices.size() ? 0 : i + 1;
+		int j = i + 1 == collider.OBBvertices.size() ? 0 : i + 1;
 
-		Vector2 edge = Vector2::Edge(collider.vertices[i], collider.vertices[j]);
+		Vector2 edge = Vector2::Edge(collider.OBBvertices[i], collider.OBBvertices[j]);
 		Vector2 n = edge.normal();
 
 		Vector2 polyInter = GetProjectInterval(n);

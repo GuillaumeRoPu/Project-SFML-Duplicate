@@ -51,17 +51,17 @@ void ParticleSystem::UpdateParticleSystem()
 		p->shape.setScale(sf::Vector2f(scale,scale));*/
 		//p->shape.setScale(sf::Vector2f(1 - ratio, 1 - ratio));
 
-		// Move particle
+		// Move particles
 		Vector2 dir = Vector2((pos.x() - (*p).shape.getPosition().x) * -1, (pos.y() - (*p).shape.getPosition().y) * -1);
 		if (dir != Vector2(0, 0))
 			dir = dir.normalized();
-		(*p).shape.setPosition((*p).shape.getPosition() + sf::Vector2f{(*p).direction.x(), (*p).direction.y()} * speed * Time::fixedDeltaTime * fry::pixelPerPoint);
+		(*p).shape.setPosition((*p).shape.getPosition() + sf::Vector2f{(*p).direction.x(), (*p).direction.y()} * speed * Time::FixedDeltaTime() * fry::pixelPerPoint);
 
 		// Gradient particles
 		if (colorByLifetime)
 			(*p).shape.setFillColor(gradient.GetColor(ratio));
 
-		(*p).time += fry::deltaTime;
+		(*p).time += Time::DeltaTime();
 		p++;
 	}
 
@@ -95,7 +95,7 @@ void ParticleSystem::PlayParticleSystem()
 	// Delay before play particles
 	if (!_play)
 	{
-		_startTime += fry::deltaTime;
+		_startTime += Time::DeltaTime();
 		if (_startTime > startDelay)
 		{
 			_startTime = 0;
@@ -107,7 +107,7 @@ void ParticleSystem::PlayParticleSystem()
 	// Duration of the system
 	if (!loop)
 	{
-		_lifeTime += fry::deltaTime;
+		_lifeTime += Time::DeltaTime();
 		if (_lifeTime > duration)
 		{
 			_play = false;
@@ -118,7 +118,7 @@ void ParticleSystem::PlayParticleSystem()
 	// Spawn x particle in 1 second
 	if (rateOverTime > 0 && _play)
 	{
-		_rateTime += fry::deltaTime;
+		_rateTime += Time::DeltaTime();
 		if (_rateTime > 1 / rateOverTime)
 		{
 			_rateTime = 0;
@@ -136,7 +136,7 @@ void ParticleSystem::PlayParticleSystem()
 	// Spawn x particles all n seconds
 	if (burst && _play)
 	{
-		_burstChrono += fry::deltaTime;
+		_burstChrono += Time::DeltaTime();
 		if (_burstChrono > burstTime)
 		{
 			_burstChrono = 0;
