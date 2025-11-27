@@ -7,6 +7,7 @@
 #include <deque>
 
 #pragma region  INCLUT TES SCENES ICI
+#include "Scenes/lascen.h"
 
 #pragma endregion
 
@@ -15,7 +16,6 @@ float GetSmoothedFPS();
 
 int main()
 {
-
     // Initialisation du moteur
     fry::Random::Init();
 
@@ -32,7 +32,7 @@ int main()
     FontManager::InitFonts();
 
     // Build tes scènes ici
-    
+    SceneManager::BuildScene<lascen>();
 
     // Class pour gerer les inputs
     InputSystem input;
