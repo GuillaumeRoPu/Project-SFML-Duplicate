@@ -3,6 +3,7 @@
 #include "Objects/GameObject.h"
 #include "Engine/FryEngine.h"
 #include "Scripts/PlayerController.h"
+#include <Components/Physics/CircleCollider2D.h>
 
 class Player : public GameObject
 {

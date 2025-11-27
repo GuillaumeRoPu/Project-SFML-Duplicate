@@ -4,7 +4,7 @@
 void PlayerController::Start()
 {
 	_rb = owner->GetComponent<Rigidbody2D>();
-	_rb->damping = 2;
+	_rb->damping = 1;
 }
 
 void PlayerController::Move(int verDir, int horDir)

@@ -24,13 +24,20 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	else if (input.getButton().left) {
 		p->_pc->Move(0, -1);
 	}
-	
-	std::cout << p->_rb->velocity.x() << " " << p->_rb->velocity.y() << std::endl;
 
-	sf::CircleShape pshape(25);
-	pshape.setOrigin(25, 25);
-	pshape.setPosition({ p->transform.position.x(), p->transform.position.y() });
+	int sizePlayer = 25;
+	sf::CircleShape pshape(sizePlayer);
+	pshape.setOrigin(sizePlayer, sizePlayer);
+	pshape.setPosition({ p->transform->position.x(), p->transform->position.y() });
+
+	float wsx = window.getSize().x;
+	float wsy = window.getSize().y;
+	if (p->transform->position.x() - sizePlayer < -wsx/2 || p->transform->position.x() + sizePlayer > wsx/2) {
+		p->_rb->velocity = Vector2(-p->_rb->velocity.x(), p->_rb->velocity.y());
+	}
+	if (p->transform->position.y() - sizePlayer < -wsy/2 || p->transform->position.y() + sizePlayer > wsy/2) {
+		p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
+	}
+
 	window.draw(pshape);
-
-	
 }
