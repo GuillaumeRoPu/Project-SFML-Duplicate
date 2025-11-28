@@ -1,7 +1,6 @@
 #pragma once
 #include "Engine/FryEngine.h"
 #include "Components/Physics/Collider2D.h"
-#include <memory>
 
 class BoxCollider2D;
 class CircleCollider2D;
