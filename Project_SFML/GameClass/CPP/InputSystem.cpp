@@ -3,7 +3,7 @@
 
 InputSystem::InputSystem()
 {
-    button.any = button.left = button.right = button.up = button.down = false;
+    button.any = button.left = button.right = button.up = button.down = button.rotateRight = button.rotateLeft = false;
 }
 
 void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
@@ -35,6 +35,14 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
             case sf::Keyboard::Down:
                 button.down = true;
                 break;
+
+            case sf::Keyboard::Q:
+                button.rotateLeft = true;
+                break;
+
+            case sf::Keyboard::D:
+                button.rotateRight = true;
+                break;
         }
     }
 
@@ -59,6 +67,14 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
 
             case sf::Keyboard::Down:
                 button.down = false;
+                break;
+
+            case sf::Keyboard::Q:
+                button.rotateLeft = false;
+                break;
+
+            case sf::Keyboard::D:
+                button.rotateRight = false;
                 break;
         }
 

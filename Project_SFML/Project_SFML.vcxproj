@@ -162,12 +162,14 @@
     <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Bullet.cpp" />
+    <ClCompile Include="GameClass\CPP\Objects\Blocker.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Enemy.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
     <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\BulletController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\EnemyController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\PlayerController.cpp" />
+    <ClCompile Include="GameClass\CPP\Scripts\PlayerHealthBlocker.cpp" />
     <ClCompile Include="GameClass\HEADER\Objects\gmtest.h" />
     <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
     <ClCompile Include="GameClass\HEADER\Scripts\BulletController.h" />
@@ -175,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameClass\HEADER\Objects\Bullet.h" />
+    <ClInclude Include="GameClass\HEADER\Objects\Blocker.h" />
     <ClInclude Include="GameClass\HEADER\Objects\Enemy.h" />
     <ClInclude Include="GameClass\HEADER\Objects\Player.h" />
     <ClInclude Include="GameClass\HEADER\Components\Camera.h" />
@@ -203,6 +206,11 @@
     <ClInclude Include="GameClass\HEADER\Scenes\lascen.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\EnemyController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\PlayerController.h" />
+    <ClInclude Include="GameClass\HEADER\Scripts\PlayerHealthBlocker.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GameClass\TrucRandom\fat-chibi-squid-game-gaurd-dance-xaiversobased.gif" />
+    <Image Include="GameClass\TrucRandom\squigam.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

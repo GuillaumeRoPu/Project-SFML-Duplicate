@@ -7,6 +7,6 @@ Bullet::Bullet()
 	_rb = AddComponent<Rigidbody2D>();
 	_collider = AddComponent<CircleCollider2D>();
 	_controller = AddComponent<BulletController>();
-	_collider->isTrigger = true;
 	name = "Bullet";
+	_collider->isTrigger = true;
 }

@@ -13,10 +13,6 @@ void BulletController::FixedUpdate()
 			_rb->velocity += VecteurPlayerEnemy;
 		}
 	}
-	else 
-	{
-		std::cout << "bah jsp quoi te dire frr" << std::endl;
-	}
 }
 
 void BulletController::Awake() 
@@ -31,6 +27,11 @@ void BulletController::OnTriggerEnter2D(Collider2D* other)
 	if (p != nullptr) {
 		std::cout << "TOUCHE" << std::endl;
 	}
+}
+
+void BulletController::OnCollisionEnter2D(Collider2D* other) 
+{
+	std::cout << "help" << std::endl;
 }
 
 void BulletController::GetPlayer(Player* player) {
