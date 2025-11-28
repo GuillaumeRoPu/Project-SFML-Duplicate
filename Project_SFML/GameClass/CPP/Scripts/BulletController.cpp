@@ -29,6 +29,11 @@ void BulletController::OnTriggerEnter2D(Collider2D* other)
 	}
 }
 
+void BulletController::OnCollisionEnter2D(Collider2D* other) 
+{
+	std::cout << "help" << std::endl;
+}
+
 void BulletController::GetPlayer(Player* player) {
 	_player = player;
 	if (_player != nullptr) {

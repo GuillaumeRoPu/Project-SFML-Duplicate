@@ -25,7 +25,15 @@ int main()
     window.setFramerateLimit(60);
 
     // Met l'icône de ton jeu ici !
-    //window.setIcon(sf::Image(""));
+    sf::Image image;
+    if (!image.loadFromFile("GameClass/TrucRandom/squigam.png"))
+    {
+        // Error handling...
+        std::cerr << "Failed to load icon image!" << std::endl;
+        return -1; // or handle gracefully
+    }
+
+    window.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 
     sf::Clock clock;
 

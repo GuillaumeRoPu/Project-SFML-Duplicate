@@ -37,14 +37,17 @@ void BoxCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 	if (findIntersection(owner->GetComponent<Collider2D>(), _c))
 	{ 
 
-		if (_collider.GetComponent<BoxCollider2D>())
-			AABBWithAABB(*_collider.GetComponent<BoxCollider2D>());
+		if (!isTrigger || !_c->isTrigger)
+		{
+			if (_collider.GetComponent<BoxCollider2D>())
+				AABBWithAABB(*_collider.GetComponent<BoxCollider2D>());
 
-		if (_collider.GetComponent<CircleCollider2D>())
-			CircleWithAABB(*_collider.GetComponent<CircleCollider2D>());
+			if (_collider.GetComponent<CircleCollider2D>())
+				CircleWithAABB(*_collider.GetComponent<CircleCollider2D>());
 
-		if (_collider.GetComponent<PolygonCollider2D>())
-			PolygonWithAABB(*_collider.GetComponent<PolygonCollider2D>());
+			if (_collider.GetComponent<PolygonCollider2D>())
+				PolygonWithAABB(*_collider.GetComponent<PolygonCollider2D>());
+		}
 
 		if (it == _collision.end())
 		{

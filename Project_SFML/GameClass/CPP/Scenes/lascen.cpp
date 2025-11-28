@@ -5,7 +5,6 @@ lascen::lascen()
 {
 	p = CreateGameObject<Player>();
 	caca = CreateGameObject<Enemy>();
-	caca->_controller->GetPlayer(this);
 	blocker = CreateGameObject<Blocker>();
 }
 
@@ -15,6 +14,10 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
 	Scene::PlayScene(window, input);
 
+	//Trucs que vous devez mettre dans le constructeur mais ça fonctionne pas dans le constructeur :'(
+	caca->_controller->GetPlayer(this);
+
+	//Boucle
 	if (input.getButton().up) {
 		p->_pc->Move(1, 0);
 	}
