@@ -73,6 +73,8 @@ void CircleCollider2D::AABBWithCircle(BoxCollider2D& collider)
 
 	float left = collider.transform().position.x() + collider.bounds.left();
 	float top = collider.transform().position.y() + collider.bounds.top();
+	float right = collider.transform().position.x() + collider.bounds.right();
+	float bottom = collider.transform().position.y() + collider.bounds.bottom();
 
 	Vector2 closetPoint = { Mathf::clamp(transform().position.x(), left, left + collider.bounds.width()),
 						Mathf::clamp(transform().position.y(), top, top + collider.bounds.height()) };
@@ -81,6 +83,31 @@ void CircleCollider2D::AABBWithCircle(BoxCollider2D& collider)
 
 	float penetration = radius - dir.magnitude();
 	Vector2 normal = dir / dir.magnitude();
+
+	if (dir.magnitude() == 0.0f)
+	{
+		// Trouver la direction de sortie la plus courte
+		float leftPen = transform().position.x() - left;
+		float rightPen = right - transform().position.x();
+		float topPen = transform().position.y() - top;
+		float bottomPen = bottom - transform().position.y();
+
+		// Trouver la plus petite
+		float minPen = std::min({ leftPen, rightPen, topPen, bottomPen });
+
+		if (minPen == leftPen)       normal = Vector2(-1, 0);
+		else if (minPen == rightPen) normal = Vector2(1, 0);
+		else if (minPen == topPen)   normal = Vector2(0, -1);
+		else                         normal = Vector2(0, 1);
+
+		penetration = radius + minPen; // ou selon ton système
+	}
+	else
+	{
+		// Cas normal : normal = direction du centre vers l’extérieur
+		normal = dir / dir.magnitude();
+		penetration = radius - dir.magnitude();
+	}
 
 	if (collider.owner->GetComponent<Rigidbody2D>() != nullptr)
 	{
