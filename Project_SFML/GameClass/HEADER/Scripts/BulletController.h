@@ -1,9 +1,9 @@
 #pragma once
-#include "Objects/GameObject.h"
 #include "Components/Scripting.h"
-#include "Components/Physics/BoxCollider2D.h"
-#include "Objects/Player.h"
-#include "Scene.h"
+#include "Components/Physics/CircleCollider2D.h"
+#include "Components/Physics/Rigidbody2D.h"
+
+class Player;
 
 class BulletController : public Scripting 
 {

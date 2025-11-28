@@ -52,6 +52,6 @@ void EnemyController::SpawnBullet()
 
 Bullet* EnemyController::InstantiateBullet() 
 {
-	return _scene->CreateGameObject<Bullet>();;
+	return _scene->CreateGameObject<Bullet>();
 }
 

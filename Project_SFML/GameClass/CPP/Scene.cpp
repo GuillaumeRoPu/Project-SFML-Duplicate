@@ -10,8 +10,9 @@
 Scene::Scene(std::string n)
 {
     name = n;
-    CreateGameObject<GameObject>("MainCamera")->tag = "MainCamera";
-    FindFirstObjectWithTag("MainCamera")->AddComponent<Camera>();
+    GameObject* cam = CreateGameObject<GameObject>("MainCamera");
+    cam->tag = "MainCamera";
+    cam->AddComponent<Camera>();
 }
 
 void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
@@ -19,14 +20,9 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     static sf::Clock fixedClock;
     static float accumulator = 0.0f;
 
-
-    if (!start)
-    {
-        for (auto& obj : SceneObjects)
-            obj->Start();
-        
-        start = true;
-    }
+    // Start
+    for (auto& obj : SceneObjects)
+        obj->Start();
 
 
     Time::Update(); // met à jour deltaTime et FPS
@@ -87,7 +83,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     for (auto& obj : SceneObjects)
     {
         if (!obj.get()->active) continue;
-
+ 
         // Update : Logic
         obj->Update();
 
@@ -104,7 +100,6 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
         }
 
         //UI
-         
         //Text
         auto txt = obj.get()->GetComponent<Text>();
         if (txt)
@@ -147,6 +142,24 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             window.draw(sprite);
         }
     }
+
+    for (auto& obj : PendingAdd)
+    {
+        obj.get()->Awake();
+        SceneObjects.push_back(std::move(obj));
+    }
+    PendingAdd.clear();
+
+    for (auto* ptr : PendingRemove)
+    {
+        auto it = std::find_if(SceneObjects.begin(), SceneObjects.end(),
+            [&](auto& uptr) { return uptr.get() == ptr; });
+
+        if (it != SceneObjects.end())
+            SceneObjects.erase(it); // delete automatique
+    }
+
+    PendingRemove.clear();
 
     return;
 }
