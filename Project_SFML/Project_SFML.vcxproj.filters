@@ -201,4 +201,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="GameClass\TrucRandom\squigam.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="GameClass\TrucRandom\fat-chibi-squid-game-gaurd-dance-xaiversobased.gif">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
