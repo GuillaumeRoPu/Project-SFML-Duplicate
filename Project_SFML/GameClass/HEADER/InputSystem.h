@@ -6,7 +6,7 @@
 
 class InputSystem
 {
-	struct Button { bool any, left, right, up, down; };
+	struct Button { bool any, left, right, up, down, rotateRight, rotateLeft; };
 
 public:
 	InputSystem();

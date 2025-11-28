@@ -6,6 +6,7 @@ lascen::lascen()
 	p = CreateGameObject<Player>();
 	caca = CreateGameObject<Enemy>();
 	caca->_controller->GetPlayer(this);
+	blocker = CreateGameObject<Blocker>();
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
@@ -25,6 +26,13 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	}
 	if (input.getButton().left) {
 		p->_pc->Move(0, -1);
+	}
+	
+	if (input.getButton().rotateRight) {
+		blocker->_phc->Rotate(true);
+	}
+	if (input.getButton().rotateLeft) {
+		blocker->_phc->Rotate(false);
 	}
 
 	int sizePlayer = 25;
@@ -58,6 +66,14 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 			p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
 	}
 
+	sf::RectangleShape pBlocker(sf::Vector2f(50, 10));
+	pBlocker.setFillColor(sf::Color::Green);
+	pBlocker.setOrigin({ 50,10 });
+	float x = 10 * Mathf::cos(blocker->_phc->rad);
+	float y = 10 * Mathf::sin(blocker->_phc->rad);
+	std::cout << x << " " << y << std::endl;
+	pBlocker.setPosition({ p->transform->position.x() * pixelPerPoint + sizePlayer, p->transform->position.y() * pixelPerPoint + sizePlayer });
+
 	sf::RectangleShape grocaca(sf::Vector2f(20, 20));
 	grocaca.setFillColor(sf::Color::Black);
 	grocaca.setOrigin({ 10,10 });
@@ -67,4 +83,5 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	window.draw(grocaca);
 
 	window.draw(pshape);
+	window.draw(pBlocker);
 }
