@@ -60,9 +60,9 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
 	for (Bullet* bullet : caca->_controller->_bullets)
 	{
-		sf::CircleShape aieaieaie(20);
+		sf::CircleShape aieaieaie(10);
 		aieaieaie.setFillColor(sf::Color::Blue);
-		aieaieaie.setOrigin(20,20);
+		aieaieaie.setOrigin(10,10);
 		bullet->_rb->mass = 1;
 		aieaieaie.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
 		window.draw(aieaieaie);

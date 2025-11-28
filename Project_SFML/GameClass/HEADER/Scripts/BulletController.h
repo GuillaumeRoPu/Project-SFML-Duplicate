@@ -10,6 +10,7 @@ class BulletController : public Scripting
 	void FixedUpdate() override;
 	void Awake() override;
 	void OnTriggerEnter2D(Collider2D* other) override;
+	void OnCollisionEnter2D(Collider2D* other) override;
 
 public:
 	void GetPlayer(Player* player);
