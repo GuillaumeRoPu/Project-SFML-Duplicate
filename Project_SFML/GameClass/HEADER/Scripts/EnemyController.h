@@ -25,7 +25,6 @@ public:
     Rigidbody2D* _rb;
     BoxCollider2D* _collider;
     Player* _player;
-    std::list<Bullet*> _bullets;
     Bullet* _bullet;
     Scene* _scene;
     float cooldown;

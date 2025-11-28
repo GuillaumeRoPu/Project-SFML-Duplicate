@@ -164,12 +164,14 @@
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Bullet.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Blocker.cpp" />
+    <ClCompile Include="GameClass\CPP\Objects\BulletManager.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Enemy.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\EnemyManager.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\GameObject.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
     <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\BulletController.cpp" />
+    <ClCompile Include="GameClass\CPP\Scripts\BulletManagerController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\EnemyController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\EnemyManagerController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\HealthComponent.cpp" />
@@ -178,6 +180,7 @@
     <ClCompile Include="GameClass\CPP\System\Health.cpp" />
     <ClCompile Include="GameClass\HEADER\Objects\gmtest.h" />
     <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
+    <ClInclude Include="GameClass\HEADER\Objects\BulletManager.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\BulletController.h" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
@@ -211,6 +214,7 @@
     <ClInclude Include="GameClass\HEADER\Object\GameObject.h" />
     <ClInclude Include="GameClass\HEADER\Scene.h" />
     <ClInclude Include="GameClass\HEADER\Scenes\lascen.h" />
+    <ClInclude Include="GameClass\HEADER\Scripts\BulletManagerController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\EnemyController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\EnemyManagerController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\HealthComponent.h" />

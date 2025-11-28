@@ -3,11 +3,13 @@
 #include "Objects/Player.h"
 #include "Objects/EnemyManager.h"
 #include "Objects/Blocker.h"
+#include "Objects/BulletManager.h"
 
 class lascen : public Scene
 {
 public:
-	EnemyManager* caca;
+	EnemyManager* enemyManager;
+	BulletManager* bulletManager;
 	Player* p;
 	Blocker* blocker;
 public:

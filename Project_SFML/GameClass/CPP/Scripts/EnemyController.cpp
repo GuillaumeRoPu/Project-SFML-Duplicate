@@ -2,6 +2,7 @@
 #include "Scripts/EnemyManagerController.h"
 #include "Objects/GameObject.h"
 #include "Objects/Bullet.h"
+#include "Objects/BulletManager.h"
 
 //void EnemyController::FixedUpdate()
 //{
@@ -42,11 +43,8 @@ void EnemyController::Start()
 
 void EnemyController::SpawnBullet()
 {
-	Bullet* newBullet = InstantiateBullet();
-	if (newBullet != nullptr && _player != nullptr) {
-		newBullet->GetComponent<BulletController>()->_player = _player;
-	}
-	_bullets.push_back(newBullet);
+	auto manager = owner->scene->FindFirstObjectByType<BulletManager>();
+	manager->GetComponent<BulletManagerController>()->SpawnBullet();
 }
 
 void EnemyController::OnTriggerEnter2D(Collider2D* other) 
@@ -54,6 +52,7 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 	PlayerController* _player = other->owner->GetComponent<PlayerController>();
 	if (_player != nullptr) {
 		owner->active = false;
+		std::cout << "Touched Player" << std::endl;
 		controller->DestroyEnemy(owner);
 	}
 }

@@ -1,7 +1,5 @@
-﻿  EnemyManagerController.cpp
-  Project_SFML.cpp
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scripts\PlayerHealthBlocker.h(8,22): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-  (compiler le fichier source 'Project_SFML.cpp')
+﻿  BulletController.cpp
+C:\Users\Guiqlord\Desktop\Projets Guillaume\A2 IIM\cppA2\ProjetSFML\Project_SFML\Project_SFML\GameClass\HEADER\Scripts\PlayerHealthBlocker.h(8,22): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/BulletController.cpp')
   
-  Génération de code en cours...
-  Project_SFML.vcxproj -> C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe
+  Project_SFML.vcxproj -> C:\Users\Guiqlord\Desktop\Projets Guillaume\A2 IIM\cppA2\ProjetSFML\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe
