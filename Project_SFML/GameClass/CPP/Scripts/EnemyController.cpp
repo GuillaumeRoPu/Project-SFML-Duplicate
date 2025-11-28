@@ -32,12 +32,17 @@ void EnemyController::Start()
 {
 	_rb = owner->GetComponent<Rigidbody2D>();
 	_collider = owner->GetComponent<BoxCollider2D>();
-	cooldown = 5;
+	cooldown = 0.4f;
 	timer = 0;
 }
 
-void EnemyController::GetPlayer(Scene* scene) {
-	_player = scene->FindFirstObjectByType<Player>();
+void EnemyController::GetPlayer(Player* player) 
+{
+	_player = player;
+}
+
+void EnemyController::GetScene(Scene* scene) 
+{
 	_scene = scene;
 }
 
@@ -48,6 +53,15 @@ void EnemyController::SpawnBullet()
 		newBullet->GetComponent<BulletController>()->GetPlayer(_player);
 	}
 	_bullets.push_back(newBullet);
+}
+
+void EnemyController::OnTriggerEnter2D(Collider2D* other) 
+{
+	PlayerController* _player = other->owner->GetComponent<PlayerController>();
+	if (_player != nullptr) {
+		owner->active = false;
+		//_scene->DestroyObject(owner);
+	}
 }
 
 Bullet* EnemyController::InstantiateBullet() 

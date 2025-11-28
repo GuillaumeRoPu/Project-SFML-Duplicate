@@ -25,18 +25,16 @@ void BulletController::OnTriggerEnter2D(Collider2D* other)
 {
 	PlayerController* p = other->owner->GetComponent<PlayerController>();
 	if (p != nullptr) {
-		std::cout << "TOUCHE" << std::endl;
 	}
 }
 
 void BulletController::OnCollisionEnter2D(Collider2D* other) 
 {
-	std::cout << "help" << std::endl;
+
 }
 
 void BulletController::GetPlayer(Player* player) {
 	_player = player;
 	if (_player != nullptr) {
-		std::cout << "TROUVE" << std::endl;
 	}
 }
