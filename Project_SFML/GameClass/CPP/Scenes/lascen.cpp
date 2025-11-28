@@ -4,18 +4,18 @@
 lascen::lascen()
 {
 	p = CreateGameObject<Player>();
-	caca = CreateGameObject<Enemy>();
+	caca = CreateGameObject<EnemyManager>();
 	blocker = CreateGameObject<Blocker>();
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
-	window.clear(sf::Color::Red);
+	window.clear(sf::Color(0,125,125,255));
 
 	Scene::PlayScene(window, input);
 
 	//Trucs que vous devez mettre dans le constructeur mais ça fonctionne pas dans le constructeur :'(
-	caca->_controller->GetPlayer(this);
+	caca->_enemyManagerController->GetPlayer(this);
 
 	//Boucle
 	if (input.getButton().up) {
@@ -70,14 +70,27 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 			p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
 	}
 
-	for (Bullet* bullet : caca->_controller->_bullets)
-	{
-		sf::CircleShape aieaieaie(10);
-		aieaieaie.setFillColor(sf::Color::Blue);
-		aieaieaie.setOrigin(10,10);
-		bullet->_rb->mass = 1;
-		aieaieaie.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
-		window.draw(aieaieaie);
+	for (Enemy* enemy : caca->_enemyManagerController->_allEnemies) {
+		sf::RectangleShape grocaca(sf::Vector2f(20, 20));
+		grocaca.setFillColor(sf::Color::Black);
+		grocaca.setOrigin({ 10,10 });
+		enemy->_rb->mass = 1;
+		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
+
+		for (Bullet* bullet : enemy->_controller->_bullets)
+		{
+			sf::CircleShape aieaieaie(10);
+			aieaieaie.setFillColor(sf::Color::Yellow);
+			aieaieaie.setOrigin(10, 10);
+			bullet->_rb->mass = 1;
+			aieaieaie.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
+			window.draw(aieaieaie);
+		}
+
+		if (enemy->active == true)
+		{
+			window.draw(grocaca);
+		}
 	}
 
 	sf::Vector2f pBlockerSize(50, 10);
@@ -90,13 +103,6 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	pBlocker.setPosition({ pBlockerPosition.x(), pBlockerPosition.y()});
 	pBlocker.setRotation(pBlockerAngle);
 
-	sf::RectangleShape grocaca(sf::Vector2f(20, 20));
-	grocaca.setFillColor(sf::Color::Black);
-	grocaca.setOrigin({ 10,10 });
-	caca->_rb->mass = 1;
-	grocaca.setPosition(sf::Vector2f(caca->transform->position.x() * pixelPerPoint, caca->transform->position.y() * pixelPerPoint));
-
-	window.draw(grocaca);
 
 	window.draw(pshape);
 	window.draw(pBlocker);

@@ -36,6 +36,8 @@ void Transform::setLocalPosition(Vector2 newPos)
 	_localPosition = newPos;
 	if (parent)
 		position = parent->position + _localPosition;
+	else
+		position = _localPosition;
 }
 
 void Transform::setLocalScale(Vector2 newScale)

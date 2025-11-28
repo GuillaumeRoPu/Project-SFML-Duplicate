@@ -14,8 +14,10 @@ class EnemyController : public Scripting
     //void FixedUpdate() override;
     void Update() override;
     void Start() override;
+    void OnTriggerEnter2D(Collider2D* other) override;
 public:
-    void GetPlayer(Scene* scene);
+    void GetPlayer(Player* player);
+    void GetScene(Scene* scene);
     void SpawnBullet();
     Bullet* InstantiateBullet();
 

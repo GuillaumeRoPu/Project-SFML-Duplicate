@@ -37,7 +37,7 @@ void PolygonCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 	if (findIntersection(owner->GetComponent<Collider2D>(), _c))
 	{
 
-		if (!isTrigger || !_c->isTrigger)
+		if (!isTrigger && !_c->isTrigger)
 		{
 			if (_collider.GetComponent<BoxCollider2D>())
 				AABBWithPolygon(*_collider.GetComponent<BoxCollider2D>());
