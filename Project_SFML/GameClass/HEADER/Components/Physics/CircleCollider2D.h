@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include <Engine\FryEngine.h>
 #include "Components/Physics/Collider2D.h"
 

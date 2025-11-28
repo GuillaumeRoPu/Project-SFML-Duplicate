@@ -1,6 +1,5 @@
 #pragma once
 #include "Components/Component.h"
-#include <SFML/Graphics.hpp>
 
 using namespace fry;
 

@@ -34,6 +34,13 @@ Vector2 fry::Vector2::RotateAngle(Vector2 vector, float angle)
 	vector = a * vector.magnitude();
 	return vector;
 }
+Vector2 Vector2::RotateAngle(Vector2 vector, Vector2 center, float angle)
+{
+	float currentAngle = Vector2::Angle(Vector2::right(), (vector - center).normalized());
+	Vector2 a = { Mathf::cos(currentAngle + angle), Mathf::sin(currentAngle + angle) };
+	vector = a * (vector - center).magnitude();
+	return vector + center;
+}
 
 Vector2 Vector2::Lerp(Vector2 a, Vector2 b, float t)
 {

@@ -21,10 +21,9 @@ public:
 	T* CreateGameObject(Args&&... args) {
 		static_assert(std::is_base_of<GameObject, T>::value, "T must inherit GameObject");
 		auto obj = std::make_unique<T>(std::forward<Args>(args)...);
-		obj->Awake();
 
 		T* ptr = obj.get();
-		SceneObjects.push_back(std::move(obj));
+		PendingAdd.push_back(std::move(obj));
 		return ptr;
 	}
 
@@ -85,13 +84,13 @@ public:
 	//--------------------DESTROY--------------------
 	void DestroyObject(GameObject* T)
 	{
-		auto it = std::remove_if(SceneObjects.begin(), SceneObjects.end(),
-			[&](const std::unique_ptr<GameObject>& go) {
-				return go.get() == T;
-			});
-
-		if (it != SceneObjects.end())
-			SceneObjects.erase(it, SceneObjects.end());
+		for (auto& obj : SceneObjects)
+		{
+			if (obj.get() == T)
+			{
+				PendingRemove.push_back(T);
+			}
+		}
 	}
 
 private:
@@ -100,6 +99,8 @@ private:
 protected:
 
 	std::vector<std::unique_ptr<GameObject>> SceneObjects;
+	std::vector<std::unique_ptr<GameObject>> PendingAdd;
+	std::vector<GameObject*> PendingRemove;
 
 	bool HasStart() { return start; }
 	

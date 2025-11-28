@@ -136,6 +136,8 @@ void CircleCollider2D::CircleWithCircle(CircleCollider2D& collider)
 {
 	// ----- Création des collisions ----- \\
 
+
+
 	Vector2 dir = Vector2::Edge(collider.transform().position, transform().position);
 
 	float penetration = radius + collider.radius - dir.magnitude();

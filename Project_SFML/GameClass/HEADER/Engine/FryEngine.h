@@ -41,6 +41,7 @@ namespace fry
 
         // Rotate a vector to an angle in degrees
         static Vector2 RotateAngle(Vector2 vector, float angle);
+        static Vector2 RotateAngle(Vector2 vector, Vector2 center, float angle);
 
         // Get the the linearly interpolate vector between two vectors by time
         static Vector2 Lerp(Vector2 initialVector, Vector2 resultVector, float time);

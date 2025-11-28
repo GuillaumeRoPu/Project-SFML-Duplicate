@@ -66,6 +66,16 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 			p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
 	}
 
+	for (Bullet* bullet : caca->_controller->_bullets)
+	{
+		sf::CircleShape aieaieaie(20);
+		aieaieaie.setFillColor(sf::Color::Blue);
+		aieaieaie.setOrigin(20,20);
+		bullet->_rb->mass = 1;
+		aieaieaie.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
+		window.draw(aieaieaie);
+	}
+
 	sf::RectangleShape pBlocker(sf::Vector2f(50, 10));
 	pBlocker.setFillColor(sf::Color::Green);
 	pBlocker.setOrigin({ 50,10 });

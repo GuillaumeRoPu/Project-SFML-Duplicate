@@ -13,6 +13,9 @@ protected:
     std::vector<std::unique_ptr<Component>> components;
     int _hashID;
 
+private:
+    bool _start = false;
+
 
 public:
     bool active = true;
@@ -27,6 +30,8 @@ public:
     GameObject() : transform(AddComponent<Transform>()) {}
     GameObject(std::string name) : transform(AddComponent<Transform>()) { this->name = name; }
 
+    bool HasStart() { return _start; }
+
     void Awake()
     {
         if (!active) return;
@@ -37,10 +42,12 @@ public:
 
     void Start()
     {
-        if (!active) return;
+        if (!active || _start) return;
 
         for (auto& comp : components)
             comp->Start();
+
+        _start = true;
     }
 
     void Update()

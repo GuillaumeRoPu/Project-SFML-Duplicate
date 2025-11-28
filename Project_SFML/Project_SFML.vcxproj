@@ -161,18 +161,22 @@
     <ClCompile Include="GameClass\CPP\Engine\Vector2.cpp" />
     <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
+    <ClCompile Include="GameClass\CPP\Objects\Bullet.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Blocker.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Enemy.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
     <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
+    <ClCompile Include="GameClass\CPP\Scripts\BulletController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\EnemyController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\PlayerController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\PlayerHealthBlocker.cpp" />
     <ClCompile Include="GameClass\HEADER\Objects\gmtest.h" />
     <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
+    <ClCompile Include="GameClass\HEADER\Scripts\BulletController.h" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameClass\HEADER\Objects\Bullet.h" />
     <ClInclude Include="GameClass\HEADER\Objects\Blocker.h" />
     <ClInclude Include="GameClass\HEADER\Objects\Enemy.h" />
     <ClInclude Include="GameClass\HEADER\Objects\Player.h" />
