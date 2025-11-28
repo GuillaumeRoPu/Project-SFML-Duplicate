@@ -1,0 +1,2 @@
+﻿  Project_SFML.cpp
+LINK : fatal error LNK1104: impossible d'ouvrir le fichier 'sfml-graphics-d.lib'

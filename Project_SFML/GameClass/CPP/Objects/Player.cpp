@@ -8,4 +8,5 @@ Player::Player()
 	_pc = AddComponent<PlayerController>();
 
 	name = "Player";
+	_health = AddComponent<HealthComponent>(100);
 }
