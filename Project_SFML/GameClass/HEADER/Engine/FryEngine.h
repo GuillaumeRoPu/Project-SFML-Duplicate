@@ -3,11 +3,11 @@
 #include <random>
 #include <map>
 
-#include "Engine\Mathf.h"
+#include "Engine/Mathf.h"
 
 namespace fry
 {
-	const float pixelPerPoint = 50;
+	inline const float pixelPerPoint = 50;
 
     class Vector2
     {
@@ -80,6 +80,9 @@ namespace fry
 
         // Get the normal of the vector
         Vector2 normal();
+
+        // Place the vector around a center by an angle
+        Vector2 RotateAroundCenter(Vector2 center, float distance, float angle);
 
         // Return the string of the vector
         std::string ToString();

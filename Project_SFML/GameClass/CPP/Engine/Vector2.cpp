@@ -27,13 +27,14 @@ float Vector2::Angle(Vector2 from, Vector2 to)
 	return angle;
 }
 
-Vector2 fry::Vector2::RotateAngle(Vector2 vector, float angle)
+Vector2 Vector2::RotateAngle(Vector2 vector, float angle)
 {
 	float currentAngle = Vector2::Angle(Vector2::right(), vector.normalized());
 	Vector2 a = { Mathf::cos(currentAngle + angle), Mathf::sin(currentAngle + angle) };
 	vector = a * vector.magnitude();
 	return vector;
 }
+
 Vector2 Vector2::RotateAngle(Vector2 vector, Vector2 center, float angle)
 {
 	float currentAngle = Vector2::Angle(Vector2::right(), (vector - center).normalized());
@@ -138,6 +139,13 @@ Vector2 Vector2::normalize()
 Vector2 Vector2::normal()
 {
 	return { -_y, _x };
+}
+
+Vector2 Vector2::RotateAroundCenter(Vector2 center, float distance, float angle)
+{
+	Vector2 a = { Mathf::cos(angle), Mathf::sin(angle) };
+	Vector2 point = a * distance + center;
+	return point;
 }
 
 std::string fry::Vector2::ToString()

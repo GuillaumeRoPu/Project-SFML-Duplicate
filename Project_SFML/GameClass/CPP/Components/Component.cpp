@@ -1,10 +1,16 @@
 #include "Components/Component.h"
-#include "Objects\GameObject.h"
-#include "Components\Transform.h"
+#include "Components/Transform.h"
+#include "Objects/GameObject.h"
+#include "Scene.h"
 
 Transform& Component::transform()
 {
     return *(owner->transform);
+}
+
+Scene& Component::scene()
+{
+    return *(owner->scene);
 }
 
 // Collision methods
