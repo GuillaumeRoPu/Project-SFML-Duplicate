@@ -1,6 +1,5 @@
 #pragma once
-#include "Objects/GameObject.h"
-#include "Objects/Bullet.h"
+
 #include "Components/Scripting.h"
 #include "Components/Physics/BoxCollider2D.h"
 #include "Objects/Player.h"
@@ -8,6 +7,7 @@
 #include <list>
 
 class Bullet;
+class EnemyManagerController;
 
 class EnemyController : public Scripting
 {
@@ -20,6 +20,8 @@ public:
     Bullet* InstantiateBullet();
 
 public:
+
+    EnemyManagerController* controller;
     Rigidbody2D* _rb;
     BoxCollider2D* _collider;
     Player* _player;

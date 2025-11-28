@@ -7,7 +7,7 @@ class HealthComponent : public Component
 {
 public:
 
-    HealthComponent(int maxHealth = 100);
+    HealthComponent();
 
     void Awake() override {}
     void Start() override {}

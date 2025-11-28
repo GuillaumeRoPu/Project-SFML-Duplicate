@@ -17,10 +17,10 @@ public:
 	virtual void PlayScene(sf::RenderWindow& window, InputSystem& input);
 
 	// Create an object to your scene
-	template <typename T, typename... Args>
-	T* CreateGameObject(Args&&... args) {
+	template <typename T>
+	T* CreateGameObject() {
 		static_assert(std::is_base_of<GameObject, T>::value, "T must inherit GameObject");
-		auto obj = std::make_unique<T>(std::forward<Args>(args)...);
+		auto obj = std::make_unique<T>();
 
 		T* ptr = obj.get();
 		PendingAdd.push_back(std::move(obj));

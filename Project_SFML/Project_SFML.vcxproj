@@ -178,7 +178,7 @@
     <ClCompile Include="GameClass\CPP\System\Health.cpp" />
     <ClCompile Include="GameClass\HEADER\Objects\gmtest.h" />
     <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
-    <ClCompile Include="GameClass\HEADER\Scripts\BulletController.h" />
+    <ClInclude Include="GameClass\HEADER\Scripts\BulletController.h" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>

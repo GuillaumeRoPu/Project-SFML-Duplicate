@@ -10,7 +10,8 @@
 Scene::Scene(std::string n)
 {
     name = n;
-    GameObject* cam = CreateGameObject<GameObject>("MainCamera");
+    GameObject* cam = CreateGameObject<GameObject>();
+    cam->name = "MainCamera";
     cam->tag = "MainCamera";
     cam->AddComponent<Camera>();
 }
@@ -145,6 +146,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
     for (auto& obj : PendingAdd)
     {
+        obj.get()->scene = this;
         obj.get()->Awake();
         SceneObjects.push_back(std::move(obj));
     }

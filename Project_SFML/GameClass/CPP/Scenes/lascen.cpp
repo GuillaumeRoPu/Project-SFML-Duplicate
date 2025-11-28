@@ -1,5 +1,6 @@
 #include "Scenes/lascen.h"
 #include "Components/Transform.h"
+#include "Objects/Bullet.h"
 
 lascen::lascen()
 {
@@ -13,9 +14,6 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	window.clear(sf::Color(0,125,125,255));
 
 	Scene::PlayScene(window, input);
-
-	//Trucs que vous devez mettre dans le constructeur mais ça fonctionne pas dans le constructeur :'(
-	caca->_enemyManagerController->GetPlayer(this);
 
 	//Boucle
 	if (input.getButton().up) {
@@ -87,7 +85,7 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 			window.draw(aieaieaie);
 		}
 
-		if (enemy->active == true)
+		if (enemy->active)
 		{
 			window.draw(grocaca);
 		}

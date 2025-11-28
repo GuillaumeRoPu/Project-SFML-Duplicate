@@ -47,11 +47,11 @@ public:
     virtual ~GameObject() = default;
 
     // Add a component to your game object
-    template <typename T, typename... Args>
-    T* AddComponent(Args&&... args)
+    template <typename T>
+    T* AddComponent()
     {
         static_assert(std::is_base_of<Component, T>::value, "T must inherit Component");
-        auto comp = std::make_unique<T>(std::forward<Args>(args)...);
+        auto comp = std::make_unique<T>();
         comp->owner = this;
 
         T* ptr = comp.get();

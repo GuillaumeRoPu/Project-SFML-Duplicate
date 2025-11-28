@@ -1,40 +1,7 @@
-﻿  Blocker.cpp
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scripts\PlayerHealthBlocker.h(8,22): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-  (compiler le fichier source 'GameClass/CPP/Objects/Blocker.cpp')
-  
-  Bullet.cpp
-  Enemy.cpp
-  EnemyManager.cpp
-  lascen.cpp
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scripts\PlayerHealthBlocker.h(8,22): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-  (compiler le fichier source 'GameClass/CPP/Scenes/lascen.cpp')
-  
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(42,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(43,31): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(43,19): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(47,12): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(47,12): warning C4244:         with
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(47,12): warning C4244:         [
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(47,12): warning C4244:             T=unsigned int
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(47,12): warning C4244:         ]
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(48,12): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(48,12): warning C4244:         with
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(48,12): warning C4244:         [
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(48,12): warning C4244:             T=unsigned int
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(48,12): warning C4244:         ]
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(97,22): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-  EnemyController.cpp
-  EnemyManagerController.cpp
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scripts\EnemyManagerController.cpp(33,46): error C2039: 'GetPlayer' n'est pas membre de 'EnemyController'
-      C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scripts\EnemyController.h(12,7):
-      voir la déclaration de 'EnemyController'
-  
-C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scripts\EnemyManagerController.cpp(34,46): error C2039: 'GetScene' n'est pas membre de 'EnemyController'
-      C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scripts\EnemyController.h(12,7):
-      voir la déclaration de 'EnemyController'
-  
+﻿  EnemyManagerController.cpp
   Project_SFML.cpp
 C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scripts\PlayerHealthBlocker.h(8,22): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
   (compiler le fichier source 'Project_SFML.cpp')
   
   Génération de code en cours...
+  Project_SFML.vcxproj -> C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe

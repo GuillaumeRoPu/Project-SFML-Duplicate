@@ -1,4 +1,7 @@
 #include "Scripts/EnemyController.h"
+#include "Scripts/EnemyManagerController.h"
+#include "Objects/GameObject.h"
+#include "Objects/Bullet.h"
 
 //void EnemyController::FixedUpdate()
 //{
@@ -41,7 +44,7 @@ void EnemyController::SpawnBullet()
 {
 	Bullet* newBullet = InstantiateBullet();
 	if (newBullet != nullptr && _player != nullptr) {
-		newBullet->GetComponent<BulletController>()->GetPlayer(_player);
+		newBullet->GetComponent<BulletController>()->_player = _player;
 	}
 	_bullets.push_back(newBullet);
 }
@@ -51,12 +54,12 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 	PlayerController* _player = other->owner->GetComponent<PlayerController>();
 	if (_player != nullptr) {
 		owner->active = false;
-		//_scene->DestroyObject(owner);
+		controller->DestroyEnemy(owner);
 	}
 }
 
 Bullet* EnemyController::InstantiateBullet() 
 {
-	return _scene->CreateGameObject<Bullet>();
+	return scene().CreateGameObject<Bullet>();
 }
 

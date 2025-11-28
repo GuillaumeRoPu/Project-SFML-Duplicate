@@ -11,13 +11,12 @@ class EnemyManagerController : public Scripting
 
 public:
 	void SpawnEnemy();
+	void DestroyEnemy(GameObject* enemy);
 	Enemy* InstantiateEnemy();
-	void GetPlayer(Scene* scene);
 
 public:
 	std::list<Enemy*> _allEnemies;
 	Player* _player;
-	Scene* _scene;
 	float _cooldown;
 	float _timer;
 	Vector2 _spawnRadius;

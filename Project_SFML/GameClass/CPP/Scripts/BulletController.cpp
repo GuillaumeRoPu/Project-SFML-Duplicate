@@ -1,8 +1,8 @@
 #include "Scripts/BulletController.h"
+#include "Objects/Player.h"
 #include "Scripts/PlayerController.h"
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components/Physics/Rigidbody2D.h"
-#include "Objects/Player.h"
 
 void BulletController::FixedUpdate() 
 {
@@ -33,10 +33,4 @@ void BulletController::OnTriggerEnter2D(Collider2D* other)
 void BulletController::OnCollisionEnter2D(Collider2D* other) 
 {
 
-}
-
-void BulletController::GetPlayer(Player* player) {
-	_player = player;
-	if (_player != nullptr) {
-	}
 }

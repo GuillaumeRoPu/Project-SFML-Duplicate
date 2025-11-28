@@ -1,8 +1,7 @@
 #include "Scripts/HealthComponent.h"
 #include "Objects/GameObject.h"   // pour poubvoir utiliser owner->active
 
-HealthComponent::HealthComponent(int maxHealth)
-    : m_health(maxHealth)
+HealthComponent::HealthComponent()
 {
 }
 

@@ -18,27 +18,33 @@ void EnemyManagerController::Start()
 
 void EnemyManagerController::Awake()
 {
-	
-}
-
-void EnemyManagerController::GetPlayer(Scene* scene) {
-	_player = scene->FindFirstObjectByType<Player>();
-	_scene = scene;
+	_player = scene().FindFirstObjectByType<Player>();
 }
 
 void EnemyManagerController::SpawnEnemy() 
 {
 	Enemy* newEnemy = InstantiateEnemy();
+	newEnemy->_controller->controller = this;
 	if (newEnemy != nullptr && _player != nullptr) {
-		newEnemy->GetComponent<EnemyController>()->GetPlayer(_player);
-		newEnemy->GetComponent<EnemyController>()->GetScene(_scene);
 		Vector2 position = Vector2(Random::Range(-100 / (int)pixelPerPoint, 100 / (int)pixelPerPoint), Random::Range(-100 / (int)pixelPerPoint, 100 / (int)pixelPerPoint));
 		newEnemy->transform->position = (position);
 	}
 	_allEnemies.push_back(newEnemy);
 }
 
+void EnemyManagerController::DestroyEnemy(GameObject* enemy)
+{
+	auto it = std::find_if(_allEnemies.begin(), _allEnemies.end(),
+		[&](auto& uptr) {return uptr == enemy; });
+
+	if (it != _allEnemies.end())
+		_allEnemies.erase(it);
+
+	scene().DestroyObject(enemy);
+}
+
+
 Enemy* EnemyManagerController::InstantiateEnemy()
 {
-	return _scene->CreateGameObject<Enemy>();
+	return scene().CreateGameObject<Enemy>();
 }
