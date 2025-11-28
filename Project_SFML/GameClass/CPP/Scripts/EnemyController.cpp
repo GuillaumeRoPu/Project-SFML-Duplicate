@@ -44,7 +44,7 @@ void EnemyController::GetPlayer(Scene* scene) {
 void EnemyController::SpawnBullet()
 {
 	Bullet* newBullet = InstantiateBullet();
-	if (newBullet != nullptr) {
+	if (newBullet != nullptr && _player != nullptr) {
 		newBullet->GetComponent<BulletController>()->GetPlayer(_player);
 	}
 	_bullets.push_back(newBullet);
