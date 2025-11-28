@@ -38,7 +38,8 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	int sizePlayer = 25;
 	sf::CircleShape pshape(sizePlayer);
 	pshape.setOrigin(sizePlayer, sizePlayer);
-	pshape.setPosition({ p->transform->position.x() * pixelPerPoint, p->transform->position.y() * pixelPerPoint });
+	sf::Vector2f playerPosition = { p->transform->position.x() * pixelPerPoint, p->transform->position.y() * pixelPerPoint };
+	pshape.setPosition(playerPosition);
 
 	float wsx = window.getSize().x;
 	float wsy = window.getSize().y;
@@ -68,21 +69,23 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
 	for (Bullet* bullet : caca->_controller->_bullets)
 	{
-		sf::CircleShape aieaieaie(20);
+		sf::CircleShape aieaieaie(10);
 		aieaieaie.setFillColor(sf::Color::Blue);
-		aieaieaie.setOrigin(20,20);
+		aieaieaie.setOrigin(10,10);
 		bullet->_rb->mass = 1;
 		aieaieaie.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
 		window.draw(aieaieaie);
 	}
 
-	sf::RectangleShape pBlocker(sf::Vector2f(50, 10));
+	sf::Vector2f pBlockerSize(50, 10);
+	Vector2 pBlockerPosition = fry::Vector2::RotateAngle(Vector2{ p->transform->position.x() * pixelPerPoint + sizePlayer, p->transform->position.y() * pixelPerPoint + sizePlayer + 20 }, Vector2{ playerPosition.x, playerPosition.y }, blocker->_phc->angle);
+	float pBlockerAngle = blocker->_phc->angle;
+	blocker->Transformation(pBlockerSize, pBlockerPosition, pBlockerAngle);
+	sf::RectangleShape pBlocker(pBlockerSize);
 	pBlocker.setFillColor(sf::Color::Green);
-	pBlocker.setOrigin({ 50,10 });
-	float x = 10 * Mathf::cos(blocker->_phc->rad);
-	float y = 10 * Mathf::sin(blocker->_phc->rad);
-	std::cout << x << " " << y << std::endl;
-	pBlocker.setPosition({ p->transform->position.x() * pixelPerPoint + sizePlayer, p->transform->position.y() * pixelPerPoint + sizePlayer });
+	pBlocker.setOrigin(pBlockerSize);
+	pBlocker.setPosition({ pBlockerPosition.x(), pBlockerPosition.y()});
+	pBlocker.setRotation(pBlockerAngle);
 
 	sf::RectangleShape grocaca(sf::Vector2f(20, 20));
 	grocaca.setFillColor(sf::Color::Black);

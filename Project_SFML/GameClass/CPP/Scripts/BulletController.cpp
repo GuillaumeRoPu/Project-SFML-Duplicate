@@ -13,10 +13,6 @@ void BulletController::FixedUpdate()
 			_rb->velocity += VecteurPlayerEnemy;
 		}
 	}
-	else 
-	{
-		std::cout << "bah jsp quoi te dire frr" << std::endl;
-	}
 }
 
 void BulletController::Awake() 

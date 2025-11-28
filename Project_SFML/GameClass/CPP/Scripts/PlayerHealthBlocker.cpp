@@ -5,7 +5,8 @@
 
 void PlayerHealthBlocker::Start()
 {
-	_bc = owner->GetComponent<BoxCollider2D>();
+	//_bc = owner->GetComponent<BoxCollider2D>();
+	//_bc->isTrigger = true;
 }
 
 void PlayerHealthBlocker::Rotate(bool dir)
@@ -21,5 +22,5 @@ void PlayerHealthBlocker::Rotate(bool dir)
 	}
 	angle = angle % 360;
 	rad = angle * (2 * Mathf::PI / 360);
-	std::cout << angle << " " << rad;
+	std::cout << angle << " " << rad << std::endl;
 }
