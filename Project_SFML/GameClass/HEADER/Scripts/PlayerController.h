@@ -6,7 +6,7 @@ class PlayerController : public Scripting
 {
 public:
 	Rigidbody2D* _rb;
-	float acceleration = 500.0f;
+	float acceleration = 10.0f;
 
 	void Start() override;
 public:
