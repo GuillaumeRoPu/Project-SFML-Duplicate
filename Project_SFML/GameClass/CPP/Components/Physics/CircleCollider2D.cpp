@@ -21,7 +21,7 @@ void CircleCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 	if (findIntersection(owner->GetComponent<Collider2D>(), _c))
 	{
 
-		if (!isTrigger)
+		if (!isTrigger || !_c->isTrigger)
 		{
 			if (_collider.GetComponent<BoxCollider2D>())
 				AABBWithCircle(*_collider.GetComponent<BoxCollider2D>());
