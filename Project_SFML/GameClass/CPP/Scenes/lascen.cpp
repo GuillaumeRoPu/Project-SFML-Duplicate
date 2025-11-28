@@ -1,5 +1,5 @@
 #include "Scenes/lascen.h"
-
+#include "Components/Transform.h"
 
 lascen::lascen()
 {
@@ -93,15 +93,15 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 		}
 	}
 
-	sf::Vector2f pBlockerSize(50, 10);
-	Vector2 pBlockerPosition = fry::Vector2::RotateAngle(Vector2{ p->transform->position.x() * pixelPerPoint + sizePlayer, p->transform->position.y() * pixelPerPoint + sizePlayer + 20 }, Vector2{ playerPosition.x, playerPosition.y }, blocker->_phc->angle);
+
 	float pBlockerAngle = blocker->_phc->angle;
-	blocker->Transformation(pBlockerSize, pBlockerPosition, pBlockerAngle);
-	sf::RectangleShape pBlocker(pBlockerSize);
+	blocker->transform->position.RotateAroundCenter(p->transform->position, 1.3f, pBlockerAngle);
+	blocker->transform->rotation = pBlockerAngle;
+	sf::RectangleShape pBlocker({ blocker->transform->scale.x() * pixelPerPoint, blocker->transform->scale.y() * pixelPerPoint });
 	pBlocker.setFillColor(sf::Color::Green);
-	pBlocker.setOrigin(pBlockerSize);
-	pBlocker.setPosition({ pBlockerPosition.x(), pBlockerPosition.y()});
-	pBlocker.setRotation(pBlockerAngle);
+	pBlocker.setOrigin({25, 5});
+	pBlocker.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
+	pBlocker.setRotation(pBlockerAngle + 90);
 
 
 	window.draw(pshape);

@@ -1,9 +1,10 @@
 #pragma once
 #include "Components/Scripting.h"
-#include "Components/Physics/CircleCollider2D.h"
-#include "Components/Physics/Rigidbody2D.h"
+
 
 class Player;
+class Rigidbody2D;
+class CircleCollider2D;
 
 class BulletController : public Scripting 
 {

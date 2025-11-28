@@ -145,6 +145,8 @@ Vector2 Vector2::RotateAroundCenter(Vector2 center, float distance, float angle)
 {
 	Vector2 a = { Mathf::cos(angle), Mathf::sin(angle) };
 	Vector2 point = a * distance + center;
+	_x = point.x();
+	_y = point.y();
 	return point;
 }
 

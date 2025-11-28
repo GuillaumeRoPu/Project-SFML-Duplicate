@@ -1,6 +1,8 @@
 #include "Scripts/BulletController.h"
-#include "Objects/Player.h"
 #include "Scripts/PlayerController.h"
+#include "Components/Physics/CircleCollider2D.h"
+#include "Components/Physics/Rigidbody2D.h"
+#include "Objects/Player.h"
 
 void BulletController::FixedUpdate() 
 {

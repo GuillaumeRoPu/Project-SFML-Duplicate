@@ -32,18 +32,9 @@ void EnemyController::Start()
 {
 	_rb = owner->GetComponent<Rigidbody2D>();
 	_collider = owner->GetComponent<BoxCollider2D>();
+	_player = scene().FindFirstObjectByType<Player>();
 	cooldown = 0.4f;
 	timer = 0;
-}
-
-void EnemyController::GetPlayer(Player* player) 
-{
-	_player = player;
-}
-
-void EnemyController::GetScene(Scene* scene) 
-{
-	_scene = scene;
 }
 
 void EnemyController::SpawnBullet()

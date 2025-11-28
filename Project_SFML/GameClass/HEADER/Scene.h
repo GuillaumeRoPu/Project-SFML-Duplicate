@@ -34,11 +34,23 @@ public:
 	T* FindFirstObjectByType()
 	{
 		static_assert(std::is_base_of<GameObject, T>::value, "T must inherit GameObject");
-		for (auto& obj : SceneObjects) {
-			if (auto casted = dynamic_cast<T*>(obj.get())) {
-				return casted;
+		if (SceneObjects.size() == 0)
+		{
+			for (auto& obj : PendingAdd) {
+				if (auto casted = dynamic_cast<T*>(obj.get())) {
+					return casted;
+				}
 			}
 		}
+		else
+		{
+			for (auto& obj : SceneObjects) {
+				if (auto casted = dynamic_cast<T*>(obj.get())) {
+					return casted;
+				}
+			}
+		}
+		
 		return nullptr;
 	}
 
@@ -61,11 +73,23 @@ public:
 	// Get an object of give tag to your scene
 	GameObject* FindFirstObjectWithTag(std::string tag)
 	{
-		for (auto& obj : SceneObjects) {
-			if (obj.get()->tag == tag) {
-				return obj.get();
+		if (SceneObjects.size() == 0)
+		{
+			for (auto& obj : PendingAdd) {
+				if (obj.get()->tag == tag) {
+					return obj.get();
+				}
 			}
 		}
+		else
+		{
+			for (auto& obj : SceneObjects) {
+				if (obj.get()->tag == tag) {
+					return obj.get();
+				}
+			}
+		}
+		
 		return nullptr;
 	}
 
@@ -93,15 +117,9 @@ public:
 		}
 	}
 
-private:
-	bool start = false;
-
 protected:
 
 	std::vector<std::unique_ptr<GameObject>> SceneObjects;
 	std::vector<std::unique_ptr<GameObject>> PendingAdd;
 	std::vector<GameObject*> PendingRemove;
-
-	bool HasStart() { return start; }
-	
 };

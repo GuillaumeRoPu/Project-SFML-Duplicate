@@ -1,4 +1,4 @@
-#include "HealthComponent.h"
+#include "Scripts/HealthComponent.h"
 #include "Objects/GameObject.h"   // pour poubvoir utiliser owner->active
 
 HealthComponent::HealthComponent(int maxHealth)
