@@ -45,4 +45,6 @@ void Transform::setLocalScale(Vector2 newScale)
 	_localScale = newScale;
 	if (parent)
 		scale = parent->scale * _localScale;
+	else
+		scale = _localScale;
 }
