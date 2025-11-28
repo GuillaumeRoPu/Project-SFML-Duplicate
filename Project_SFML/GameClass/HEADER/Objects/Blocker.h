@@ -11,9 +11,6 @@ public:
 	Blocker();
 	void Transformation(sf::Vector2f s, Vector2 pos, float rot);
 public:
-	//BoxCollider2D* _bc;
+	BoxCollider2D* _bc;
 	PlayerHealthBlocker* _phc;
-	sf::Vector2f size;
-	Vector2 position;
-	float rotation;
 };

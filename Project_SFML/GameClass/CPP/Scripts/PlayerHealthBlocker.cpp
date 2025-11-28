@@ -3,12 +3,6 @@
 #include "Objects/GameObject.h"
 #include "InputSystem.h"
 
-void PlayerHealthBlocker::Start()
-{
-	//_bc = owner->GetComponent<BoxCollider2D>();
-	//_bc->isTrigger = true;
-}
-
 void PlayerHealthBlocker::Rotate(bool dir)
 {
 	if (dir) {
