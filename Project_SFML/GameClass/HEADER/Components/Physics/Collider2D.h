@@ -6,11 +6,11 @@ class Collider2D : public Component
 {
 public:
 	
-	void Start() override;
-
 	virtual void ApplyRotation() {};
-	virtual void UpdateCollision(std::unique_ptr<GameObject>& collider);
-	virtual bool isPointInside(Vector2 point);
+	virtual void UpdateCollision(GameObject* collider) {};
+	virtual bool isPointInside(Vector2 point) { return false; };
+	virtual Vector2 GetProjectInterval(Vector2 normal) { return Vector2::zero(); };
+	
 	bool findIntersection(Collider2D* c1, Collider2D* c2);
 
 	bool isTrigger = false;

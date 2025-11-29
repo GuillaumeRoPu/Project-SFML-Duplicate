@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <Engine\FryEngine.h>
 #include "Components/Physics/Collider2D.h"
 
@@ -10,8 +11,10 @@ class CircleCollider2D : public Collider2D
 public:
 	void Start() override;
 
-	void UpdateCollision(std::unique_ptr<GameObject>& collider) override;
+	void ApplyRotation() override;
+	void UpdateCollision(GameObject* collider) override;
 	bool isPointInside(fry::Vector2 point) override;
+	Vector2 GetProjectInterval(Vector2 normal) override;
 
 	float radius = 1.f;
 

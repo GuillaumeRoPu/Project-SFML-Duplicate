@@ -4,6 +4,7 @@
 
 class BoxCollider2D;
 class CircleCollider2D;
+class GameObject;
 
 class PolygonCollider2D : public Collider2D
 {
@@ -11,10 +12,9 @@ public:
 	void Start() override;
 
 	void ApplyRotation() override;
-	void UpdateCollision(std::unique_ptr<GameObject>& collider) override;
+	void UpdateCollision(GameObject* collider) override;
 	bool isPointInside(Vector2 point) override;
-
-	Vector2 GetProjectInterval(Vector2 normal);
+	Vector2 GetProjectInterval(Vector2 normal) override;
 
 	Vector2 center();
 

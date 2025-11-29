@@ -1,23 +1,8 @@
-#include "Objects/GameObject.h"
 #include "Components/Physics/Collider2D.h"
 #include "Components/Physics/BoxCollider2D.h"
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components/Physics/PolygonCollider2D.h"
-
-void Collider2D::Start()
-{
-
-}
-
-void Collider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
-{
-
-}
-
-bool Collider2D::isPointInside(Vector2 point)
-{
-	return false;
-}
+#include "Objects/GameObject.h"
 
 bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondCollider)
 {
@@ -31,29 +16,30 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 
 		if (c2.owner->GetComponent<BoxCollider2D>())
 		{
-			Rect boxBounds({ box->transform().position.x() + box->bounds.center().x(),
-								box->transform().position.y() + box->bounds.center().y() },
-				{ box->bounds.width(), box->bounds.height() });
-
-			isCollide = c2.isPointInside({ boxBounds.left(), boxBounds.top() }) ||
-				c2.isPointInside({ boxBounds.right(), boxBounds.top() }) ||
-				c2.isPointInside({ boxBounds.left(), boxBounds.bottom() }) ||
-				c2.isPointInside({ boxBounds.right(), boxBounds.bottom() });
+			for (int i = 0; i < box->OBBRect.size(); i++)
+			{
+				isCollide = c2.isPointInside(box->OBBRect[i]);
+				if (isCollide)
+					break;
+			}
 		}
 		else if (c2.owner->GetComponent<CircleCollider2D>())
 		{
 			auto circle = c2.owner->GetComponent<CircleCollider2D>();
 
-			float left = c1.transform().position.x() + box->bounds.left();
-			float top = c1.transform().position.y() + box->bounds.top();
+			for (int i = 0; i < box->OBBRect.size(); i++)
+			{
+				int j = i + 1 == box->OBBRect.size() ? 0 : i + 1;
+				Vector2 closetPoint = Vector2::ClosetPointOnSegment(circle->transform().position, box->OBBRect[i], box->OBBRect[j]);
 
-			Vector2 closetPoint = { Mathf::clamp(circle->transform().position.x(), left, left + box->bounds.width()),
-								Mathf::clamp(circle->transform().position.y(), top, top + box->bounds.height()) };
+				Vector2 dir = Vector2::Edge(circle->transform().position, closetPoint);
+				float distance = dir.sqrMagnitude();
 
-			Vector2 dir = Vector2::Edge(circle->transform().position, closetPoint);
-			float distance = dir.sqrMagnitude();
+				isCollide = distance < circle->radius * circle->radius;
+				if (isCollide)
+					break;
+			}
 
-			isCollide = distance < circle->radius * circle->radius;
 		}
 		else if (c2.owner->GetComponent<PolygonCollider2D>())
 		{
@@ -107,10 +93,12 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 			float left = c2.transform().position.x() + box->bounds.left();
 			float top = c2.transform().position.y() + box->bounds.top();
 
-			Vector2 closetPoint = { Mathf::clamp(circle->transform().position.x(), left, left + box->bounds.width()),
-								Mathf::clamp(circle->transform().position.y(), top, top + box->bounds.height())};
+			Vector2 newCirclePos = Vector2::RotateAngle(circle->transform().position, c2.transform().position, -c2.transform().rotation);
 
-			Vector2 dir = Vector2::Edge(circle->transform().position, closetPoint);
+			Vector2 closetPoint = { Mathf::clamp(newCirclePos.x(), left, left + box->bounds.width()),
+								Mathf::clamp(newCirclePos.y(), top, top + box->bounds.height())};
+
+			Vector2 dir = Vector2::Edge(newCirclePos, closetPoint);
 			distance = dir.sqrMagnitude();
 
 			isCollide = distance < circle->radius*circle->radius;
@@ -129,17 +117,21 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 		{
 			auto polygon = c2.owner->GetComponent<PolygonCollider2D>();
 
-			for (int i = 0; i < polygon->OBBvertices.size(); i++)
+			isCollide = polygon->isPointInside(circle->transform().position);
+			if (!isCollide)
 			{
-				int j = i + 1 == polygon->OBBvertices.size() ? 0 : i + 1;
+				for (int i = 0; i < polygon->OBBvertices.size(); i++)
+				{
+					int j = i + 1 == polygon->OBBvertices.size() ? 0 : i + 1;
 
-				Vector2 closet = Vector2::ClosetPointOnSegment(circle->transform().position,
-					polygon->OBBvertices[i] + polygon->transform().position,
-					polygon->OBBvertices[j] + polygon->transform().position);
+					Vector2 closet = Vector2::ClosetPointOnSegment(circle->transform().position,
+						polygon->OBBvertices[i] + polygon->transform().position,
+						polygon->OBBvertices[j] + polygon->transform().position);
 
-				isCollide = circle->isPointInside(closet);
-				if (isCollide)
-					break;
+					isCollide = circle->isPointInside(closet);
+					if (isCollide)
+						break;
+				}
 			}
 		}
 
@@ -171,12 +163,16 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 					break;
 			}
 
-			const Vector2 boxAxes[] = { Vector2(0,1), Vector2(1,0) };
-			for (Vector2 axe : boxAxes)
+			for (int i = 0; i < box.OBBRect.size(); i++)
 			{
-				Vector2 polyInter = polygon->GetProjectInterval(axe);
+				int j = i + 1 == box.OBBRect.size() ? 0 : i + 1;
 
-				Vector2 boxInter = box.GetProjectInterval(axe);
+				Vector2 edge = Vector2::Edge(box.OBBRect[i], box.OBBRect[j]);
+				Vector2 n = edge.normal();
+
+				Vector2 polyInter = polygon->GetProjectInterval(n);
+
+				Vector2 boxInter = box.GetProjectInterval(n);
 
 				boxColl = polyInter.y() >= boxInter.x() && boxInter.y() >= polyInter.x();
 				if (!boxColl)
@@ -249,18 +245,16 @@ bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondC
 
 	if (!isCollide)
 	{
-		if (c2.owner->GetComponent<BoxCollider2D>())
+		if (c2.owner->GetComponent<BoxCollider2D>() && c1.owner->GetComponent<BoxCollider2D>())
 		{
 			auto box = c2.owner->GetComponent<BoxCollider2D>();
 
-			Rect boxBounds({ box->transform().position.x() + box->bounds.center().x(),
-								box->transform().position.y() + box->bounds.center().y() },
-				{ box->bounds.width(), box->bounds.height()});
-
-			isCollide = c1.isPointInside({ boxBounds.left(), boxBounds.top()}) ||
-				c1.isPointInside({ boxBounds.right(), boxBounds.top() }) ||
-				c1.isPointInside({ boxBounds.left(), boxBounds.bottom()}) ||
-				c1.isPointInside({ boxBounds.right(), boxBounds.bottom() });
+			for (int i = 0; i < box->OBBRect.size(); i++)
+			{
+				isCollide = c1.isPointInside(box->OBBRect[i]);
+				if (isCollide)
+					break;
+			}
 
 		}
 		if (c2.owner->GetComponent<PolygonCollider2D>())

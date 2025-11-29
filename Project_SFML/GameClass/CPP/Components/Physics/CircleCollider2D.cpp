@@ -1,6 +1,7 @@
 #include "Components\Physics\PolygonCollider2D.h"
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components/Physics/BoxCollider2D.h"
+#include "Components/Physics/Rigidbody2D.h"
 #include "Objects/GameObject.h"
 
 void CircleCollider2D::Start()
@@ -9,7 +10,12 @@ void CircleCollider2D::Start()
 	body = owner->GetComponent<Rigidbody2D>();
 }
 
-void CircleCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
+void CircleCollider2D::ApplyRotation()
+{
+	radius = Mathf::Max(owner->transform->scale.x() / 2, owner->transform->scale.y() / 2);
+}
+
+void CircleCollider2D::UpdateCollision(GameObject* collider)
 {
 	auto& _collider = *collider;
 	auto _c = _collider.GetComponent<Collider2D>();
@@ -32,7 +38,6 @@ void CircleCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 			else if (_collider.GetComponent<PolygonCollider2D>())
 				PolygonWithCircle(*_collider.GetComponent<PolygonCollider2D>());
 		}
-		
 
 		if (it == _collision.end())
 		{
@@ -71,30 +76,53 @@ bool CircleCollider2D::isPointInside(Vector2 point)
 	return length <= radius * radius;
 }
 
+Vector2 CircleCollider2D::GetProjectInterval(Vector2 normal)
+{
+	Vector2 distance = normal.normalized();
+	Vector2 radDistence = distance * radius;
+
+	Vector2 p1 = transform().position + radDistence;
+	Vector2 p2 = transform().position - radDistence;
+
+	float min = Vector2::Dot(normal, p1);
+	float max = Vector2::Dot(normal, p2);
+
+	if (min > max)
+	{
+		float t = min;
+		min = max;
+		max = t;
+	}
+
+	return { min, max };
+}
+
 void CircleCollider2D::AABBWithCircle(BoxCollider2D& collider)
 {
 	// ----- Création des collisions ----- \\
 
 	float left = collider.transform().position.x() + collider.bounds.left();
 	float top = collider.transform().position.y() + collider.bounds.top();
-	float right = collider.transform().position.x() + collider.bounds.right();
+	float right = collider.transform().position.y() + collider.bounds.right();
 	float bottom = collider.transform().position.y() + collider.bounds.bottom();
 
-	Vector2 closetPoint = { Mathf::clamp(transform().position.x(), left, left + collider.bounds.width()),
-						Mathf::clamp(transform().position.y(), top, top + collider.bounds.height()) };
+	Vector2 newCirclePos = Vector2::RotateAngle(transform().position, collider.transform().position, -collider.transform().rotation);
 
-	Vector2 dir = Vector2::Edge(closetPoint, transform().position);
+	Vector2 closetPoint = { Mathf::clamp(newCirclePos.x(), left, left + collider.bounds.width()),
+						Mathf::clamp(newCirclePos.y(), top, top + collider.bounds.height()) };
+
+	Vector2 dir = Vector2::Edge(closetPoint, newCirclePos);
 
 	float penetration = radius - dir.magnitude();
 	Vector2 normal = dir / dir.magnitude();
 
-	if (dir.magnitude() == 0.0f)
+	if (dir.magnitude() < 0.1f)
 	{
 		// Trouver la direction de sortie la plus courte
-		float leftPen = transform().position.x() - left;
-		float rightPen = right - transform().position.x();
-		float topPen = transform().position.y() - top;
-		float bottomPen = bottom - transform().position.y();
+		float leftPen = newCirclePos.x() - left;
+		float rightPen = right - newCirclePos.x();
+		float topPen = newCirclePos.y() - top;
+		float bottomPen = bottom - newCirclePos.y();
 
 		// Trouver la plus petite
 		float minPen = std::min({ leftPen, rightPen, topPen, bottomPen });
@@ -106,12 +134,7 @@ void CircleCollider2D::AABBWithCircle(BoxCollider2D& collider)
 
 		penetration = radius + minPen; // ou selon ton système
 	}
-	else
-	{
-		// Cas normal : normal = direction du centre vers l’extérieur
-		normal = dir / dir.magnitude();
-		penetration = radius - dir.magnitude();
-	}
+	
 
 	if (collider.owner->GetComponent<Rigidbody2D>() != nullptr)
 	{
@@ -124,13 +147,15 @@ void CircleCollider2D::AABBWithCircle(BoxCollider2D& collider)
 		
 		Vector2 correction = normal * (penetration/ invMassSum);
 
-		transform().position += correction * invMassA;
-		collider.transform().position -= correction * invMassB;
+		newCirclePos += correction * invMassA;
+		collider.transform().position -= Vector2::RotateAngle(correction * invMassB, collider.transform().position, collider.transform().rotation);
 	}
 	else
 	{
-		transform().position += normal * penetration;
+		newCirclePos += normal * penetration;
 	}
+
+	transform().position = Vector2::RotateAngle(newCirclePos, collider.transform().position, collider.transform().rotation);
 
 	return;
 
@@ -139,8 +164,6 @@ void CircleCollider2D::AABBWithCircle(BoxCollider2D& collider)
 void CircleCollider2D::CircleWithCircle(CircleCollider2D& collider)
 {
 	// ----- Création des collisions ----- \\
-
-
 
 	Vector2 dir = Vector2::Edge(collider.transform().position, transform().position);
 
@@ -167,27 +190,87 @@ void CircleCollider2D::CircleWithCircle(CircleCollider2D& collider)
 
 void CircleCollider2D::PolygonWithCircle(PolygonCollider2D& collider)
 {
-	bool isCollide = false;
-	Vector2 closet;
-	for (int i = 0; i < collider.vertices.size(); i++)
+	float minSepa = INFINITY;
+	Vector2 minSepaNormal = Vector2::zero();
+	bool polyColl = false;
+	bool circleColl = false;
+
+	for (int i = 0; i < collider.OBBvertices.size(); i++)
 	{
-		int j = i + 1 == collider.vertices.size() ? 0 : i + 1;
+		int j = i + 1 == collider.OBBvertices.size() ? 0 : i + 1;
 
-		closet = Vector2::ClosetPointOnSegment(transform().position,
-			collider.vertices[i] + collider.transform().position,
-			collider.vertices[j] + collider.transform().position);
+		Vector2 edge = Vector2::Edge(collider.OBBvertices[i], collider.OBBvertices[j]);
+		Vector2 n = edge.normal();
 
-		isCollide = isPointInside(closet);
-		if (isCollide)
+		Vector2 polyInter = collider.GetProjectInterval(n);
+		Vector2 circleInter = GetProjectInterval(n);
+
+		float sepa = Mathf::Min(polyInter.y(), circleInter.y()) - Mathf::Max(polyInter.x(), circleInter.x());
+
+		polyColl = sepa > 0;
+
+		if (!polyColl)
 			break;
+		else
+		{
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (polyInter.x() + polyInter.y()) / 2 - (circleInter.x() + circleInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
 	}
 
-	if (isCollide)
+	Vector2 minCloset;
+	float minClos = INFINITY;
+	for (int i = 0; i < collider.OBBvertices.size(); i++)
 	{
-		Vector2 dir = Vector2::Edge(transform().position, closet);
+		int j = i + 1 == collider.OBBvertices.size() ? 0 : i + 1;
 
-		float penetration = radius - dir.magnitude();
-		dir.normalize();
+		Vector2 closet = Vector2::ClosetPointOnSegment(transform().position - collider.transform().position, 
+			collider.OBBvertices[i], collider.OBBvertices[j]);
+
+		if (Vector2::Edge(transform().position - collider.transform().position, closet).magnitude() < minClos)
+		{
+			minClos = Vector2::Edge(transform().position - collider.transform().position, closet).magnitude();
+			minCloset = Vector2::Edge(transform().position - collider.transform().position, closet);
+		}
+	}
+
+	{
+
+		Vector2 n = minCloset.normal();
+
+		Vector2 polyInter = collider.GetProjectInterval(n);
+		Vector2 circleInter = GetProjectInterval(n);
+
+		float sepa = Mathf::Min(polyInter.y(), circleInter.y()) - Mathf::Max(polyInter.x(), circleInter.x());
+
+		circleColl = sepa > 0;
+		if (circleColl)
+		{
+
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (polyInter.x() + polyInter.y()) / 2 - (circleInter.x() + circleInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
+	}
+
+	if (polyColl && circleColl)
+	{
+		Vector2 normal = minSepaNormal.normalized();
 
 		if (collider.owner->GetComponent<Rigidbody2D>())
 		{
@@ -197,11 +280,13 @@ void CircleCollider2D::PolygonWithCircle(PolygonCollider2D& collider)
 			float invMassB = 1.f / _otherRb.mass;
 			float invMassSum = invMassA + invMassB;
 
-			Vector2 correction = dir * (penetration / invMassSum);
+			Vector2 correction = normal * ((minSepa / minSepaNormal.magnitude()) / invMassSum);
 			transform().position -= correction * invMassA;
 			collider.transform().position += correction * invMassB;
 		}
 		else
-			transform().position -= dir * penetration;
+		{
+			transform().position -= normal * (minSepa / minSepaNormal.magnitude());
+		}
 	}
 }

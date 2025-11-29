@@ -1,7 +1,9 @@
-#include "Components\Physics\PolygonCollider2D.h"
-#include "Components/Physics/CircleCollider2D.h"
+#include "Components/Physics/PolygonCollider2D.h"
 #include "Components/Physics/BoxCollider2D.h"
+#include "Components/Physics/CircleCollider2D.h"
+#include "Components/Physics/Rigidbody2D.h"
 #include "Objects/GameObject.h"
+
 
 void PolygonCollider2D::Start()
 {
@@ -25,7 +27,7 @@ void PolygonCollider2D::ApplyRotation()
 	}
 }
 
-void PolygonCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
+void PolygonCollider2D::UpdateCollision(GameObject* collider)
 {
 	auto& _collider = *collider;
 	auto _c = _collider.GetComponent<Collider2D>();
@@ -48,7 +50,7 @@ void PolygonCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 			if (_collider.GetComponent<PolygonCollider2D>())
 				PolygonWithPolygon(*_collider.GetComponent<PolygonCollider2D>());
 		}
-
+		
 		if (it == _collision.end())
 		{
 			_collision.push_back(_collider.GetComponent<Collider2D>());
@@ -167,12 +169,16 @@ void PolygonCollider2D::AABBWithPolygon(BoxCollider2D& collider)
 		}
 	}
 
-	const Vector2 boxAxes[] = { Vector2(0,1), Vector2(1,0) };
-	for (Vector2 axe : boxAxes)
+	for (int i = 0; i < collider.OBBRect.size(); i++)
 	{
-		Vector2 polyInter = GetProjectInterval(axe);
+		int j = i + 1 == collider.OBBRect.size() ? 0 : i + 1;
 
-		Vector2 boxInter = collider.GetProjectInterval(axe);
+		Vector2 edge = Vector2::Edge(collider.OBBRect[i], collider.OBBRect[j]);
+		Vector2 n = edge.normal();
+
+		Vector2 polyInter = GetProjectInterval(n);
+
+		Vector2 boxInter = collider.GetProjectInterval(n);
 
 		boxColl = polyInter.y() >= boxInter.x() && boxInter.y() >= polyInter.x();
 		if (!boxColl)
@@ -183,7 +189,7 @@ void PolygonCollider2D::AABBWithPolygon(BoxCollider2D& collider)
 			if (sepa < minSepa)
 			{
 				minSepa = sepa;
-				minSepaNormal = axe;
+				minSepaNormal = n;
 
 				float d = (polyInter.x() + polyInter.y()) / 2 - (boxInter.x() + boxInter.y()) / 2;
 				if (d < 0)
@@ -334,8 +340,6 @@ void PolygonCollider2D::PolygonWithPolygon(PolygonCollider2D& collider)
 	{
 		Vector2 normal = minSepaNormal.normalized();
 
-		const float correctionFactor = .5f;
-
 		if (collider.owner->GetComponent<Rigidbody2D>())
 		{
 			Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
@@ -344,12 +348,12 @@ void PolygonCollider2D::PolygonWithPolygon(PolygonCollider2D& collider)
 			float invMassB = 1.f / _otherRb.mass;
 			float invMassSum = invMassA + invMassB;
 
-			Vector2 correction = normal * ((minSepa * correctionFactor) / invMassSum);
+			Vector2 correction = normal * ((minSepa / minSepaNormal.magnitude()) / invMassSum);
 			transform().position += correction * invMassA;
 			collider.transform().position -= correction * invMassB;
 		}
 		else
-			transform().position += normal * (minSepa * correctionFactor);
+			transform().position += normal * (minSepa / minSepaNormal.magnitude());
 
 	}
 }

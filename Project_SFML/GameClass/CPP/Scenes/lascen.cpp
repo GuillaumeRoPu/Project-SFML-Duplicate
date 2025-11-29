@@ -1,5 +1,6 @@
 #include "Scenes/lascen.h"
 #include "Components/Transform.h"
+#include "Components/Physics/Rigidbody2D.h"
 #include "Objects/Bullet.h"
 
 lascen::lascen()
