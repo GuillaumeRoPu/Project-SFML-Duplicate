@@ -1,5 +1,6 @@
 #include "Scripts/EnemyController.h"
 #include "Scripts/EnemyManagerController.h"
+#include "Components/ParticleSystem.h"
 #include "Objects/GameObject.h"
 #include "Objects/Bullet.h"
 #include "Objects/BulletManager.h"
@@ -54,8 +55,31 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 		_player->Heal(1);
 		owner->active = false;
 		std::cout << "Touched Player" << std::endl;
+
+		SpawnDeathParticle();
+
 		controller->DestroyEnemy(owner);
 	}
+}
+
+void EnemyController::SpawnDeathParticle()
+{
+	GameObject* gm_particle = scene().CreateGameObject<GameObject>();
+	gm_particle->transform->position = transform().position;
+	ParticleSystem* particle = gm_particle->AddComponent<ParticleSystem>();
+	particle->destroyWhenDie = true;
+	particle->duration = .5f;
+	particle->randomLifetime = true;
+	particle->minLifetime = .5f;
+	particle->maxLifetime = 1.4f;
+	particle->radius = .1f;
+	particle->speed = 10;
+	particle->burst = true;
+	particle->burstNumber = 1;
+	particle->rateOverTime = 20;
+	particle->burstCount = 20;
+	particle->size = .05f;
+	particle->burstTime = 0.f;
 }
 
 Bullet* EnemyController::InstantiateBullet() 

@@ -97,6 +97,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
         {
             p->PlayParticleSystem();
             p->UpdateParticleSystem();
+            p->DrawParticleSystem(window);
         }
 
         //UI

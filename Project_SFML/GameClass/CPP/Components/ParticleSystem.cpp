@@ -1,5 +1,6 @@
 #include <Components/ParticleSystem.h>
 #include "Objects/GameObject.h"
+#include "Scene.h";
 
 void ParticleSystem::AddParticleToSystem(float lifetime)
 {
@@ -22,7 +23,7 @@ void ParticleSystem::AddParticleToSystem(float lifetime)
 
 	p.direction = Vector2(cos(angle), sin(angle)) * radius;
 
-	p.shape.setPosition(sf::Vector2f(transform().position.x(), transform().position.y()));
+	p.shape.setPosition(sf::Vector2f(transform().position.x() * fry::pixelPerPoint, transform().position.y() * fry::pixelPerPoint));
 
 	_particles.push_back(p);
 	
@@ -32,7 +33,7 @@ void ParticleSystem::UpdateParticleSystem()
 {
 
 
-	Vector2 pos = transform().position;
+	Vector2 pos = transform().position * fry::pixelPerPoint;
 
 	int count = (int)_particles.size();
 	std::list<Particle>::iterator p = _particles.begin();
@@ -46,10 +47,6 @@ void ParticleSystem::UpdateParticleSystem()
 		}
 
 		float ratio = (*p).time / (*p).lifetime;
-		/*const float PI = 3.14159265f;
-		float scale = sin(PI * p->time / p->lifetime);
-		p->shape.setScale(sf::Vector2f(scale,scale));*/
-		//p->shape.setScale(sf::Vector2f(1 - ratio, 1 - ratio));
 
 		// Move particles
 		Vector2 dir = Vector2((pos.x() - (*p).shape.getPosition().x) * -1, (pos.y() - (*p).shape.getPosition().y) * -1);
@@ -60,6 +57,12 @@ void ParticleSystem::UpdateParticleSystem()
 		// Gradient particles
 		if (colorByLifetime)
 			(*p).shape.setFillColor(gradient.GetColor(ratio));
+
+		if (sizeByLifeTime)
+		{
+			float finalSize = (*p).shape.getRadius() * Mathf::Lerp(size_zero, size_one, ratio);
+			(*p).shape.setRadius(finalSize);
+		}
 
 		(*p).time += Time::DeltaTime();
 		p++;
@@ -93,7 +96,7 @@ void ParticleSystem::PlayParticleSystem()
 {
 
 	// Delay before play particles
-	if (!_play)
+	if (!_play && _loopPlay)
 	{
 		_startTime += Time::DeltaTime();
 		if (_startTime > startDelay)
@@ -101,6 +104,8 @@ void ParticleSystem::PlayParticleSystem()
 			_startTime = 0;
 			_play = true;
 			_burstChrono = burstTime;
+
+			_loopPlay = loop;
 		}
 	}
 
@@ -112,8 +117,15 @@ void ParticleSystem::PlayParticleSystem()
 		{
 			_play = false;
 			_lifeTime = 0;
+			if (destroyWhenDie)
+			{
+				_waitForDie = true;
+			}
 		}
 	}
+
+	if (_waitForDie && particleCount() <= 0)
+		scene().DestroyObject(owner);
 
 	// Spawn x particle in 1 second
 	if (rateOverTime > 0 && _play)
@@ -134,11 +146,16 @@ void ParticleSystem::PlayParticleSystem()
 	}
 
 	// Spawn x particles all n seconds
-	if (burst && _play)
+	if (burst && _play && _canBurst)
 	{
 		_burstChrono += Time::DeltaTime();
 		if (_burstChrono > burstTime)
 		{
+			if (burstNumber > 0)
+			{
+				_burstCount++;
+				_canBurst = _burstCount < burstNumber;
+			}
 			_burstChrono = 0;
 			for (int i = 0; i < burstCount; i++)
 			{

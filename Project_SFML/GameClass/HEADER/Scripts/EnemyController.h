@@ -15,6 +15,8 @@ class EnemyController : public Scripting
     void Update() override;
     void Start() override;
     void OnTriggerEnter2D(Collider2D* other) override;
+private:
+    void SpawnDeathParticle();
 public:
     void SpawnBullet();
     Bullet* InstantiateBullet();
