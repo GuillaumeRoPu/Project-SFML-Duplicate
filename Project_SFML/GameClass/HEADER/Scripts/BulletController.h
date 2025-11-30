@@ -12,10 +12,10 @@ class BulletManagerController;
 
 class BulletController : public Scripting 
 {
-	void FixedUpdate() override;
 	void Awake() override;
 	void Start() override;
 	void OnTriggerEnter2D(Collider2D* other) override;
+	void OnTriggerExit2D(Collider2D* other) override;
 	void OnCollisionEnter2D(Collider2D* other) override;
 
 public:
@@ -23,4 +23,7 @@ public:
 	Rigidbody2D* _rb;
 	CircleCollider2D* _collider;
 	Player* _player;
+
+private:
+	float _bulletSpeed = 50;
 };

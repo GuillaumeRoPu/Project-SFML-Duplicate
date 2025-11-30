@@ -16,5 +16,10 @@ void PlayerHealthBlocker::Rotate(bool dir)
 	}
 	angle = angle % 360;
 	rad = angle * (2 * Mathf::PI / 360);
-	std::cout << angle << " " << rad << std::endl;
+	//std::cout << angle << " " << rad << std::endl;
+}
+
+void PlayerHealthBlocker::SetHP(float ratio)
+{
+	_healthSize = transform().scale.x() * ratio;
 }

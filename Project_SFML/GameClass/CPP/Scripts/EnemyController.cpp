@@ -43,8 +43,8 @@ void EnemyController::Start()
 
 void EnemyController::SpawnBullet()
 {
-	auto manager = owner->scene->FindFirstObjectByType<BulletManager>();
-	manager->GetComponent<BulletManagerController>()->SpawnBullet();
+	auto manager = scene().FindFirstObjectByType<BulletManager>();
+	manager->GetComponent<BulletManagerController>()->SpawnBullet(transform().position);
 }
 
 void EnemyController::OnTriggerEnter2D(Collider2D* other) 

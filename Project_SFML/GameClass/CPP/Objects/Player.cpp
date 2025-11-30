@@ -1,6 +1,6 @@
 #include "Objects/Player.h"
-#include <Components/Physics/CircleCollider2D.h>
-#include <Components/Physics/Rigidbody2D.h>
+#include "Components/Physics/CircleCollider2D.h"
+#include "Components/Physics/Rigidbody2D.h"
 
 Player::Player()
 {
@@ -11,5 +11,5 @@ Player::Player()
 
 	name = "Player";
 	_health = AddComponent<HealthComponent>();
-	_health->SetMaxHealth(100, true);
+	_health->SetMaxHealth(10, true);
 }

@@ -9,12 +9,11 @@ class Player;
 
 class BulletManagerController : public Scripting
 {
-	void Update() override;
 	void Start() override;
 	void Awake() override;
 
 public:
-	void SpawnBullet();
+	void SpawnBullet(Vector2 position);
 	void DestroyBullet(GameObject* bullet);
 	Bullet* InstantiateBullet();
 

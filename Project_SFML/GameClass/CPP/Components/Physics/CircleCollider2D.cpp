@@ -26,7 +26,6 @@ void CircleCollider2D::UpdateCollision(GameObject* collider)
 
 	if (findIntersection(owner->GetComponent<Collider2D>(), _c))
 	{
-
 		if (!isTrigger && !_c->isTrigger)
 		{
 			if (_collider.GetComponent<BoxCollider2D>())

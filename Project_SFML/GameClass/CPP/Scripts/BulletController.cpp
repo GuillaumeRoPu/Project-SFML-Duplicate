@@ -5,44 +5,38 @@
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components/Physics/Rigidbody2D.h"
 
-void BulletController::FixedUpdate() 
-{
-	if (_player != nullptr)
-	{
-		Vector2 VecteurPlayerEnemy = Vector2(_player->transform->position.x() - transform().position.x(), _player->transform->position.y() - transform().position.y());
-		float magnitude = Mathf::sqrt(VecteurPlayerEnemy.x() * VecteurPlayerEnemy.x() + VecteurPlayerEnemy.y() * VecteurPlayerEnemy.y());
-		if (magnitude >= _player->transform->scale.x()) 
-		{
-			_rb->velocity += VecteurPlayerEnemy;
-		}
-	}
-}
 
 void BulletController::Awake() 
 {
 	_rb = owner->GetComponent<Rigidbody2D>();
+	_rb->damping = 2;
 	_collider = owner->GetComponent<CircleCollider2D>();
 }
 
 void BulletController::Start() 
 {
 	_player = owner->scene->FindFirstObjectByType<Player>();
+
+	Vector2 direction = Vector2::Edge(transform().position, _player->transform->position);
+	_rb->velocity = direction.normalized() * _bulletSpeed;
 }
 
 void BulletController::OnTriggerEnter2D(Collider2D* other) 
 {
 	PlayerHealthBlocker* blocker = other->owner->GetComponent<PlayerHealthBlocker>();
-	if (blocker != nullptr) 
-	{
-		std::cout << "Touched Blocker" << std::endl;
-		owner->active = false;
-		controller->DestroyBullet(owner);
-	}
 	PlayerController* p = other->owner->GetComponent<PlayerController>();
-	if (p != nullptr) {
-		owner->active = false;
+	if (blocker || p)
+	{
 		controller->DestroyBullet(owner);
+		if (p)
+			p->TakeDamage(1);
 	}
+}
+
+void BulletController::OnTriggerExit2D(Collider2D* other)
+{
+	if (other->owner->name == "Limit")
+		controller->DestroyBullet(owner);
 }
 
 void BulletController::OnCollisionEnter2D(Collider2D* other) 

@@ -9,6 +9,13 @@ lascen::lascen()
 	enemyManager = CreateGameObject<EnemyManager>();
 	bulletManager = CreateGameObject<BulletManager>();
 	blocker = CreateGameObject<Blocker>();
+
+	// Création du game object permettant aux détecter lorsqu'elles sortent de la caméra.
+	GameObject* limit = CreateGameObject<GameObject>();
+	limit->transform->scale = Vector2(16, 16);
+	limit->name = "Limit";
+	BoxCollider2D* boxLimit = limit->AddComponent<BoxCollider2D>();
+	boxLimit->isTrigger = true;
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
@@ -99,13 +106,25 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	float pBlockerAngle = blocker->_phc->angle;
 	blocker->transform->position.RotateAroundCenter(p->transform->position, 1.3f, pBlockerAngle);
 	blocker->transform->rotation = pBlockerAngle;
-	sf::RectangleShape pBlocker({ blocker->transform->scale.x() * pixelPerPoint, blocker->transform->scale.y() * pixelPerPoint });
+	PlayerHealthBlocker* healthBlocker = blocker->GetComponent<PlayerHealthBlocker>();
+
+	sf::Vector2f blockerHealthSize = { healthBlocker->GetHealthSize() * pixelPerPoint, blocker->transform->scale.y() * pixelPerPoint };
+	sf::Vector2f blockerSize = { blocker->transform->scale.x() * pixelPerPoint, blocker->transform->scale.y() * pixelPerPoint };
+	
+	sf::RectangleShape pBlocker(blockerHealthSize);
 	pBlocker.setFillColor(sf::Color::Green);
-	pBlocker.setOrigin({25, 5});
+	pBlocker.setOrigin({ blockerSize.x/2, blockerSize.y/2});
 	pBlocker.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
 	pBlocker.setRotation(pBlockerAngle + 90);
 
+	sf::RectangleShape pBlockerBackground(blockerSize);
+	pBlockerBackground.setFillColor(sf::Color::White);
+	pBlockerBackground.setOrigin({ blockerSize.x/2, blockerSize.y/2 });
+	pBlockerBackground.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
+	pBlockerBackground.setRotation(pBlockerAngle + 90);
+
 
 	window.draw(pshape);
+	window.draw(pBlockerBackground);
 	window.draw(pBlocker);
 }
