@@ -20,7 +20,8 @@ lascen::lascen()
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
-	window.clear(sf::Color(0,125,125,255));
+	//window.clear(sf::Color(0,125,125,255));
+	window.clear(sf::Color::Black);
 
 	Scene::PlayScene(window, input);
 
@@ -48,6 +49,7 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	int sizePlayer = 25;
 	sf::CircleShape pshape(sizePlayer);
 	pshape.setOrigin(sizePlayer, sizePlayer);
+	pshape.setFillColor(sf::Color::White);
 	sf::Vector2f playerPosition = { p->transform->position.x() * pixelPerPoint, p->transform->position.y() * pixelPerPoint };
 	pshape.setPosition(playerPosition);
 
@@ -79,9 +81,18 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
 	for (Enemy* enemy : enemyManager->_enemyManagerController->_allEnemies) {
 		sf::RectangleShape grocaca(sf::Vector2f(20, 20));
-		grocaca.setFillColor(sf::Color::Black);
+		grocaca.setFillColor(sf::Color::White);
 		grocaca.setOrigin({ 10,10 });
-		enemy->_rb->mass = 1;
+		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
+
+		if (enemy->active)
+		{
+			window.draw(grocaca);
+		}
+
+		grocaca.setSize(sf::Vector2f(18, 18));
+		grocaca.setFillColor(sf::Color::Black);
+		grocaca.setOrigin({ 10-1,10-1 });
 		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
 
 		if (enemy->active)
@@ -94,6 +105,16 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 		sf::CircleShape grocaca(10);
 		grocaca.setFillColor(sf::Color::Yellow);
 		grocaca.setOrigin({ 10,10 });
+		grocaca.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
+
+		if (bullet->active)
+		{
+			window.draw(grocaca);
+		}
+
+		grocaca.setRadius(10-1);
+		grocaca.setFillColor(sf::Color::Black);
+		grocaca.setOrigin({ 10 - 1,10 - 1 });
 		grocaca.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
 
 		if (bullet->active)
@@ -118,13 +139,18 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	pBlocker.setRotation(pBlockerAngle + 90);
 
 	sf::RectangleShape pBlockerBackground(blockerSize);
-	pBlockerBackground.setFillColor(sf::Color::White);
+	pBlockerBackground.setFillColor(sf::Color::Red);
 	pBlockerBackground.setOrigin({ blockerSize.x/2, blockerSize.y/2 });
 	pBlockerBackground.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
 	pBlockerBackground.setRotation(pBlockerAngle + 90);
 
 
 	window.draw(pshape);
+	pshape.setRadius(sizePlayer-1);
+	pshape.setOrigin(sizePlayer-1, sizePlayer-1);
+	pshape.setFillColor(sf::Color::Black);
+	window.draw(pshape);
+
 	window.draw(pBlockerBackground);
 	window.draw(pBlocker);
 }

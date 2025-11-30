@@ -15,5 +15,6 @@ public:
 	void Update() override;
 public:
 	void Move(int verDir, int horDir);
+	void Heal(int amount);
 	void TakeDamage(int amount);
 };

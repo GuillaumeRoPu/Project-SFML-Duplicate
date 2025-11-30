@@ -14,6 +14,7 @@ class BulletController : public Scripting
 {
 	void Awake() override;
 	void Start() override;
+	void Update() override;
 	void OnTriggerEnter2D(Collider2D* other) override;
 	void OnTriggerExit2D(Collider2D* other) override;
 	void OnCollisionEnter2D(Collider2D* other) override;
@@ -25,5 +26,7 @@ public:
 	Player* _player;
 
 private:
-	float _bulletSpeed = 50;
+	float _bulletSpeed = 10;
+	Vector2 direction;
+	float timer;
 };

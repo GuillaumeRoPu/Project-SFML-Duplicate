@@ -36,3 +36,8 @@ void PlayerController::TakeDamage(int amount)
 {
 	_health->TakeDamage(amount);
 }
+
+void PlayerController::Heal(int amount)
+{
+	_health->Heal(amount);
+}

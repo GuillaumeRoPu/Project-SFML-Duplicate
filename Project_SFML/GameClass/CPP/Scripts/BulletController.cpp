@@ -17,8 +17,15 @@ void BulletController::Start()
 {
 	_player = owner->scene->FindFirstObjectByType<Player>();
 
-	Vector2 direction = Vector2::Edge(transform().position, _player->transform->position);
+	direction = Vector2::Edge(transform().position, _player->transform->position);
 	_rb->velocity = direction.normalized() * _bulletSpeed;
+	_rb->damping = 0;
+	timer = 0;
+}
+
+void BulletController::Update() 
+{
+	timer += Time::DeltaTime();
 }
 
 void BulletController::OnTriggerEnter2D(Collider2D* other) 
@@ -28,7 +35,7 @@ void BulletController::OnTriggerEnter2D(Collider2D* other)
 	if (blocker || p)
 	{
 		controller->DestroyBullet(owner);
-		if (p)
+		if (p && timer >= 0.05f)
 			p->TakeDamage(1);
 	}
 }
