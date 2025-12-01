@@ -18,6 +18,8 @@ class ParticleSystem : public Component
 public:
 
 	//System
+	bool deltaTime = true;
+	bool destroyWhenDie;
 	bool loop = false;
 	float duration = 5;
 	float startDelay = 0;
@@ -27,6 +29,7 @@ public:
 	float rateOverTime = 10;
 
 	bool burst = false;
+	int burstNumber = 0;
 	float burstTime = 0;
 	int burstCount = 4;
 
@@ -48,6 +51,10 @@ public:
 	float minSize = 1;
 	float maxSize = 1;
 
+	bool sizeByLifeTime = false;
+	float size_zero = 1;
+	float size_one = 0;
+
 	// Color
 	sf::Color startColor = sf::Color::White;
 	bool colorByLifetime = false;
@@ -68,7 +75,12 @@ private:
 	float _burstChrono = 0;
 	float _lifeTime = 0;
 
-	bool _play;
+	bool _play = false;
+	bool _loopPlay = true;
+	bool _canBurst = true;
+	int _burstCount = 0;
+
+	bool _waitForDie = false;
 
 	std::list<Particle> _particles;
 
