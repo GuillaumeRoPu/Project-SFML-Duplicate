@@ -1,8 +1,11 @@
 #pragma once
 #include "Objects/GameObject.h"
-#include "Scripts/EnemyController.h"
 #include "Components/Physics/CircleCollider2D.h"
 #include "Scripts/BulletController.h"
+
+class RigidBody2D;
+class CircleCollider2D;
+class BulletController;
 
 class Bullet : public GameObject 
 {

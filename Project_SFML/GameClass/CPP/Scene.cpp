@@ -10,7 +10,8 @@
 Scene::Scene(std::string n)
 {
     name = n;
-    GameObject* cam = CreateGameObject<GameObject>("MainCamera");
+    GameObject* cam = CreateGameObject<GameObject>();
+    cam->name = "MainCamera";
     cam->tag = "MainCamera";
     cam->AddComponent<Camera>();
 }
@@ -42,32 +43,31 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
             transform.ApplyTransformToParent();
 
-            // Apply Collision Transform
-            auto* coll = obj.get()->GetComponent<Collider2D>();
-            if (coll)
-            {
-                coll->ApplyRotation();
-            }
-
             // Rigidbody
             auto rb = obj.get()->GetComponent<Rigidbody2D>();
             if (rb != nullptr) // Regarde si l'objet à un rigidbody
             {
                 auto* target = obj.get()->GetComponent<Collider2D>();
-
-                for (auto& coll : SceneObjects) // Boucle sur tout les autres objets
+                if (target)
                 {
+                    target->ApplyRotation();
 
-                    if (obj == coll || !coll.get()->active)
-                        continue;
-
-                    auto* collider = coll.get()->GetComponent<Collider2D>();
-
-                    if (collider != nullptr) // Regarder s'il a un collider
+                    for (auto& coll : SceneObjects) // Boucle sur tout les autres objets
                     {
-                        target->UpdateCollision(coll); // Créé la collision
+
+                        if (obj == coll || !coll.get()->active)
+                            continue;
+
+                        auto* collider = coll.get()->GetComponent<Collider2D>();
+
+                        if (collider != nullptr) // Regarder s'il a un collider
+                        {
+                            collider->ApplyRotation();
+                            target->UpdateCollision(coll.get()); // Créé la collision
+                        }
                     }
                 }
+                
             }
         }
 
@@ -83,7 +83,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     for (auto& obj : SceneObjects)
     {
         if (!obj.get()->active) continue;
- 
+
         // Update : Logic
         obj->Update();
 
@@ -97,17 +97,19 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
         {
             p->PlayParticleSystem();
             p->UpdateParticleSystem();
+            p->DrawParticleSystem(window);
         }
 
         //UI
+         
         //Text
         auto txt = obj.get()->GetComponent<Text>();
         if (txt)
         {
-            sf::Text text;
-            text.setFont(txt->font);
-            text.setFillColor(txt->color);
-            text.setString(txt->text);
+            sf::Text fps;
+            fps.setFont(txt->font);
+            fps.setFillColor(txt->color);
+            fps.setString(txt->text);
         }
     }
 
@@ -143,9 +145,12 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
         }
     }
 
+    bool makeAwake = false;
+    int nb_awake = 0;
     for (auto& obj : PendingAdd)
     {
-        obj.get()->Awake();
+        makeAwake = true;
+        nb_awake++;
         SceneObjects.push_back(std::move(obj));
     }
     PendingAdd.clear();
@@ -156,10 +161,25 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             [&](auto& uptr) { return uptr.get() == ptr; });
 
         if (it != SceneObjects.end())
-            SceneObjects.erase(it); // delete automatique
+            SceneObjects.erase(it);
     }
 
     PendingRemove.clear();
+
+    if (makeAwake)
+    {
+        int id = 0;
+        for (auto& obj : SceneObjects)
+        {
+            if (id >= SceneObjects.size() - nb_awake)
+            {
+                obj.get()->scene = this;
+                obj.get()->Awake();
+            }
+
+            id++;
+        }
+    }
 
     return;
 }

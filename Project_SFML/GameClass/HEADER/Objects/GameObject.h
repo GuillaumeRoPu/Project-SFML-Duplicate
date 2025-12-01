@@ -6,6 +6,8 @@
 
 #include <vector>
 
+class Scene;
+
 class GameObject
 {
 protected:
@@ -16,7 +18,6 @@ protected:
 private:
     bool _start = false;
 
-
 public:
     bool active = true;
 
@@ -25,56 +26,32 @@ public:
     // Tag of the game object
     std::string tag = "Untagged";
 
+    Scene* scene;
+
     Transform* transform;
 
     GameObject() : transform(AddComponent<Transform>()) {}
     GameObject(std::string name) : transform(AddComponent<Transform>()) { this->name = name; }
 
-    bool HasStart() { return _start; }
+    bool HasStart() const { return _start; }
 
-    void Awake()
-    {
-        if (!active) return;
-        
-        for (auto& comp : components)
-            comp->Awake();
-    }
+    void Awake();
 
-    void Start()
-    {
-        if (!active || _start) return;
+    void Start();
 
-        for (auto& comp : components)
-            comp->Start();
+    void Update();
 
-        _start = true;
-    }
-
-    void Update()
-    {
-        if (!active) return;
-
-        for (auto& comp : components)
-            comp->Update();
-    }
-
-    void FixedUpdate()
-    {
-        if (!active) return;
-
-        for (auto& comp : components)
-            comp->FixedUpdate();
-    }
+    void FixedUpdate();
 
 
     virtual ~GameObject() = default;
 
     // Add a component to your game object
-    template <typename T, typename... Args>
-    T* AddComponent(Args&&... args) 
+    template <typename T>
+    T* AddComponent()
     {
         static_assert(std::is_base_of<Component, T>::value, "T must inherit Component");
-        auto comp = std::make_unique<T>(std::forward<Args>(args)...);
+        auto comp = std::make_unique<T>();
         comp->owner = this;
 
         T* ptr = comp.get();
@@ -84,7 +61,7 @@ public:
 
     // Get a component to your game object
     template <typename T>
-    T* GetComponent() 
+    T* GetComponent()
     {
         static_assert(std::is_base_of<Component, T>::value, "T must inherit Component");
         for (auto& comp : components) {
@@ -108,52 +85,16 @@ public:
     }
 
     // Collisions & Triggers
-    void OnCollisionEnter2D(Collider2D* other)
-    {
-        if (!active) return;
+    void OnCollisionEnter2D(Collider2D* other);
 
-        for (auto& comp : components)
-            comp->OnCollisionEnter2D(other);
-    }
+    void OnCollisionStay2D(Collider2D* other);
 
-    void OnCollisionStay2D(Collider2D* other)
-    {
-        if (!active) return;
+    void OnCollisionExit2D(Collider2D* other);
 
-        for (auto& comp : components)
-            comp->OnCollisionStay2D(other);
-    }
+    void OnTriggerEnter2D(Collider2D* other);
 
-    void OnCollisionExit2D(Collider2D* other)
-    {
-        if (!active) return;
+    void OnTriggerStay2D(Collider2D* other);
 
-        for (auto& comp : components)
-            comp->OnCollisionExit2D(other);
-    }
-
-    void OnTriggerEnter2D(Collider2D* other)
-    {
-        if (!active) return;
-
-        for (auto& comp : components)
-            comp->OnTriggerEnter2D(other);
-    }
-
-    void OnTriggerStay2D(Collider2D* other)
-    {
-        if (!active) return;
-
-        for (auto& comp : components)
-            comp->OnTriggerStay2D(other);
-    }
-
-    void OnTriggerExit2D(Collider2D* other)
-    {
-        if (!active) return;
-
-        for (auto& comp : components)
-            comp->OnTriggerExit2D(other);
-    }
+    void OnTriggerExit2D(Collider2D* other);
 
 };

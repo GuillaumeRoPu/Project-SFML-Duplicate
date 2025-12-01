@@ -17,10 +17,10 @@ public:
 	virtual void PlayScene(sf::RenderWindow& window, InputSystem& input);
 
 	// Create an object to your scene
-	template <typename T, typename... Args>
-	T* CreateGameObject(Args&&... args) {
+	template <typename T>
+	T* CreateGameObject() {
 		static_assert(std::is_base_of<GameObject, T>::value, "T must inherit GameObject");
-		auto obj = std::make_unique<T>(std::forward<Args>(args)...);
+		auto obj = std::make_unique<T>();
 
 		T* ptr = obj.get();
 		PendingAdd.push_back(std::move(obj));
@@ -34,11 +34,23 @@ public:
 	T* FindFirstObjectByType()
 	{
 		static_assert(std::is_base_of<GameObject, T>::value, "T must inherit GameObject");
-		for (auto& obj : SceneObjects) {
-			if (auto casted = dynamic_cast<T*>(obj.get())) {
-				return casted;
+		if (SceneObjects.size() == 0)
+		{
+			for (auto& obj : PendingAdd) {
+				if (auto casted = dynamic_cast<T*>(obj.get())) {
+					return casted;
+				}
 			}
 		}
+		else
+		{
+			for (auto& obj : SceneObjects) {
+				if (auto casted = dynamic_cast<T*>(obj.get())) {
+					return casted;
+				}
+			}
+		}
+		
 		return nullptr;
 	}
 
@@ -61,11 +73,23 @@ public:
 	// Get an object of give tag to your scene
 	GameObject* FindFirstObjectWithTag(std::string tag)
 	{
-		for (auto& obj : SceneObjects) {
-			if (obj.get()->tag == tag) {
-				return obj.get();
+		if (SceneObjects.size() == 0)
+		{
+			for (auto& obj : PendingAdd) {
+				if (obj.get()->tag == tag) {
+					return obj.get();
+				}
 			}
 		}
+		else
+		{
+			for (auto& obj : SceneObjects) {
+				if (obj.get()->tag == tag) {
+					return obj.get();
+				}
+			}
+		}
+		
 		return nullptr;
 	}
 
@@ -93,15 +117,9 @@ public:
 		}
 	}
 
-private:
-	bool start = false;
-
 protected:
 
 	std::vector<std::unique_ptr<GameObject>> SceneObjects;
 	std::vector<std::unique_ptr<GameObject>> PendingAdd;
 	std::vector<GameObject*> PendingRemove;
-
-	bool HasStart() { return start; }
-	
 };

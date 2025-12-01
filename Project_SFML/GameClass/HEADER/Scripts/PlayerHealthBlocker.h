@@ -10,4 +10,9 @@ public:
 	float rad = 0;
 public:
 	void Rotate(bool dir);
+	void SetHP(float ratio);
+	float GetHealthSize() { return _healthSize; }
+
+private:
+	float _healthSize;
 };

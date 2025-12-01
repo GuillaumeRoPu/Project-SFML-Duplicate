@@ -23,8 +23,8 @@ public:
 
 private:
     inline static sf::Clock clock;
-    inline static float deltaTime = 0.0f;
-    inline static float totalTime = 0.0f;
-    inline static float fps = 0.0f;
+    inline static float deltaTime;
+    inline static float totalTime;
+    inline static float fps;
     inline static float fixedDeltaTime = 1.0f / 60.0f;
 };

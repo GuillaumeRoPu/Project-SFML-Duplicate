@@ -11,5 +11,6 @@ void FontManager::InitFonts()
 void FontManager::LoadFont(sf::Font& font, std::string path)
 {
 	if (!font.loadFromFile(path))
+		
 		std::cout << "Erreur de chargement de la police" << std::endl;
 }

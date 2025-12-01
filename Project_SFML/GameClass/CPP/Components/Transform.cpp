@@ -1,5 +1,4 @@
 #include "Components\Transform.h"
-#include "Objects\GameObject.h"
 
 void Transform::SetParent(Transform* newParent, bool keepTransform)
 {

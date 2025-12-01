@@ -9,7 +9,6 @@ class Blocker : public GameObject
 {
 public:
 	Blocker();
-	void Transformation(sf::Vector2f s, Vector2 pos, float rot);
 public:
 	BoxCollider2D* _bc;
 	PlayerHealthBlocker* _phc;

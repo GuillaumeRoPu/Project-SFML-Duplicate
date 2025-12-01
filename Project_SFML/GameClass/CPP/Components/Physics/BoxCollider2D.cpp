@@ -1,6 +1,7 @@
 #include "Components/Physics/BoxCollider2D.h"
 #include "Components/Physics/CircleCollider2D.h"
-#include "Components\Physics\PolygonCollider2D.h"
+#include "Components/Physics/PolygonCollider2D.h"
+#include "Components/Physics/Rigidbody2D.h"
 #include "Objects/GameObject.h"
 
 void BoxCollider2D::Start()
@@ -11,17 +12,19 @@ void BoxCollider2D::Start()
 
 void BoxCollider2D::ApplyRotation()
 {
+	bounds.setSize(owner->transform->scale);
+
 	Rect boxBounds({ transform().position.x() + bounds.center().x(),
 								transform().position.y() + bounds.center().y() },
 		{ bounds.width(), bounds.height() });
 
-	OBBRect = { Vector2::RotateAngle({boxBounds.left(), boxBounds.top()}, transform().rotation),
-	Vector2::RotateAngle({boxBounds.left(), boxBounds.bottom()}, transform().rotation) ,
-	Vector2::RotateAngle({boxBounds.right(), boxBounds.bottom()}, transform().rotation) ,
-	Vector2::RotateAngle({boxBounds.right(), boxBounds.top()}, transform().rotation) };
+	OBBRect = { Vector2::RotateAngle({boxBounds.left(), boxBounds.top()}, transform().position, transform().rotation),
+	Vector2::RotateAngle({boxBounds.left(), boxBounds.bottom()},transform().position, transform().rotation) ,
+	Vector2::RotateAngle({boxBounds.right(), boxBounds.bottom()},transform().position, transform().rotation) ,
+	Vector2::RotateAngle({boxBounds.right(), boxBounds.top()},transform().position, transform().rotation) };
 }
 
-void BoxCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
+void BoxCollider2D::UpdateCollision(GameObject* collider)
 {
 	auto& _collider = *collider;
 	auto _c = _collider.GetComponent<Collider2D>();
@@ -37,7 +40,7 @@ void BoxCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 	if (findIntersection(owner->GetComponent<Collider2D>(), _c))
 	{ 
 
-		if (!isTrigger || !_c->isTrigger)
+		if (!isTrigger && !_c->isTrigger)
 		{
 			if (_collider.GetComponent<BoxCollider2D>())
 				AABBWithAABB(*_collider.GetComponent<BoxCollider2D>());
@@ -79,30 +82,27 @@ void BoxCollider2D::UpdateCollision(std::unique_ptr<GameObject>& collider)
 
 bool BoxCollider2D::isPointInside(Vector2 point)
 {
-	const float e = 0.f;
+	Vector2 newPoint = Vector2::RotateAngle(point, transform().position, -transform().rotation);
 
-	float left = transform().position.x() + bounds.left() - e;
-	float top = transform().position.y() + bounds.top() - e;
-	float right = transform().position.x() + bounds.right() + e;
-	float bottom = transform().position.y() + bounds.bottom() + e;
+	float left = transform().position.x() + bounds.left();
+	float top = transform().position.y() + bounds.top();
+	float right = transform().position.x() + bounds.right();
+	float bottom = transform().position.y() + bounds.bottom();
 
-	return point.x() > left && point.x() < right && point.y() > top && point.y() < bottom;
+	return newPoint.x() > left && newPoint.x() < right && newPoint.y() > top && newPoint.y() < bottom;
 }
 
 Vector2 BoxCollider2D::GetProjectInterval(Vector2 normal)
 {
 
-	Rect boxBounds({ transform().position.x() + bounds.center().x(),
-								transform().position.y() + bounds.center().y() },
-		{ bounds.width(), bounds.height() });
-
-	float dot1 = Vector2::Dot({ boxBounds.left(), boxBounds.top() }, normal);
-	float dot2 = Vector2::Dot({ boxBounds.left(), boxBounds.bottom() }, normal);
-	float dot3 = Vector2::Dot({ boxBounds.right(), boxBounds.bottom() }, normal);
-	float dot4 = Vector2::Dot({ boxBounds.right(), boxBounds.top() }, normal);
-
-	float min = Mathf::Min(Mathf::Min(dot1, dot2), Mathf::Min(dot3, dot4));
-	float max = Mathf::Max(Mathf::Max(dot1, dot2), Mathf::Max(dot3, dot4));
+	float min = INFINITY;
+	float max = -INFINITY;
+	for (int i = 0; i < OBBRect.size(); i++)
+	{
+		float dot = Vector2::Dot(OBBRect[i], normal);
+		min = dot < min ? dot : min;
+		max = dot > max ? dot : max;
+	}
 
 	return Vector2(min, max);
 }
@@ -110,98 +110,196 @@ Vector2 BoxCollider2D::GetProjectInterval(Vector2 normal)
 void BoxCollider2D::AABBWithAABB(BoxCollider2D& collider)
 {
 
-	Rect c_bounds = collider.bounds;
+	float minSepa = INFINITY;
+	Vector2 minSepaNormal = Vector2::zero();
+	bool boxColl = false;
+	bool box2Coll = false;
 
-	// ----- Construction des AABB ----- \\
-
-	Rect targetRect(
-		Vector2(transform().position.x() + bounds.center().x(), transform().position.y() + bounds.center().y()),
-		Vector2(bounds.width(), bounds.height())
-	);
-
-	Rect colliderRect(
-		Vector2(collider.transform().position.x() + c_bounds.center().x(), collider.transform().position.y() + c_bounds.center().y()),
-		Vector2(c_bounds.width(), c_bounds.height())
-	);
-
-	// ----- Création des collisions ----- \\
-
-	float dx = targetRect.center().x() - colliderRect.center().x();
-	float px = (bounds.width() / 2 + c_bounds.width() / 2) - std::abs(dx);
-
-	float dy = targetRect.center().y() - colliderRect.center().y();;
-	float py = (bounds.height() / 2 + c_bounds.height() / 2) - std::abs(dy);
-
-	if (collider.owner->GetComponent<Rigidbody2D>() != nullptr)
+	for (int i = 0; i < OBBRect.size(); i++)
 	{
-		Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
+		int j = i + 1 == OBBRect.size() ? 0 : i + 1;
 
-		float totalMass = body->mass + _otherRb.mass;
-		float ratioA = _otherRb.mass / totalMass;
-		float ratioB = body->mass / totalMass;
-		if (px < py) {
-			float move = px * .5f; // ratio
-			transform().position += {(dx < 0 ? -move * ratioA : move * ratioA), 0.f};
-			collider.transform().position += {(dx < 0 ? move * ratioB : -move * ratioB), 0.f};
-		}
-		else {
-			float move = py * .5f;
-			transform().position += {0.f, (dy < 0 ? -move * ratioA : move * ratioA)};
-			collider.transform().position += {0.f, (dy < 0 ? move * ratioB : -move * ratioB)};
+		Vector2 edge = Vector2::Edge(OBBRect[i], OBBRect[j]);
+		Vector2 n = edge.normal();
+
+		Vector2 boxInter = GetProjectInterval(n);
+
+		Vector2 box2Inter = collider.GetProjectInterval(n);
+
+		boxColl = box2Inter.y() >= boxInter.x() && boxInter.y() >= box2Inter.x();
+		if (!boxColl)
+			break;
+		else
+		{
+			float sepa = Mathf::Min(box2Inter.y(), boxInter.y()) - Mathf::Max(box2Inter.x(), boxInter.x());
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (box2Inter.x() + box2Inter.y()) / 2 - (boxInter.x() + boxInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
 		}
 	}
-	else
+
+	for (int i = 0; i < collider.OBBRect.size(); i++)
 	{
-		if (px < py) {
-			dx < 0 ? transform().position -= {px, 0.f} : transform().position += {px, 0.f};
-			body->velocity = { 0.f, body->velocity.y()};
-		}
-		else {
-			dy < 0 ? transform().position -= {0.f, py} : transform().position += {0.f, py};
-			body->velocity = { body->velocity.x(), 0.f };
+		int j = i + 1 == collider.OBBRect.size() ? 0 : i + 1;
+
+		Vector2 edge = Vector2::Edge(collider.OBBRect[i], collider.OBBRect[j]);
+		Vector2 n = edge.normal();
+
+		Vector2 boxInter = GetProjectInterval(n);
+
+		Vector2 box2Inter = collider.GetProjectInterval(n);
+
+		box2Coll = box2Inter.y() >= boxInter.x() && boxInter.y() >= box2Inter.x();
+		if (!box2Coll)
+			break;
+		else
+		{
+			float sepa = Mathf::Min(box2Inter.y(), boxInter.y()) - Mathf::Max(box2Inter.x(), boxInter.x());
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (box2Inter.x() + box2Inter.y()) / 2 - (boxInter.x() + boxInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
 		}
 	}
-	
-	return;
+
+	if (boxColl && box2Coll)
+	{
+		Vector2 normal = minSepaNormal.normalized();
+		if (collider.owner->GetComponent<Rigidbody2D>())
+		{
+			Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
+
+			float invMassA = 1.f / body->mass;
+			float invMassB = 1.f / _otherRb.mass;
+			float invMassSum = invMassA + invMassB;
+
+			Vector2 correction = normal * ((minSepa / minSepaNormal.magnitude()) / invMassSum);
+			transform().position -= correction * invMassA;
+			collider.transform().position += correction * invMassB;
+		}
+		else
+		{
+			transform().position -= normal * (minSepa / minSepaNormal.magnitude());
+		}
+
+	}
 
 }
 
 void BoxCollider2D::CircleWithAABB(CircleCollider2D& collider)
 {
-	// ----- Création des collisions ----- \\
 
-	auto circle = collider.owner->GetComponent<CircleCollider2D>();
+	float minSepa = INFINITY;
+	Vector2 minSepaNormal = Vector2::zero();
+	bool boxColl = false;
+	bool circleColl = false;
 
-	float left = transform().position.x() + bounds.left();
-	float top = transform().position.y() + bounds.top();
-
-	Vector2 closetPoint = { Mathf::clamp(circle->transform().position.x(), left, left + bounds.width()),
-						Mathf::clamp(circle->transform().position.y(), top, top + bounds.height()) };
-
-	Vector2 dir = Vector2::Edge(closetPoint, circle->transform().position);
-
-
-	float penetration = circle->radius - dir.magnitude();
-	Vector2 normal = dir / dir.magnitude();
-	if (collider.owner->GetComponent<Rigidbody2D>() != nullptr)
+	for (int i = 0; i < OBBRect.size(); i++)
 	{
-		Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
+		int j = i + 1 == OBBRect.size() ? 0 : i + 1;
 
-		float invMassA = 1.f / body->mass;
-		float invMassB = 1.f / _otherRb.mass;
-		float invMassSum = invMassA + invMassB;
+		Vector2 edge = Vector2::Edge(OBBRect[i], OBBRect[j]);
+		Vector2 n = edge.normal();
 
-		Vector2 correction = normal * (penetration / invMassSum);
+		Vector2 boxInter = GetProjectInterval(n);
 
-		circle->transform().position += correction * invMassB;
-		transform().position -= correction * invMassA;
+		Vector2 circleInter = collider.GetProjectInterval(n);
+
+		boxColl = circleInter.y() >= boxInter.x() && boxInter.y() >= circleInter.x();
+		if (!boxColl)
+			break;
+		else
+		{
+			float sepa = Mathf::Min(circleInter.y(), boxInter.y()) - Mathf::Max(circleInter.x(), boxInter.x());
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (circleInter.x() + circleInter.y()) / 2 - (boxInter.x() + boxInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
 	}
-	else
+
+	Vector2 minCloset;
+	float minClos = INFINITY;
+	for (int i = 0; i < OBBRect.size(); i++)
 	{
-		transform().position -= normal * penetration;
+		int j = i + 1 == OBBRect.size() ? 0 : i + 1;
+
+		Vector2 closet = Vector2::ClosetPointOnSegment(collider.transform().position,
+			OBBRect[i], OBBRect[j]);
+
+		if (Vector2::Edge(collider.transform().position, closet).magnitude() < minClos)
+		{
+			minClos = Vector2::Edge(collider.transform().position, closet).magnitude();
+			minCloset = Vector2::Edge(collider.transform().position, closet);
+		}
 	}
 
-	return;
+	{
+
+		Vector2 n = minCloset.normal();
+
+		Vector2 boxInter = GetProjectInterval(n);
+		Vector2 circleInter = collider.GetProjectInterval(n);
+
+		float sepa = Mathf::Min(boxInter.y(), circleInter.y()) - Mathf::Max(boxInter.x(), circleInter.x());
+
+		circleColl = sepa > 0;
+		if (circleColl)
+		{
+
+			if (sepa < minSepa)
+			{
+				minSepa = sepa;
+				minSepaNormal = n;
+
+				float d = (boxInter.x() + boxInter.y()) / 2 - (circleInter.x() + circleInter.y()) / 2;
+				if (d < 0)
+					minSepaNormal *= -1;
+
+			}
+		}
+	}
+
+	if (boxColl && circleColl)
+	{
+		Vector2 normal = minSepaNormal.normalized();
+
+		if (collider.owner->GetComponent<Rigidbody2D>())
+		{
+			Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
+
+			float invMassA = 1.f / body->mass;
+			float invMassB = 1.f / _otherRb.mass;
+			float invMassSum = invMassA + invMassB;
+
+			Vector2 correction = normal * ((minSepa / minSepaNormal.magnitude()) / invMassSum);
+			transform().position -= correction * invMassA;
+			collider.transform().position += correction * invMassB;
+		}
+		else
+		{
+			transform().position -= normal * (minSepa / minSepaNormal.magnitude());
+		}
+	}
 }
 
 void BoxCollider2D::PolygonWithAABB(PolygonCollider2D& collider)
@@ -210,11 +308,11 @@ void BoxCollider2D::PolygonWithAABB(PolygonCollider2D& collider)
 	Vector2 minSepaNormal = Vector2::zero();
 	bool polyColl = false;
 	bool boxColl = false;
-	for (int i = 0; i < collider.vertices.size(); i++)
+	for (int i = 0; i < collider.OBBvertices.size(); i++)
 	{
-		int j = i + 1 == collider.vertices.size() ? 0 : i + 1;
+		int j = i + 1 == collider.OBBvertices.size() ? 0 : i + 1;
 
-		Vector2 edge = Vector2::Edge(collider.vertices[i], collider.vertices[j]);
+		Vector2 edge = Vector2::Edge(collider.OBBvertices[i], collider.OBBvertices[j]);
 		Vector2 n = edge.normal();
 
 		Vector2 polyInter = collider.GetProjectInterval(n);
@@ -240,12 +338,16 @@ void BoxCollider2D::PolygonWithAABB(PolygonCollider2D& collider)
 		}
 	}
 
-	const Vector2 boxAxes[] = { Vector2(0,1), Vector2(1,0) };
-	for (Vector2 axe : boxAxes)
+	for (int i = 0; i < OBBRect.size(); i++)
 	{
-		Vector2 polyInter = collider.GetProjectInterval(axe);
+		int j = i + 1 == OBBRect.size() ? 0 : i + 1;
 
-		Vector2 boxInter = GetProjectInterval(axe);
+		Vector2 edge = Vector2::Edge(OBBRect[i], OBBRect[j]);
+		Vector2 n = edge.normal();
+
+		Vector2 polyInter = collider.GetProjectInterval(n);
+
+		Vector2 boxInter = GetProjectInterval(n);
 
 		boxColl = polyInter.y() >= boxInter.x() && boxInter.y() >= polyInter.x();
 		if (!boxColl)
@@ -256,7 +358,7 @@ void BoxCollider2D::PolygonWithAABB(PolygonCollider2D& collider)
 			if (sepa < minSepa)
 			{
 				minSepa = sepa;
-				minSepaNormal = axe;
+				minSepaNormal = n;
 
 				float d = (polyInter.x() + polyInter.y()) / 2 - (boxInter.x() + boxInter.y()) / 2;
 				if (d < 0)
@@ -269,11 +371,6 @@ void BoxCollider2D::PolygonWithAABB(PolygonCollider2D& collider)
 	if (boxColl && polyColl)
 	{
 		Vector2 normal = minSepaNormal.normalized();
-		bool isBoxAxis = (Mathf::abs(normal.x()) < 0.01f || Mathf::abs(normal.y()) < 0.01f);
-
-		bool isCornerCollision = !isBoxAxis;
-
-		float correctionFactor = isCornerCollision ? 0.5f : 1.0f;
 		if (collider.owner->GetComponent<Rigidbody2D>())
 		{
 			Rigidbody2D& _otherRb = *collider.owner->GetComponent<Rigidbody2D>();
@@ -282,13 +379,13 @@ void BoxCollider2D::PolygonWithAABB(PolygonCollider2D& collider)
 			float invMassB = 1.f / _otherRb.mass;
 			float invMassSum = invMassA + invMassB;
 
-			Vector2 correction = normal * ((minSepa * correctionFactor) / invMassSum);
+			Vector2 correction = normal * ((minSepa / minSepaNormal.magnitude()) / invMassSum);
 			transform().position -= correction * invMassA;
 			collider.transform().position += correction * invMassB;
 		}
 		else
 		{
-			transform().position -= normal * (minSepa * correctionFactor);
+			transform().position -= normal * (minSepa / minSepaNormal.magnitude());
 		}
 
 	}

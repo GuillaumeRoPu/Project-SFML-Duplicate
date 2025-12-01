@@ -1,21 +1,29 @@
 #include "Scenes/lascen.h"
-
+#include "Components/Transform.h"
+#include "Components/Physics/Rigidbody2D.h"
+#include "Objects/Bullet.h"
 
 lascen::lascen()
 {
 	p = CreateGameObject<Player>();
-	caca = CreateGameObject<Enemy>();
+	enemyManager = CreateGameObject<EnemyManager>();
+	bulletManager = CreateGameObject<BulletManager>();
 	blocker = CreateGameObject<Blocker>();
+
+	// Création du game object permettant aux détecter lorsqu'elles sortent de la caméra.
+	GameObject* limit = CreateGameObject<GameObject>();
+	limit->transform->scale = Vector2(16, 16);
+	limit->name = "Limit";
+	BoxCollider2D* boxLimit = limit->AddComponent<BoxCollider2D>();
+	boxLimit->isTrigger = true;
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
-	window.clear(sf::Color::Red);
+	//window.clear(sf::Color(0,125,125,255));
+	window.clear(sf::Color::Black);
 
 	Scene::PlayScene(window, input);
-
-	//Trucs que vous devez mettre dans le constructeur mais ça fonctionne pas dans le constructeur :'(
-	caca->_controller->GetPlayer(this);
 
 	//Boucle
 	if (input.getButton().up) {
@@ -41,6 +49,7 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	int sizePlayer = 25;
 	sf::CircleShape pshape(sizePlayer);
 	pshape.setOrigin(sizePlayer, sizePlayer);
+	pshape.setFillColor(sf::Color::White);
 	sf::Vector2f playerPosition = { p->transform->position.x() * pixelPerPoint, p->transform->position.y() * pixelPerPoint };
 	pshape.setPosition(playerPosition);
 
@@ -70,34 +79,78 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 			p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
 	}
 
-	for (Bullet* bullet : caca->_controller->_bullets)
-	{
-		sf::CircleShape aieaieaie(10);
-		aieaieaie.setFillColor(sf::Color::Blue);
-		aieaieaie.setOrigin(10,10);
-		bullet->_rb->mass = 1;
-		aieaieaie.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
-		window.draw(aieaieaie);
+	for (Enemy* enemy : enemyManager->_enemyManagerController->_allEnemies) {
+		sf::RectangleShape grocaca(sf::Vector2f(20, 20));
+		grocaca.setFillColor(sf::Color::White);
+		grocaca.setOrigin({ 10,10 });
+		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
+
+		if (enemy->active)
+		{
+			window.draw(grocaca);
+		}
+
+		grocaca.setSize(sf::Vector2f(18, 18));
+		grocaca.setFillColor(sf::Color::Black);
+		grocaca.setOrigin({ 10-1,10-1 });
+		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
+
+		if (enemy->active)
+		{
+			window.draw(grocaca);
+		}
 	}
 
-	sf::Vector2f pBlockerSize(50, 10);
-	Vector2 pBlockerPosition = fry::Vector2::RotateAngle(Vector2{ p->transform->position.x() * pixelPerPoint + sizePlayer, p->transform->position.y() * pixelPerPoint + sizePlayer + 20 }, Vector2{ playerPosition.x, playerPosition.y }, blocker->_phc->angle);
+	for (Bullet* bullet : bulletManager->_bulletManagerController->_allBullets) {
+		sf::CircleShape grocaca(10);
+		grocaca.setFillColor(sf::Color::Yellow);
+		grocaca.setOrigin({ 10,10 });
+		grocaca.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
+
+		if (bullet->active)
+		{
+			window.draw(grocaca);
+		}
+
+		grocaca.setRadius(10-1);
+		grocaca.setFillColor(sf::Color::Black);
+		grocaca.setOrigin({ 10 - 1,10 - 1 });
+		grocaca.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
+
+		if (bullet->active)
+		{
+			window.draw(grocaca);
+		}
+	}
+
+
 	float pBlockerAngle = blocker->_phc->angle;
-	blocker->Transformation(pBlockerSize, pBlockerPosition, pBlockerAngle);
-	sf::RectangleShape pBlocker(pBlockerSize);
+	blocker->transform->position.RotateAroundCenter(p->transform->position, 1.3f, pBlockerAngle);
+	blocker->transform->rotation = pBlockerAngle;
+	PlayerHealthBlocker* healthBlocker = blocker->GetComponent<PlayerHealthBlocker>();
+
+	sf::Vector2f blockerHealthSize = { healthBlocker->GetHealthSize() * pixelPerPoint, blocker->transform->scale.y() * pixelPerPoint };
+	sf::Vector2f blockerSize = { blocker->transform->scale.x() * pixelPerPoint, blocker->transform->scale.y() * pixelPerPoint };
+	
+	sf::RectangleShape pBlocker(blockerHealthSize);
 	pBlocker.setFillColor(sf::Color::Green);
-	pBlocker.setOrigin(pBlockerSize);
-	pBlocker.setPosition({ pBlockerPosition.x(), pBlockerPosition.y()});
-	pBlocker.setRotation(pBlockerAngle);
+	pBlocker.setOrigin({ blockerSize.x/2, blockerSize.y/2});
+	pBlocker.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
+	pBlocker.setRotation(pBlockerAngle + 90);
 
-	sf::RectangleShape grocaca(sf::Vector2f(20, 20));
-	grocaca.setFillColor(sf::Color::Black);
-	grocaca.setOrigin({ 10,10 });
-	caca->_rb->mass = 1;
-	grocaca.setPosition(sf::Vector2f(caca->transform->position.x() * pixelPerPoint, caca->transform->position.y() * pixelPerPoint));
+	sf::RectangleShape pBlockerBackground(blockerSize);
+	pBlockerBackground.setFillColor(sf::Color::Red);
+	pBlockerBackground.setOrigin({ blockerSize.x/2, blockerSize.y/2 });
+	pBlockerBackground.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
+	pBlockerBackground.setRotation(pBlockerAngle + 90);
 
-	window.draw(grocaca);
 
 	window.draw(pshape);
+	pshape.setRadius(sizePlayer-1);
+	pshape.setOrigin(sizePlayer-1, sizePlayer-1);
+	pshape.setFillColor(sf::Color::Black);
+	window.draw(pshape);
+
+	window.draw(pBlockerBackground);
 	window.draw(pBlocker);
 }

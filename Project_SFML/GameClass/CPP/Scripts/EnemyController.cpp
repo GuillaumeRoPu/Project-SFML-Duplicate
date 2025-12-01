@@ -1,4 +1,9 @@
 #include "Scripts/EnemyController.h"
+#include "Scripts/EnemyManagerController.h"
+#include "Components/ParticleSystem.h"
+#include "Objects/GameObject.h"
+#include "Objects/Bullet.h"
+#include "Objects/BulletManager.h"
 
 //void EnemyController::FixedUpdate()
 //{
@@ -32,26 +37,53 @@ void EnemyController::Start()
 {
 	_rb = owner->GetComponent<Rigidbody2D>();
 	_collider = owner->GetComponent<BoxCollider2D>();
-	cooldown = 5;
+	_player = scene().FindFirstObjectByType<Player>();
+	cooldown = 0.4f;
 	timer = 0;
-}
-
-void EnemyController::GetPlayer(Scene* scene) {
-	_player = scene->FindFirstObjectByType<Player>();
-	_scene = scene;
 }
 
 void EnemyController::SpawnBullet()
 {
-	Bullet* newBullet = InstantiateBullet();
-	if (newBullet != nullptr && _player != nullptr) {
-		newBullet->GetComponent<BulletController>()->GetPlayer(_player);
+	auto manager = scene().FindFirstObjectByType<BulletManager>();
+	manager->GetComponent<BulletManagerController>()->SpawnBullet(transform().position);
+}
+
+void EnemyController::OnTriggerEnter2D(Collider2D* other) 
+{
+	PlayerController* _player = other->owner->GetComponent<PlayerController>();
+	if (_player != nullptr) {
+		_player->Heal(1);
+		owner->active = false;
+		std::cout << "Touched Player" << std::endl;
+
+		SpawnDeathParticle();
+
+		controller->DestroyEnemy(owner);
 	}
-	_bullets.push_back(newBullet);
+}
+
+void EnemyController::SpawnDeathParticle()
+{
+	GameObject* gm_particle = scene().CreateGameObject<GameObject>();
+	gm_particle->transform->position = transform().position;
+	ParticleSystem* particle = gm_particle->AddComponent<ParticleSystem>();
+	particle->destroyWhenDie = true;
+	particle->duration = .5f;
+	particle->randomLifetime = true;
+	particle->minLifetime = .5f;
+	particle->maxLifetime = 1.4f;
+	particle->radius = .1f;
+	particle->speed = 10;
+	particle->burst = true;
+	particle->burstNumber = 1;
+	particle->rateOverTime = 20;
+	particle->burstCount = 20;
+	particle->size = .05f;
+	particle->burstTime = 0.f;
 }
 
 Bullet* EnemyController::InstantiateBullet() 
 {
-	return _scene->CreateGameObject<Bullet>();
+	return scene().CreateGameObject<Bullet>();
 }
 
