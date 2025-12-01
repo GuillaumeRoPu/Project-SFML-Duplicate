@@ -18,6 +18,11 @@ void PlayerController::Update()
 	blocker->GetComponent<PlayerHealthBlocker>()->SetHP(_health->GetHealth().GetRatio());
 }
 
+void PlayerController::OnCollisionEnter2D(Collider2D* other)
+{
+	//AudioManager::PlaySound(AudioManager::collision);
+}
+
 void PlayerController::Move(int verDir, int horDir)
 {
 	if (verDir == 1) {
@@ -40,7 +45,7 @@ void PlayerController::TakeDamage(int amount)
 	_health->TakeDamage(amount);
 	if (_health->IsDead())
 	{
-		Time::timeScale = 0.01f;
+		Time::timeScale = 0.f;
 		SpawnDeathParticle();
 		AudioManager::SoloSounds({ AudioManager::destroy , AudioManager::defeat });
 	}

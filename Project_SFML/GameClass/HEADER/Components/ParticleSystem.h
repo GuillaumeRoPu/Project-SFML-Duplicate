@@ -75,12 +75,12 @@ private:
 	float _burstChrono = 0;
 	float _lifeTime = 0;
 
-	bool _play;
+	bool _play = false;
 	bool _loopPlay = true;
 	bool _canBurst = true;
 	int _burstCount = 0;
 
-	bool _waitForDie;
+	bool _waitForDie = false;
 
 	std::list<Particle> _particles;
 

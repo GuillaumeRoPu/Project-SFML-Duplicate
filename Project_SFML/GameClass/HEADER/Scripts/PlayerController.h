@@ -13,6 +13,8 @@ public:
 
 	void Awake() override;
 	void Update() override;
+	void OnCollisionEnter2D(Collider2D* other) override;
+
 public:
 	void Move(int verDir, int horDir);
 	void Heal(int amount);

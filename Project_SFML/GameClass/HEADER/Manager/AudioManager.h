@@ -29,9 +29,10 @@ class AudioManager
 public:
 	// Sounds
 	inline static const AudioParameter shoot = AudioParameter("res/Sounds/shoot.wav", 50, 0);
-	inline static const AudioParameter destroy = AudioParameter("res/Sounds/destroy.wav", 50, 0.1f);
+	inline static const AudioParameter destroy = AudioParameter("res/Sounds/destroy.wav", 50, 0.2f);
 	inline static const AudioParameter touch = AudioParameter("res/Sounds/playerTouch.wav", 50, 0);
 	inline static const AudioParameter defeat = AudioParameter("res/Sounds/defeat.wav", 50, 0);
+	inline static const AudioParameter collision = AudioParameter("res/Sounds/collision.wav", 50, .2f);
 
 public:
 	static void Initialize();

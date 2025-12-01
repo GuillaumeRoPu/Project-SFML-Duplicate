@@ -5,7 +5,7 @@
 class PlayerHealthBlocker : public Scripting
 {
 public:
-	int rotationSpeed = 360.0f;
+	float rotationSpeed = 360.0f;
 	int angle = 0;
 	float rad = 0;
 public:

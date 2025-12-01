@@ -3,6 +3,7 @@
 #include "Components/Physics/Rigidbody2D.h"
 #include "Objects/Bullet.h"
 #include "Components/Camera.h"
+#include "Manager\AudioManager.h"
 
 lascen::lascen()
 {
@@ -17,6 +18,8 @@ lascen::lascen()
 	limit->name = "Limit";
 	BoxCollider2D* boxLimit = limit->AddComponent<BoxCollider2D>();
 	boxLimit->isTrigger = true;
+
+	Time::timeScale = 0;
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
@@ -25,6 +28,8 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	Scene::PlayScene(window, input);
 
 	//Boucle
+	if (input.getButton().any && !p->_health->IsDead())
+		Time::timeScale = 1;
 	if (input.getButton().up) {
 		p->_pc->Move(1, 0);
 	}
@@ -63,19 +68,32 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
 	if (p->transform->position.x() * pixelPerPoint - sizePlayer < -wsx / 2) {
 		if (p->_rb->velocity.x() <= 0)
+		{
+			AudioManager::PlaySound(AudioManager::collision);
 			p->_rb->velocity = Vector2(-p->_rb->velocity.x(), p->_rb->velocity.y());
+
+		}
 	}
 	if (p->transform->position.x() * pixelPerPoint + sizePlayer > wsx / 2) {
 		if (p->_rb->velocity.x() >= 0)
+		{
 			p->_rb->velocity = Vector2(-p->_rb->velocity.x(), p->_rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (p->transform->position.y() * pixelPerPoint - sizePlayer < -wsy / 2) {
 		if (p->_rb->velocity.y() <= 0)
+		{
+			AudioManager::PlaySound(AudioManager::collision);
 			p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
+		}
 	}
 	if (p->transform->position.y() * pixelPerPoint + sizePlayer > wsy / 2) {
 		if (p->_rb->velocity.y() >= 0)
+		{
+			AudioManager::PlaySound(AudioManager::collision);
 			p->_rb->velocity = Vector2(p->_rb->velocity.x(), -p->_rb->velocity.y());
+		}
 	}
 
 	for (Enemy* enemy : enemyManager->_enemyManagerController->_allEnemies) {

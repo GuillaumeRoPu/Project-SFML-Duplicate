@@ -70,7 +70,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             }
         }
 
-        accumulator -= Time::FixedDeltaTime();
+        accumulator -= Time::UnscaledFixedDeltaTime();
 
     }
 

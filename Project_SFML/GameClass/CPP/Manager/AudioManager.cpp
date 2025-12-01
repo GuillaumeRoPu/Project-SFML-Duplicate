@@ -11,6 +11,7 @@ void AudioManager::Initialize()
 	LoadBuffer(destroy.path);
 	LoadBuffer(touch.path);
 	LoadBuffer(defeat.path);
+	LoadBuffer(collision.path);
 }
 
 void AudioManager::LoadBuffer(std::string path)
