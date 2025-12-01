@@ -2,6 +2,7 @@
 #include "Components/Transform.h"
 #include "Components/Physics/Rigidbody2D.h"
 #include "Objects/Bullet.h"
+#include "Components/Camera.h"
 
 lascen::lascen()
 {
@@ -20,8 +21,6 @@ lascen::lascen()
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
-	//window.clear(sf::Color(0,125,125,255));
-	window.clear(sf::Color::Black);
 
 	Scene::PlayScene(window, input);
 

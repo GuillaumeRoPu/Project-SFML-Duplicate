@@ -10,15 +10,14 @@
 Scene::Scene(std::string n)
 {
     name = n;
-    GameObject* cam = CreateGameObject<GameObject>();
-    cam->name = "MainCamera";
-    cam->tag = "MainCamera";
-    cam->AddComponent<Camera>();
+    MainCamera = CreateGameObject<GameObject>();
+    MainCamera->name = "MainCamera";
+    MainCamera->tag = "MainCamera";
+    MainCamera->AddComponent<Camera>();
 }
 
 void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
-    static sf::Clock fixedClock;
     static float accumulator = 0.0f;
 
     // Start
@@ -91,6 +90,14 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
         transform.ApplyTransformToParent();
 
+        // Camera
+        auto cam = obj.get()->GetComponent<Camera>();
+        if (cam)
+        {
+            window.clear(cam->backgroundColor);
+            cam->SetCameraView(window);
+        }
+
         // Particles
         auto p = obj.get()->GetComponent<ParticleSystem>();
         if (p != nullptr)
@@ -98,18 +105,6 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             p->PlayParticleSystem();
             p->UpdateParticleSystem();
             p->DrawParticleSystem(window);
-        }
-
-        //UI
-         
-        //Text
-        auto txt = obj.get()->GetComponent<Text>();
-        if (txt)
-        {
-            sf::Text fps;
-            fps.setFont(txt->font);
-            fps.setFillColor(txt->color);
-            fps.setString(txt->text);
         }
     }
 
@@ -122,11 +117,16 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
         transform.ApplyTransformToParent();
 
-        // Camera
-        auto cam = obj.get()->GetComponent<Camera>();
-        if (cam)
+        //UI
+
+        //Text
+        auto txt = obj.get()->GetComponent<Text>();
+        if (txt)
         {
-            cam->SetCameraView(window);
+            sf::Text fps;
+            fps.setFont(txt->font);
+            fps.setFillColor(txt->color);
+            fps.setString(txt->text);
         }
 
         // Sprites

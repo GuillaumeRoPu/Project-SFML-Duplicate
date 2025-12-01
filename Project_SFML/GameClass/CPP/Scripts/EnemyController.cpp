@@ -4,6 +4,7 @@
 #include "Objects/GameObject.h"
 #include "Objects/Bullet.h"
 #include "Objects/BulletManager.h"
+#include "Manager/AudioManager.h"
 
 //void EnemyController::FixedUpdate()
 //{
@@ -44,6 +45,7 @@ void EnemyController::Start()
 
 void EnemyController::SpawnBullet()
 {
+	AudioManager::PlaySound(AudioManager::shoot);
 	auto manager = scene().FindFirstObjectByType<BulletManager>();
 	manager->GetComponent<BulletManagerController>()->SpawnBullet(transform().position);
 }
@@ -58,6 +60,7 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 
 		SpawnDeathParticle();
 
+		AudioManager::PlaySound(AudioManager::destroy);
 		controller->DestroyEnemy(owner);
 	}
 }

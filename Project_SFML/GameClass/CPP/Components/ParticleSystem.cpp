@@ -33,6 +33,9 @@ void ParticleSystem::UpdateParticleSystem()
 {
 
 
+	float time = deltaTime ? Time::DeltaTime() : Time::UnscaledDeltaTime();
+	float fixedTime = deltaTime ? Time::FixedDeltaTime() : Time::UnscaledFixedDeltaTime();
+
 	Vector2 pos = transform().position * fry::pixelPerPoint;
 
 	int count = (int)_particles.size();
@@ -52,7 +55,7 @@ void ParticleSystem::UpdateParticleSystem()
 		Vector2 dir = Vector2((pos.x() - (*p).shape.getPosition().x) * -1, (pos.y() - (*p).shape.getPosition().y) * -1);
 		if (dir != Vector2(0, 0))
 			dir = dir.normalized();
-		(*p).shape.setPosition((*p).shape.getPosition() + sf::Vector2f{(*p).direction.x(), (*p).direction.y()} * speed * Time::FixedDeltaTime() * fry::pixelPerPoint);
+		(*p).shape.setPosition((*p).shape.getPosition() + sf::Vector2f{(*p).direction.x(), (*p).direction.y()} * speed * fixedTime * fry::pixelPerPoint);
 
 		// Gradient particles
 		if (colorByLifetime)
@@ -64,7 +67,7 @@ void ParticleSystem::UpdateParticleSystem()
 			(*p).shape.setRadius(finalSize);
 		}
 
-		(*p).time += Time::DeltaTime();
+		(*p).time += time;
 		p++;
 	}
 
@@ -95,10 +98,12 @@ void ParticleSystem::DrawParticleSystem(sf::RenderWindow& window)
 void ParticleSystem::PlayParticleSystem()
 {
 
+	float time = deltaTime ? Time::DeltaTime() : Time::UnscaledDeltaTime();
+
 	// Delay before play particles
 	if (!_play && _loopPlay)
 	{
-		_startTime += Time::DeltaTime();
+		_startTime += time;
 		if (_startTime > startDelay)
 		{
 			_startTime = 0;
@@ -112,7 +117,7 @@ void ParticleSystem::PlayParticleSystem()
 	// Duration of the system
 	if (!loop)
 	{
-		_lifeTime += Time::DeltaTime();
+		_lifeTime += time;
 		if (_lifeTime > duration)
 		{
 			_play = false;
@@ -130,7 +135,7 @@ void ParticleSystem::PlayParticleSystem()
 	// Spawn x particle in 1 second
 	if (rateOverTime > 0 && _play)
 	{
-		_rateTime += Time::DeltaTime();
+		_rateTime += time;
 		if (_rateTime > 1 / rateOverTime)
 		{
 			_rateTime = 0;
@@ -148,7 +153,7 @@ void ParticleSystem::PlayParticleSystem()
 	// Spawn x particles all n seconds
 	if (burst && _play && _canBurst)
 	{
-		_burstChrono += Time::DeltaTime();
+		_burstChrono += time;
 		if (_burstChrono > burstTime)
 		{
 			if (burstNumber > 0)

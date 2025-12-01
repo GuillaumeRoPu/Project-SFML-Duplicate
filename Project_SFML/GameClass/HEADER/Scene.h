@@ -14,6 +14,8 @@ public:
 
 	std::string name;
 
+	GameObject* MainCamera = nullptr;
+
 	virtual void PlayScene(sf::RenderWindow& window, InputSystem& input);
 
 	// Create an object to your scene

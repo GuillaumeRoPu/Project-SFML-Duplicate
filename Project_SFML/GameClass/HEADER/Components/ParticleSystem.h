@@ -18,6 +18,7 @@ class ParticleSystem : public Component
 public:
 
 	//System
+	bool deltaTime = true;
 	bool destroyWhenDie;
 	bool loop = false;
 	float duration = 5;
