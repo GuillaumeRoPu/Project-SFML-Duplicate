@@ -6,31 +6,13 @@
 #include "Objects/BulletManager.h"
 #include "Manager/AudioManager.h"
 
-//void EnemyController::FixedUpdate()
-//{
-//	//_rb->AddForce(Vector2(1, 1));
-//	//if (_rb->transform().position.x() > 1000 || _rb->transform().position.x() < -1000)
-//	//{
-//		//_rb->transform().position = Vector2(0, 0);
-//	//}
-//	if (_player != nullptr)
-//	{
-//		Vector2 VecteurPlayerEnemy = Vector2(_player->transform->position.x() - transform().position.x(), _player->transform->position.y() - transform().position.y());
-//		float magnitude = Mathf::sqrt(VecteurPlayerEnemy.x() * VecteurPlayerEnemy.x() + VecteurPlayerEnemy.y() * VecteurPlayerEnemy.y());
-//		if (magnitude >= _player->transform->scale.x()) {
-//			_rb->velocity += VecteurPlayerEnemy;
-//		}
-//	}
-//	int i = 9;
-//}
-
 void EnemyController::Update() 
 {
 	timer += Time::DeltaTime();
 	if (timer >= cooldown) 
 	{
 		timer = 0;
-		SpawnBullet();
+		//SpawnBullet();
 	}
 }
 
@@ -39,6 +21,7 @@ void EnemyController::Start()
 	_rb = owner->GetComponent<Rigidbody2D>();
 	_collider = owner->GetComponent<BoxCollider2D>();
 	_player = scene().FindFirstObjectByType<Player>();
+	_health = owner->GetComponent<HealthComponent>();
 	cooldown = 0.4f;
 	timer = 0;
 }
@@ -55,8 +38,12 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 	PlayerController* _player = other->owner->GetComponent<PlayerController>();
 	if (_player != nullptr) {
 		_player->Heal(1);
+		_health->TakeDamage(5);
 		owner->active = false;
 		std::cout << "Touched Player" << std::endl;
+
+		if (_health->IsDead())
+			_player->score++;
 
 		SpawnDeathParticle();
 

@@ -257,6 +257,9 @@
     <ClInclude Include="GameClass\HEADER\System\Health.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="GameClass\HEADER\Manager\AudioManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameClass\TrucRandom\squigam.png">

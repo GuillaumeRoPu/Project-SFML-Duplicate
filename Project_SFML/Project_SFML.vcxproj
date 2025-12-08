@@ -181,6 +181,7 @@
     <ClCompile Include="GameClass\CPP\System\Health.cpp" />
     <ClCompile Include="GameClass\HEADER\Objects\gmtest.h" />
     <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
+    <ClInclude Include="GameClass\HEADER\Manager\AudioManager.h" />
     <ClInclude Include="GameClass\HEADER\Objects\BulletManager.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\BulletController.h" />
     <ClCompile Include="Project_SFML.cpp" />

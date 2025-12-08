@@ -1,5 +1,6 @@
 #include <Scripts/PlayerController.h>
 #include "Scripts/BulletController.h"
+#include "Scripts/EnemyController.h"
 #include "Objects/Blocker.h"
 #include "Components\ParticleSystem.h"
 #include "InputSystem.h"
@@ -20,7 +21,11 @@ void PlayerController::Update()
 
 void PlayerController::OnCollisionEnter2D(Collider2D* other)
 {
-	//AudioManager::PlaySound(AudioManager::collision);
+	if (other->owner->GetComponent<EnemyController>())
+	{
+		//std::cout << "ENEMY" << std::endl;
+		//AudioManager::PlaySound(AudioManager::collision);
+	}
 }
 
 void PlayerController::Move(int verDir, int horDir)
