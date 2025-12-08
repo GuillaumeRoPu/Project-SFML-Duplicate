@@ -151,7 +151,6 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     {
         makeAwake = true;
         nb_awake++;
-        obj.get()->InitID();
         SceneObjects.push_back(std::move(obj));
     }
     PendingAdd.clear();
@@ -175,6 +174,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             if (id >= SceneObjects.size() - nb_awake)
             {
                 obj.get()->scene = this;
+                obj.get()->InitID();
                 obj.get()->Awake();
             }
 
