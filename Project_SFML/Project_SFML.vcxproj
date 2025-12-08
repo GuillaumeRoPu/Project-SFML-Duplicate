@@ -171,6 +171,7 @@
     <ClCompile Include="GameClass\CPP\Objects\GameObject.cpp" />
     <ClCompile Include="GameClass\CPP\Scene.cpp" />
     <ClCompile Include="GameClass\CPP\Scenes\lascen.cpp" />
+    <ClCompile Include="GameClass\CPP\Scenes\MainMenu.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\BulletController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\BulletManagerController.cpp" />
     <ClCompile Include="GameClass\CPP\Scripts\EnemyController.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
     <ClInclude Include="GameClass\HEADER\Manager\AudioManager.h" />
     <ClInclude Include="GameClass\HEADER\Objects\BulletManager.h" />
+    <ClInclude Include="GameClass\HEADER\Scenes\MainMenu.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\BulletController.h" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>

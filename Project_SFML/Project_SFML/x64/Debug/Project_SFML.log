@@ -1,4 +1,5 @@
-﻿  Collider2D.cpp
-  Scene.cpp
-  Génération de code en cours...
+﻿  MainMenu.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scenes/MainMenu.cpp')
+  
   Project_SFML.vcxproj -> C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe

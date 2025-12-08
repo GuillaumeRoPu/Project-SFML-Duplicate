@@ -141,6 +141,9 @@
     <ClCompile Include="GameClass\CPP\Manager\AudioManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="GameClass\CPP\Scenes\MainMenu.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameClass\HEADER\Components\Physics\BoxCollider2D.h">
@@ -258,6 +261,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="GameClass\HEADER\Manager\AudioManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClass\HEADER\Scenes\MainMenu.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
