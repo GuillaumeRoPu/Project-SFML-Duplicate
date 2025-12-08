@@ -8,7 +8,7 @@ class PlayerHealthBlocker : public Scripting
 public:
 	int angle = 0;
 private:
-	int _rotationSpeed = 360.0f;
+	int _rotationSpeed = 360;
 	float _healthSize;
 
 public:

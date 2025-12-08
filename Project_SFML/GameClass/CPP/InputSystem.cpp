@@ -3,7 +3,7 @@
 
 InputSystem::InputSystem()
 {
-    button.any = button.left = button.right = button.up = button.down = button.rotateRight = button.rotateLeft = button.enter = false;
+    button.any = button.left = button.right = button.up = button.down = button.rotateRight = button.rotateLeft = button.enter = button.lshift = false;
 }
 
 void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
@@ -18,6 +18,10 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
             // Ferme la fenêtre
             case sf::Keyboard::Escape:
                 window.close();
+                break;
+
+            case sf::Keyboard::LShift:
+                button.lshift = true;
                 break;
 
             case sf::Keyboard::Enter:
@@ -60,6 +64,10 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
 
             case sf::Keyboard::Enter:
                 button.enter = false;
+                break;
+
+            case sf::Keyboard::LShift:
+                button.lshift = false;
                 break;
 
             case sf::Keyboard::Right:

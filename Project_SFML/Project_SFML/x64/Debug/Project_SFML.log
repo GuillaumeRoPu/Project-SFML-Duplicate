@@ -1,5 +1,22 @@
-﻿  MainMenu.cpp
+﻿  lascen.cpp
 C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
-  (compiler le fichier source 'GameClass/CPP/Scenes/MainMenu.cpp')
+  (compiler le fichier source 'GameClass/CPP/Scenes/lascen.cpp')
   
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,61): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,61): warning C4244:         with
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,61): warning C4244:         [
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,61): warning C4244:             T=unsigned int
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,61): warning C4244:         ]
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,41): warning C4244: 'argument' : conversion de 'T' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,41): warning C4244:         with
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,41): warning C4244:         [
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,41): warning C4244:             T=unsigned int
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(33,41): warning C4244:         ]
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(36,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(37,31): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(37,19): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(86,22): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(108,30): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(109,46): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(109,30): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
   Project_SFML.vcxproj -> C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe

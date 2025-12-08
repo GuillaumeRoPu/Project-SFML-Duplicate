@@ -7,6 +7,8 @@
 
 class PlayerController : public Scripting
 {
+public:
+	int score = 0;
 private:
 	Rigidbody2D* _rb;
 	HealthComponent* _health;
