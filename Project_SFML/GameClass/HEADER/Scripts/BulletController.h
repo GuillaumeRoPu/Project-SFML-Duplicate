@@ -33,7 +33,7 @@ private:
 	float _bulletSpeed = 10;
 	Vector2 direction;
 	float timer;
-	bool _isTracking = true;
-	bool _predictsPlayerMovement = false;
+	bool _isTracking = false;
+	bool _predictsPlayerMovement = true;
 	float _maxDistance = 3;
 };
