@@ -9,12 +9,14 @@ struct AudioParameter
 {
 	std::string path = "";
 	float volume = 100;
+	float pitch = 1;
 	sf::Time start = sf::seconds(0.f);
 
-	AudioParameter(std::string path, float volume, float start)
+	AudioParameter(std::string path, float volume, float pitch, float start)
 	{
 		this->path = path;
 		this->volume = volume;
+		this->pitch = pitch;
 		this->start = sf::seconds(start);
 	}
 };
@@ -28,11 +30,11 @@ class AudioManager
 
 public:
 	// Sounds
-	inline static const AudioParameter shoot = AudioParameter("res/Sounds/shoot.wav", 50, 0);
-	inline static const AudioParameter destroy = AudioParameter("res/Sounds/destroy.wav", 50, 0.2f);
-	inline static const AudioParameter touch = AudioParameter("res/Sounds/playerTouch.wav", 50, 0);
-	inline static const AudioParameter defeat = AudioParameter("res/Sounds/defeat.wav", 50, 0);
-	inline static const AudioParameter collision = AudioParameter("res/Sounds/collision.wav", 50, .2f);
+	inline static const AudioParameter shoot = AudioParameter("res/Sounds/shoot.wav", 50, 1, 0);
+	inline static const AudioParameter destroy = AudioParameter("res/Sounds/destroy.wav", 50, 1, 0.2f);
+	inline static const AudioParameter touch = AudioParameter("res/Sounds/playerTouch.wav", 50, 1, 0);
+	inline static const AudioParameter defeat = AudioParameter("res/Sounds/defeat.wav", 50, 1, 0);
+	inline static const AudioParameter collision = AudioParameter("res/Sounds/collision.wav", 50, 1, .2f);
 
 public:
 	static void Initialize();
