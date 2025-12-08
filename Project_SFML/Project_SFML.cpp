@@ -7,6 +7,7 @@
 #include <deque>
 
 #pragma region  INCLUT TES SCENES ICI
+#include "Scenes/MainMenu.h"
 #include "Scenes/lascen.h"
 
 #pragma endregion
@@ -32,6 +33,7 @@ int main()
     FontManager::InitFonts();
 
     // Build tes scènes ici
+    SceneManager::BuildScene<MainMenu>();
     SceneManager::BuildScene<lascen>();
 
     // Class pour gerer les inputs

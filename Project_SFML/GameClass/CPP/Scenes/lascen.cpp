@@ -24,7 +24,6 @@ lascen::lascen()
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
-
 	Scene::PlayScene(window, input);
 
 	//Boucle
@@ -170,4 +169,15 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
 	window.draw(pBlockerBackground);
 	window.draw(pBlocker);
+
+	if (fadeAlpha > 0.f)
+	{
+		fadeAlpha -= 200.f * Time::DeltaTime();
+		if (fadeAlpha < 0.f) fadeAlpha = 0.f;
+
+		sf::RectangleShape fadeRect;
+		fadeRect.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
+		fadeRect.setFillColor(sf::Color(0, 0, 0, (sf::Uint8)fadeAlpha));
+		window.draw(fadeRect);
+	}
 }
