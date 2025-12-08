@@ -18,6 +18,8 @@ public:
 
 	virtual void PlayScene(sf::RenderWindow& window, InputSystem& input);
 
+	int ObjectCount() { return SceneObjects.size(); }
+
 	// Create an object to your scene
 	template <typename T>
 	T* CreateGameObject() {

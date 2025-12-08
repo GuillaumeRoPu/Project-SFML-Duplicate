@@ -1,2 +1,119 @@
-﻿  EnemyManagerController.cpp
-  Project_SFML.vcxproj -> C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe
+﻿  Camera.cpp
+  Component.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Components/Component.cpp')
+  
+  ParticleSystem.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Components\ParticleSystem.cpp(3,10): warning C4067: jetons inattendus après la directive du préprocesseur - saut de ligne attendu
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Components/ParticleSystem.cpp')
+  
+  BoxCollider2D.cpp
+  CircleCollider2D.cpp
+  Collider2D.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Components/Physics/Collider2D.cpp')
+  
+  PolygonCollider2D.cpp
+  Rigidbody2D.cpp
+  RectTransform.cpp
+  SpriteRenderer.cpp
+  Transform.cpp
+  Text.cpp
+  Gradient.cpp
+  Lerp.cpp
+  Mathf.cpp
+  Physics.cpp
+  Random.cpp
+  SceneManager.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Engine/SceneManager.cpp')
+  
+  Time.cpp
+  Vector2.cpp
+  Génération de code en cours...
+  Compilation en cours...
+  InputSystem.cpp
+  AudioManager.cpp
+  FontManager.cpp
+  Bullet.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/Bullet.cpp')
+  
+  Blocker.cpp
+  BulletManager.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/BulletManager.cpp')
+  
+  Enemy.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/Enemy.cpp')
+  
+  EnemyManager.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/EnemyManager.cpp')
+  
+  GameObject.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/GameObject.cpp')
+  
+  Scene.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scene.cpp')
+  
+  lascen.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scenes/lascen.cpp')
+  
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(54,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(55,31): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(55,19): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(60,12): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(60,12): warning C4244:         with
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(60,12): warning C4244:         [
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(60,12): warning C4244:             T=unsigned int
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(60,12): warning C4244:         ]
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(61,12): warning C4244: 'initialisation' : conversion de 'T' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(61,12): warning C4244:         with
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(61,12): warning C4244:         [
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(61,12): warning C4244:             T=unsigned int
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(61,12): warning C4244:         ]
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(136,22): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(158,29): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(159,43): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(159,29): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  BulletController.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/BulletController.cpp')
+  
+  BulletManagerController.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/BulletManagerController.cpp')
+  
+  EnemyController.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/EnemyController.cpp')
+  
+  EnemyManagerController.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/EnemyManagerController.cpp')
+  
+  HealthComponent.cpp
+  PlayerController.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/PlayerController.cpp')
+  
+  PlayerHealthBlocker.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scripts\PlayerHealthBlocker.cpp(9,26): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\CPP\Scripts\PlayerHealthBlocker.cpp(12,26): warning C4244: '-=' : conversion de 'float' en 'int', perte possible de données
+  Health.cpp
+  gmtest.h
+  Génération de code en cours...
+  Compilation en cours...
+  Player.cpp
+  Project_SFML.cpp
+C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'Project_SFML.cpp')
+  
+  Génération de code en cours...
+  Project_SFML.vcxproj -> C:\Users\gllmr\Documents\IIM A2\C++\PROJET SFML\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe

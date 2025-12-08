@@ -12,7 +12,7 @@ void EnemyController::Update()
 	if (timer >= cooldown) 
 	{
 		timer = 0;
-		//SpawnBullet();
+		SpawnBullet();
 	}
 }
 

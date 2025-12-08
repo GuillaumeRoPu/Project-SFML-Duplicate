@@ -174,6 +174,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             if (id >= SceneObjects.size() - nb_awake)
             {
                 obj.get()->scene = this;
+                obj.get()->InitID();
                 obj.get()->Awake();
             }
 

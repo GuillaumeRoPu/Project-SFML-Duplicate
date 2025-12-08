@@ -1,20 +1,18 @@
 #pragma once
 #include "Components/Scripting.h"
 #include <Components/Physics/BoxCollider2D.h>
-#include "InputSystem.h"
 
 class PlayerHealthBlocker : public Scripting
 {
 public:
+	float rotationSpeed = 360.0f;
 	int angle = 0;
-private:
-	int _rotationSpeed = 360.0f;
-	float _healthSize;
-
+	float rad = 0;
 public:
-	void BlockerInputTreatment(InputSystem& input);
+	void Rotate(bool dir);
 	void SetHP(float ratio);
 	float GetHealthSize() { return _healthSize; }
+
 private:
-	void Rotate(int dir);
+	float _healthSize;
 };

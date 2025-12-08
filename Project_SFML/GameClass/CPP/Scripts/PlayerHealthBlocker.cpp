@@ -1,29 +1,22 @@
 #include "Scripts/PlayerHealthBlocker.h"
 #include <Components/Physics/BoxCollider2D.h>
 #include "Objects/GameObject.h"
+#include "InputSystem.h"
 
-void PlayerHealthBlocker::BlockerInputTreatment(InputSystem& input)
+void PlayerHealthBlocker::Rotate(bool dir)
 {
-	int rotation = 0;
-	if (input.getButton().rotateRight) {
-		rotation += 1;
+	if (dir) {
+		angle += rotationSpeed * Time::DeltaTime();
 	}
-	if (input.getButton().rotateLeft) {
-		rotation -= 1;
+	else if (!dir) {
+		angle -= rotationSpeed * Time::DeltaTime();
 	}
-	Rotate(rotation);
-}
-
-void PlayerHealthBlocker::Rotate(int dir)
-{
-	angle += dir * _rotationSpeed * Time::DeltaTime();
-
 	if (angle < 0) {
-		angle += 360;
+		angle = 360 + angle;
 	}
-	else if (angle > 360) {
-		angle -= 360;
-	}
+	angle = angle % 360;
+	rad = angle * (2 * Mathf::PI / 360);
+	//std::cout << angle << " " << rad << std::endl;
 }
 
 void PlayerHealthBlocker::SetHP(float ratio)

@@ -12,6 +12,13 @@ void CircleCollider2D::Start()
 
 void CircleCollider2D::ApplyRotation()
 {
+	if (transform().rotation != _lastRotation)
+	{
+		_lastRotation = transform().rotation;
+	}
+	else
+		return;
+
 	radius = Mathf::Max(owner->transform->scale.x() / 2, owner->transform->scale.y() / 2);
 }
 
