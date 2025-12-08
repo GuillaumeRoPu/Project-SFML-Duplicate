@@ -161,6 +161,7 @@
     <ClCompile Include="GameClass\CPP\Engine\Time.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Vector2.cpp" />
     <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
+    <ClCompile Include="GameClass\CPP\Manager\AudioManager.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Bullet.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Blocker.cpp" />

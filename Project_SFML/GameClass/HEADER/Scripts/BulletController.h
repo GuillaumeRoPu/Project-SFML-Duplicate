@@ -18,7 +18,11 @@ class BulletController : public Scripting
 	void OnTriggerEnter2D(Collider2D* other) override;
 	void OnTriggerExit2D(Collider2D* other) override;
 	void OnCollisionEnter2D(Collider2D* other) override;
+	bool TryGetInterceptDirection(Vector2 shooterPos, Vector2 targetPos, Vector2 targetVel, float projectileSpeed);
 
+public:
+	void BulletCanTrack(float maxDistance);
+	void PredictsPlayerMovement();
 public:
 	BulletManagerController* controller;
 	Rigidbody2D* _rb;
@@ -29,4 +33,7 @@ private:
 	float _bulletSpeed = 10;
 	Vector2 direction;
 	float timer;
+	bool _isTracking = true;
+	bool _predictsPlayerMovement = false;
+	float _maxDistance = 3;
 };

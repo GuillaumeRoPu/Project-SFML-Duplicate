@@ -18,6 +18,7 @@ class EnemyController : public Scripting
 private:
     void SpawnDeathParticle();
 public:
+    void Setup(float damage, float cooldown, float bulletSpeed);
     void SpawnBullet();
     Bullet* InstantiateBullet();
 

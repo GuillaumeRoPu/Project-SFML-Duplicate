@@ -17,8 +17,22 @@ void BulletController::Start()
 {
 	_player = owner->scene->FindFirstObjectByType<Player>();
 
-	direction = Vector2::Edge(transform().position, _player->transform->position);
-	_rb->velocity = direction.normalized() * _bulletSpeed;
+	//direction = Vector2::Edge(transform().position, _player->transform->position);
+
+	if (_predictsPlayerMovement) 
+	{
+		if (!TryGetInterceptDirection(transform().position, _player->transform->position, _player->_rb->velocity, _bulletSpeed))
+		{
+			direction = Vector2::Edge(transform().position, _player->transform->position).normalized();
+		}
+	}
+	else 
+	{
+		direction = Vector2::Edge(transform().position, _player->transform->position).normalized();
+	}
+
+	
+	_rb->velocity = direction * _bulletSpeed;
 	_rb->damping = 0;
 	timer = 0;
 }
@@ -26,6 +40,17 @@ void BulletController::Start()
 void BulletController::Update() 
 {
 	timer += Time::DeltaTime();
+	Vector2 magnitudeWithPlayer = Vector2::Edge(transform().position, _player->transform->position);
+	if (_isTracking && magnitudeWithPlayer.magnitude() >= _maxDistance)
+	{
+		direction = magnitudeWithPlayer.normalized();
+		_rb->velocity = direction * _rb->velocity.magnitude();
+	}
+	else if (_isTracking) 
+	{
+		_isTracking = false;
+	}
+
 }
 
 void BulletController::OnTriggerEnter2D(Collider2D* other) 
@@ -50,3 +75,65 @@ void BulletController::OnCollisionEnter2D(Collider2D* other)
 {
 
 }
+
+void BulletController::BulletCanTrack(float maxDistance) 
+{
+	_isTracking = true;
+	_maxDistance = maxDistance;
+}
+
+void BulletController::PredictsPlayerMovement() 
+{
+	_predictsPlayerMovement = true;
+}
+
+bool BulletController::TryGetInterceptDirection(Vector2 shooterPos, Vector2 targetPos, Vector2 targetVel, float projectileSpeed)
+{
+	direction = Vector2(0, 0);
+
+	Vector2 r = targetPos - shooterPos;
+	float vv = Vector2::Dot(targetVel, targetVel);
+	float ss = projectileSpeed * projectileSpeed;
+	float a = vv - ss;
+	float b = 2 * Vector2::Dot(r, targetVel);
+	float c = Vector2::Dot(r, r);
+
+	const float EPS = 1e-6f;
+	float t;
+
+	if (abs(a) < EPS)
+	{
+		if (abs(b) < EPS)
+			return false;
+
+		t = -c / b;
+		if (t <= 0) return false;
+	}
+	else
+	{
+		float disc = b * b - 4 * a * c;
+		if (disc < 0) return false;
+
+		float sqrtDisc = sqrtf(disc);
+		float t1 = (-b - sqrtDisc) / (2 * a);
+		float t2 = (-b + sqrtDisc) / (2 * a);
+
+		bool t1OK = t1 > 0;
+		bool t2OK = t2 > 0;
+
+		if (t1OK && t2OK)
+			t = Mathf::Min(t1, t2);
+		else
+			t = t1OK ? t1 : (t2OK ? t2 : -1);
+
+		if (t <= 0) return false;
+	}
+
+	Vector2 aimPoint = targetPos + targetVel * t;
+	Vector2 dir = aimPoint - shooterPos;
+	if (dir.sqrMagnitude() < EPS) return false;
+
+	direction = dir.normalized();
+	return true;
+}
+

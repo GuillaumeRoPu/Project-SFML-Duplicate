@@ -28,6 +28,7 @@ void EnemyManagerController::SpawnEnemy()
 	if (newEnemy != nullptr && _player != nullptr) {
 		Vector2 position = Vector2(Random::Range((float)-5, (float)5), Random::Range((float)-5, (float)5));
 		newEnemy->transform->position = (position);
+		newEnemy->_controller->Setup(0,0,0);
 	}
 	_allEnemies.push_back(newEnemy);
 }

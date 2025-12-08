@@ -90,3 +90,8 @@ Bullet* EnemyController::InstantiateBullet()
 	return scene().CreateGameObject<Bullet>();
 }
 
+void EnemyController::Setup(float damage, float cooldown, float bulletSpeed)
+{
+
+}
+
