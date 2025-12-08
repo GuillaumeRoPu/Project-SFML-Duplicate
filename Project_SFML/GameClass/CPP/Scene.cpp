@@ -151,6 +151,7 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     {
         makeAwake = true;
         nb_awake++;
+        obj.get()->InitID();
         SceneObjects.push_back(std::move(obj));
     }
     PendingAdd.clear();

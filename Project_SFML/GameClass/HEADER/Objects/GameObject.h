@@ -13,10 +13,10 @@ class GameObject
 protected:
 
     std::vector<std::unique_ptr<Component>> components;
-    int _hashID;
 
 private:
     bool _start = false;
+    int _ID = -1;
 
 public:
     bool active = true;
@@ -31,9 +31,11 @@ public:
     Transform* transform;
 
     GameObject() : transform(AddComponent<Transform>()) {}
-    GameObject(std::string name) : transform(AddComponent<Transform>()) { this->name = name; }
 
     bool HasStart() const { return _start; }
+
+    void InitID();
+    int ID() { return _ID; }
 
     void Awake();
 

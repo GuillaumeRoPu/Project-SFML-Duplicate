@@ -13,10 +13,13 @@ public:
 	
 	bool findIntersection(Collider2D* c1, Collider2D* c2);
 
+	std::vector<Collider2D*> Collisions() { return _collision; }
+
 	bool isTrigger = false;
 
 protected:
 	Rigidbody2D* body = nullptr;
 	std::vector<Collider2D*> _collision;
-	
+	float _lastRotation = INFINITY;
+
 };
