@@ -50,3 +50,6 @@ Project_SFML/Project_SFML/x64/Debug
 *.tlog
 *.idb
 Project_SFML/Project_SFML/x64/Debug/Project_SFML.log
+*.tlog
+*.log
+*.idb

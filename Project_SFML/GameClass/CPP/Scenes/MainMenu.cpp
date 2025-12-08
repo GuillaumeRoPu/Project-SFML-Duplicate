@@ -8,19 +8,15 @@
 
 MainMenu::MainMenu()
 {
+    MainCamera->transform->position = { 8,8 };
 }
 
 void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
     Scene::PlayScene(window, input);
-
     static float animTime = 0.0f;
     animTime += Time::DeltaTime() * 3;
     float scale = 1.0f + std::sin(animTime) * 0.05f;
-
-    static bool startTransition = false;
-    static float flashAlpha = 0.f;
-    static float fadeAlpha = 0.f;
 
     sf::Text title;
     title.setFont(FontManager::f_pixelify);
@@ -32,7 +28,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     title.setScale(scale, scale);
 
     sf::Text shadow = title;
-    shadow.setFillColor(sf::Color(0, 0, 0, 150));
+    shadow.setFillColor(sf::Color(0, 0, 200, 150));
     shadow.setScale(scale * 1.02f, scale * 1.02f);
     shadow.setPosition(400.f + 4, 200.f + 4);
 
@@ -41,44 +37,14 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     pressKey.setString("ENTREE pour jouer");
     pressKey.setCharacterSize(28);
     pressKey.setFillColor(sf::Color(200, 200, 200));
-    pressKey.setPosition(200.f, 320.f);
+    pressKey.setOrigin({ pressKey.getGlobalBounds().width/2, pressKey.getGlobalBounds().height / 2 });
+    pressKey.setPosition(400.f, 620.f);
 
     window.draw(shadow);
     window.draw(title);
 
-    if (!startTransition)
-        window.draw(pressKey);
+    window.draw(pressKey);
 
-    if (!startTransition && sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-    {
-        startTransition = true;
-        flashAlpha = 200.f;
-    }
-
-    if (startTransition && flashAlpha > 0.f)
-    {
-        flashAlpha -= 600.f * Time::DeltaTime();
-
-        sf::RectangleShape flashRect;
-        flashRect.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
-        flashRect.setFillColor(sf::Color(255, 255, 255, (sf::Uint8)flashAlpha));
-        window.draw(flashRect);
-
-        return;
-    }
-
-    if (startTransition)
-    {
-        fadeAlpha += 200.f * Time::DeltaTime();
-        if (fadeAlpha >= 255.f)
-        {
-            fadeAlpha = 255.f;
-            SceneManager::LoadScene(1);
-        }
-
-        sf::RectangleShape fadeRect;
-        fadeRect.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
-        fadeRect.setFillColor(sf::Color(0, 0, 0, (sf::Uint8)fadeAlpha));
-        window.draw(fadeRect);
-    }
+    if (input.getButton().enter)
+        SceneManager::LoadScene(1);
 }
