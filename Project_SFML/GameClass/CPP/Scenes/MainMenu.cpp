@@ -19,9 +19,12 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     static float animTime = 0.0f;
     static float blinkTime = 0.0f;
     static float sparkleTime = 0.0f;
+    static float scanTime = 0.0f;
+
     animTime += Time::DeltaTime() * 3.f;
     blinkTime += Time::DeltaTime() * 4.f;
     sparkleTime += Time::DeltaTime();
+    scanTime += Time::DeltaTime();
 
     float titleScale = 1.0f + std::sin(animTime) * 0.05f;
 
@@ -103,8 +106,8 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     static std::vector<TitleState> trail;
     static float trailTimer = 0.f;
 
-    const std::size_t trailSize = 6;
-    const float trailSampleInterval = 0.09f;
+    const std::size_t trailSize = 4;
+    const float trailSampleInterval = 0.06f;
 
     trailTimer += Time::DeltaTime();
 
@@ -133,7 +136,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         const TitleState& st = trail[i];
         sf::Text g = title;
         g.setPosition(st.pos);
-        float s = st.scale * (1.0f + static_cast<float>(i + 1) * 0.02f);
+        float s = st.scale * (1.0f + static_cast<float>(i + 1) * 0.03f);
         g.setScale(s, s);
         float falloff = 1.f - static_cast<float>(i) / static_cast<float>(trail.size());
         if (falloff < 0.f) falloff = 0.f;
@@ -295,13 +298,95 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         window.draw(px);
     }
 
+    sf::Text rgb1 = title;
+    sf::Text rgb2 = title;
+    sf::Text rgb3 = title;
+
+    float vibX1 = std::sin(animTime * 10.f) * 1.2f;
+    float vibY1 = std::cos(animTime * 9.f) * 0.8f;
+    float vibX2 = std::sin(animTime * 11.f + 1.5f) * 1.0f;
+    float vibY2 = std::cos(animTime * 8.f + 0.7f) * 0.8f;
+    float vibX3 = std::sin(animTime * 9.f + 2.3f) * 0.8f;
+    float vibY3 = std::cos(animTime * 10.f + 1.1f) * 0.6f;
+
+    rgb1.setFillColor(sf::Color(0, 255, 160, 90));
+    rgb2.setFillColor(sf::Color(0, 220, 100, 70));
+    rgb3.setFillColor(sf::Color(80, 255, 120, 60));
+
+    rgb1.move(vibX1, vibY1);
+    rgb2.move(vibX2, vibY2);
+    rgb3.move(vibX3, vibY3);
+
+    static float scanPos = 0.f;
+    const float scanSpeed = 80.f;
+    const float bandHeight = 32.f;
+
+    scanPos += scanSpeed * Time::DeltaTime();
+    if (scanPos > worldSize.y + bandHeight)
+        scanPos = -bandHeight;
+
+    sf::RectangleShape scanBand;
+    scanBand.setSize(sf::Vector2f(worldSize.x, bandHeight));
+    scanBand.setPosition(sf::Vector2f(worldTopLeft.x, worldTopLeft.y + scanPos));
+    scanBand.setFillColor(sf::Color(0, 255, 100, 18));
+    window.draw(scanBand);
+
+    sf::RectangleShape scanLine;
+    scanLine.setSize(sf::Vector2f(worldSize.x, 2.f));
+    scanLine.setPosition(sf::Vector2f(worldTopLeft.x, worldTopLeft.y + scanPos + bandHeight * 0.5f - 1.f));
+    scanLine.setFillColor(sf::Color(150, 255, 180, 70));
+    window.draw(scanLine);
+
+    for (float y = worldTopLeft.y; y < worldBottomRight.y; y += 3.f)
+    {
+        sf::RectangleShape line;
+        line.setSize(sf::Vector2f(worldSize.x, 1.f));
+        line.setPosition(sf::Vector2f(worldTopLeft.x, y));
+        line.setFillColor(sf::Color(0, 255, 100, 8));
+        window.draw(line);
+    }
+
+    window.draw(rgb3);
+    window.draw(rgb2);
+    window.draw(rgb1);
     window.draw(title);
     window.draw(playText);
     window.draw(quitText);
+
     if (!startTransition)
     {
         window.draw(selector);
         window.draw(hint);
+    }
+
+    static std::vector<sf::Vector2f> noisePoints;
+    if (noisePoints.empty())
+    {
+        const int NOISE_COUNT = 300;
+        noisePoints.reserve(NOISE_COUNT);
+        for (int i = 0; i < NOISE_COUNT; ++i)
+        {
+            sf::Vector2f p;
+            p.x = static_cast<float>(std::rand() % winSize.x);
+            p.y = static_cast<float>(std::rand() % winSize.y);
+            noisePoints.push_back(p);
+        }
+    }
+
+    for (const auto& np : noisePoints)
+    {
+        sf::Vector2f worldPos = window.mapPixelToCoords(
+            sf::Vector2i(static_cast<int>(np.x), static_cast<int>(np.y))
+        );
+
+        float n = std::sin(animTime * 50.f + np.x * 0.15f + np.y * 0.21f);
+        float v = (n + 1.f) * 0.5f;
+        sf::Uint8 a = static_cast<sf::Uint8>(8.f + v * 30.f);
+
+        sf::RectangleShape grain(sf::Vector2f(1.f, 1.f));
+        grain.setPosition(worldPos);
+        grain.setFillColor(sf::Color(0, 255, 100, a));
+        window.draw(grain);
     }
 
     if (startTransition && flashTimer < FLASH_DURATION)
