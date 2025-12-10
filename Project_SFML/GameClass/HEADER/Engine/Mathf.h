@@ -44,5 +44,5 @@ public:
 	// Return the angle of a vector in degrees
 	static float atan2(float y, float x) { return Mathf::Rad2deg(std::atan2f(y, x)); }
 
-	static inline float PI = 3.14159265359f;
+	static float PI;
 };

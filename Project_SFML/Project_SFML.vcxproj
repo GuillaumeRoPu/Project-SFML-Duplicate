@@ -153,9 +153,10 @@
     <ClCompile Include="GameClass\CPP\Components\Transform.cpp" />
     <ClCompile Include="GameClass\CPP\Components\UI\Text.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Gradient.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\LayerMask.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Lerp.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Mathf.cpp" />
-    <ClCompile Include="GameClass\CPP\Engine\Physics.cpp" />
+    <ClCompile Include="GameClass\CPP\Engine\Physics2D.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Random.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\SceneManager.cpp" />
     <ClCompile Include="GameClass\CPP\Engine\Time.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="GameClass\CPP\InputSystem.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\AudioManager.cpp" />
     <ClCompile Include="GameClass\CPP\Manager\FontManager.cpp" />
+    <ClCompile Include="GameClass\CPP\Manager\LayerManager.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Bullet.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\Blocker.cpp" />
     <ClCompile Include="GameClass\CPP\Objects\BulletManager.cpp" />
@@ -183,6 +185,7 @@
     <ClCompile Include="GameClass\HEADER\Objects\gmtest.h" />
     <ClCompile Include="GameClass\CPP\Objects\Player.cpp" />
     <ClInclude Include="GameClass\HEADER\Manager\AudioManager.h" />
+    <ClInclude Include="GameClass\HEADER\Manager\LayerManager.h" />
     <ClInclude Include="GameClass\HEADER\Objects\BulletManager.h" />
     <ClInclude Include="GameClass\HEADER\Scenes\MainMenu.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\BulletController.h" />

@@ -76,7 +76,9 @@ void BulletController::OnTriggerEnter2D(Collider2D* other)
 void BulletController::OnTriggerExit2D(Collider2D* other)
 {
 	if (other->owner->name == "Limit")
+	{
 		controller->DestroyBullet(owner);
+	}
 }
 
 void BulletController::OnCollisionEnter2D(Collider2D* other) 

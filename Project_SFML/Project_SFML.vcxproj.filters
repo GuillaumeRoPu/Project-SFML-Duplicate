@@ -54,7 +54,7 @@
     <ClCompile Include="GameClass\CPP\Engine\Lerp.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameClass\CPP\Engine\Physics.cpp">
+    <ClCompile Include="GameClass\CPP\Engine\Physics2D.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="GameClass\CPP\Engine\Random.cpp">
@@ -142,6 +142,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="GameClass\CPP\Scenes\MainMenu.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClass\CPP\Manager\LayerManager.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClass\CPP\Engine\LayerMask.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -264,6 +270,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="GameClass\HEADER\Scenes\MainMenu.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClass\HEADER\Manager\LayerManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

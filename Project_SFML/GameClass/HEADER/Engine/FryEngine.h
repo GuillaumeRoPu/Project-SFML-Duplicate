@@ -209,4 +209,28 @@ namespace fry
         Vector2 _size;
     };
 
+    struct LayerMask
+    {
+        LayerMask(int value)
+        {
+            this->value = value;
+        }
+
+        int value;
+
+        bool operator==(int v);
+        bool operator==(LayerMask layer);
+
+        bool operator<(int v);
+        bool operator<(const LayerMask& layer) const;
+        bool operator>(int v);
+        bool operator>(const LayerMask& layer) const;
+
+        int operator+(int v);
+        int operator-(int v);
+
+        void operator+=(int v);
+        void operator-=(int v);
+    };
+
 }

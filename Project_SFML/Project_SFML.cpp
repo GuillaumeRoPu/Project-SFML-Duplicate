@@ -3,6 +3,7 @@
 #include "Manager/FontManager.h"
 #include "Manager/AudioManager.h"
 #include "Manager/SceneManager.h"
+#include "Manager/LayerManager.h"
 #include "Engine/FryEngine.h"
 #include "Engine\Time.h"
 #include <deque>
@@ -44,6 +45,13 @@ int main()
 
     FontManager::InitFonts();
     AudioManager::Initialize();
+
+    // Crée tes layers ici
+    LayerManager::layers[0] = "Default";
+    LayerManager::layers[1] = "Player";
+    LayerManager::layers[2] = "Enemy";
+    LayerManager::layers[4] = "Bullet";
+    LayerManager::layers[8] = "Limit";
 
     // Build tes scènes ici
 

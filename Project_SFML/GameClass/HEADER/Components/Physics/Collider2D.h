@@ -14,6 +14,7 @@ public:
 	bool findIntersection(Collider2D* c1, Collider2D* c2);
 
 	std::vector<Collider2D*> Collisions() { return _collision; }
+	LayerMask includeLayers = LayerMask(0);
 
 	bool isTrigger = false;
 

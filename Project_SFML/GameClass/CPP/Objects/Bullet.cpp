@@ -1,4 +1,5 @@
 #include "Objects/Bullet.h"
+#include "Manager\LayerManager.h"
 
 Bullet::Bullet() 
 {
@@ -6,7 +7,12 @@ Bullet::Bullet()
 
 	_rb = AddComponent<Rigidbody2D>();
 	_collider = AddComponent<CircleCollider2D>();
+	_collider->includeLayers += LayerManager::GetLayerByName("Player").value;
+	_collider->includeLayers += LayerManager::GetLayerByName("Limit").value;
+
 	_controller = AddComponent<BulletController>();
 	name = "Bullet";
 	_collider->isTrigger = true;
+
+	layer = LayerManager::GetLayerByName("Bullet");
 }
