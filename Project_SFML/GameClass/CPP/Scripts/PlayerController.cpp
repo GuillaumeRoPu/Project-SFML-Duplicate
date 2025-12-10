@@ -1,5 +1,7 @@
 #include <Scripts/PlayerController.h>
 #include "Scripts/BulletController.h"
+#include "Components/ParticleSystem.h"
+#include "Manager/AudioManager.h"
 #include "Objects/Blocker.h"
 
 void PlayerController::Awake()
@@ -89,7 +91,35 @@ void PlayerController::BounceOnBorder(float borderX, float borderY, int playerSi
 
 void PlayerController::TakeDamage(int amount)
 {
+	AudioManager::PlaySound(AudioManager::touch);
 	_health->TakeDamage(amount);
+	if (_health->IsDead())
+	{
+		Time::timeScale = 0.f;
+		SpawnDeathParticle();
+		AudioManager::SoloSounds({ AudioManager::destroy , AudioManager::defeat });
+	}
+}
+
+void PlayerController::SpawnDeathParticle()
+{
+	GameObject* gm_particle = scene().CreateGameObject<GameObject>();
+	gm_particle->transform->position = transform().position;
+	ParticleSystem* particle = gm_particle->AddComponent<ParticleSystem>();
+	particle->deltaTime = false;
+	particle->destroyWhenDie = true;
+	particle->duration = .5f;
+	particle->randomLifetime = true;
+	particle->minLifetime = .5f;
+	particle->maxLifetime = 1.4f;
+	particle->radius = .3f;
+	particle->speed = 10;
+	particle->burst = true;
+	particle->burstNumber = 1;
+	particle->rateOverTime = 20;
+	particle->burstCount = 20;
+	particle->size = .1f;
+	particle->burstTime = 0.f;
 }
 
 void PlayerController::Heal(int amount)
