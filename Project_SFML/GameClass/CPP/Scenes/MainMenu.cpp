@@ -17,21 +17,19 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
     Scene::PlayScene(window, input);
 
-    // ====== TIMERS ANIMATIONS ======
-    static float animTime = 0.0f; // bounce du titre
-    static float blinkTime = 0.0f; // clignotement texte
+    static float animTime = 0.0f;
+    static float blinkTime = 0.0f;
     animTime += Time::DeltaTime() * 3.f;
     blinkTime += Time::DeltaTime() * 4.f;
 
     float titleScale = 1.0f + std::sin(animTime) * 0.05f;
 
-    // ====== ETAT DU MENU / TRANSITION ======
-    static int   selectedIndex = 0;    // 0 = JOUER, 1 = QUITTER
+    static int   selectedIndex = 0;
     static bool  startTransition = false;
     static float flashTimer = 0.f;
     static float fadeAlpha = 0.f;
 
-    const float FLASH_DURATION = 0.20f;  // durée du flash blanc
+    const float FLASH_DURATION = 0.20f;
 
     static bool prevUp = false;
     static bool prevDown = false;
@@ -41,7 +39,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
     bool enter = sf::Keyboard::isKeyPressed(sf::Keyboard::Enter);
 
-    // ====== CALCUL DES POSITIONS EN FONCTION DE LA VIEW ======
     sf::Vector2u winSize = window.getSize();
 
     sf::Vector2f worldTopLeft = window.mapPixelToCoords(sf::Vector2i(0, 0));
@@ -53,7 +50,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         worldBottomRight.y - worldTopLeft.y
     );
 
-    // Positions écran -> monde
     sf::Vector2f worldTitle = window.mapPixelToCoords(
         sf::Vector2i(static_cast<int>(winSize.x / 2), static_cast<int>(winSize.y / 3))
     );
@@ -67,7 +63,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         sf::Vector2i(static_cast<int>(winSize.x / 2), static_cast<int>(winSize.y * 0.8f))
     );
 
-    // ====== TITRE ======
     sf::Text title;
     title.setFont(FontManager::f_pixelify);
     title.setString("2D Game");
@@ -77,13 +72,11 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     title.setPosition(worldTitle);
     title.setScale(titleScale, titleScale);
 
-    // Ombre / glow
     sf::Text shadow = title;
     shadow.setFillColor(sf::Color(0, 0, 0, 150));
     shadow.setScale(titleScale * 1.02f, titleScale * 1.02f);
     shadow.setPosition(worldTitle + sf::Vector2f(4.f, 4.f));
 
-    // ====== OPTIONS DU MENU ======
     sf::Text playText;
     playText.setFont(FontManager::f_pixelify);
     playText.setString("JOUER");
@@ -113,7 +106,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         quitText.setScale(1.1f, 1.1f);
     }
 
-    // Sélecteur ">"
     sf::Text selector;
     selector.setFont(FontManager::f_pixelify);
     selector.setString(">");
@@ -124,7 +116,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     else
         selector.setPosition(worldQuit + sf::Vector2f(-80.f, -10.f));
 
-    // ====== TEXTE QUI CLIGNOTE ("ENTREE pour valider") ======
     float blinkValue = (std::sin(blinkTime) + 1.f) * 0.5f; // 0  1
     sf::Uint8 blinkAlpha = static_cast<sf::Uint8>(80.f + blinkValue * 175.f);
 
@@ -136,15 +127,13 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     hint.setPosition(worldHint);
     hint.setFillColor(sf::Color(200, 200, 200, blinkAlpha));
 
-    // ====== FOND : PIXELS QUI BOUGENT ======
     struct Pixel
     {
-        sf::Vector2f pixPos; // en coordonnées pixels écran
+        sf::Vector2f pixPos;
         float speed;
     };
     static std::vector<Pixel> pixels;
 
-    // Initialisation des pixels une seule fois
     if (pixels.empty())
     {
         const int PIXEL_COUNT = 60;
@@ -154,12 +143,11 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
             Pixel p;
             p.pixPos.x = static_cast<float>(std::rand() % winSize.x);
             p.pixPos.y = static_cast<float>(std::rand() % winSize.y);
-            p.speed = 30.f + static_cast<float>(std::rand() % 40); // 30 à 70 px/s
+            p.speed = 30.f + static_cast<float>(std::rand() % 40);
             pixels.push_back(p);
         }
     }
 
-    // Mise à jour des pixels (en coordonnées écran)
     for (auto& px : pixels)
     {
         px.pixPos.y += px.speed * Time::DeltaTime();
@@ -170,7 +158,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         }
     }
 
-    // ====== NAVIGATION MENU (si pas en transition) ======
     if (!startTransition)
     {
         if (up && !prevUp)
@@ -188,7 +175,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         {
             if (selectedIndex == 0)
             {
-                // Lancer la transition vers le jeu
                 startTransition = true;
                 flashTimer = 0.f;
                 fadeAlpha = 0.f;
@@ -204,7 +190,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     prevDown = down;
     prevEnter = enter;
 
-    // ====== DESSIN : fond de pixels d'abord ======
     for (const auto& px : pixels)
     {
         sf::Vector2f worldPos = window.mapPixelToCoords(
@@ -218,7 +203,6 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         window.draw(dot);
     }
 
-    // Ensuite le titre + menu
     window.draw(shadow);
     window.draw(title);
     window.draw(playText);
@@ -226,21 +210,18 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     if (!startTransition)
     {
         window.draw(selector);
-        window.draw(hint);   // texte qui clignote
+        window.draw(hint);
     }
 
-    // ====== TRANSITION : FLASH BLANC PUIS FADE NOIR ======
 
-    // 1) Flash blanc style arcade
     if (startTransition && flashTimer < FLASH_DURATION)
     {
         flashTimer += Time::DeltaTime();
         float t = flashTimer / FLASH_DURATION;
         if (t > 1.f) t = 1.f;
 
-        // courbe en cloche 
-        float x = 2.f * t - 1.f;           // -1  1
-        float intensity = 1.f - x * x;     // max au milieu
+        float x = 2.f * t - 1.f;
+        float intensity = 1.f - x * x;
         sf::Uint8 alpha = static_cast<sf::Uint8>(255.f * intensity);
 
         sf::RectangleShape flashRect;
@@ -249,19 +230,15 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         flashRect.setFillColor(sf::Color(255, 255, 255, alpha));
         window.draw(flashRect);
 
-        return; // on n'enchaîne le fade noir qu'après la fin du flash
+        return;
     }
 
-    // 2) Fade noir vers la scène de jeu
     if (startTransition && flashTimer >= FLASH_DURATION)
     {
         fadeAlpha += 200.f * Time::DeltaTime();
         if (fadeAlpha >= 255.f)
         {
             fadeAlpha = 255.f;
-            // Si tu as donné le nom "lascen" à ta scène :
-            // SceneManager::LoadScene("lascen");
-            // Sinon, par index :
             SceneManager::LoadScene(1);
         }
 
