@@ -19,8 +19,10 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
     static float animTime = 0.0f;
     static float blinkTime = 0.0f;
+    static float sparkleTime = 0.0f;
     animTime += Time::DeltaTime() * 3.f;
     blinkTime += Time::DeltaTime() * 4.f;
+    sparkleTime += Time::DeltaTime();
 
     float titleScale = 1.0f + std::sin(animTime) * 0.05f;
 
@@ -63,19 +65,54 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         sf::Vector2i(static_cast<int>(winSize.x / 2), static_cast<int>(winSize.y * 0.8f))
     );
 
+    sf::Color matrixNeon(0, 255, 100);
+    sf::Vector2f snappedTitlePos(
+        std::round(worldTitle.x),
+        std::round(worldTitle.y)
+    );
+
     sf::Text title;
     title.setFont(FontManager::f_pixelify);
     title.setString("2D Game");
-    title.setCharacterSize(64);
-    title.setFillColor(sf::Color::White);
+    title.setCharacterSize(68);
     title.setOrigin(title.getLocalBounds().width / 2, title.getLocalBounds().height / 2);
-    title.setPosition(worldTitle);
+    title.setPosition(snappedTitlePos);
     title.setScale(titleScale, titleScale);
 
-    sf::Text shadow = title;
-    shadow.setFillColor(sf::Color(0, 0, 0, 150));
-    shadow.setScale(titleScale * 1.02f, titleScale * 1.02f);
-    shadow.setPosition(worldTitle + sf::Vector2f(4.f, 4.f));
+    sf::Text outline = title;
+    outline.setFillColor(sf::Color(0, 60, 0));
+
+    std::vector<sf::Vector2f> offsets = {
+        { -2.f,  0.f }, {  2.f,  0.f }, {  0.f, -2.f }, {  0.f,  2.f },
+        { -2.f, -2.f }, {  2.f, -2.f }, { -2.f,  2.f }, {  2.f,  2.f },
+    };
+
+    std::vector<sf::Text> outlineCopies;
+    for (auto& off : offsets)
+    {
+        sf::Text t = outline;
+        t.move(off);
+        outlineCopies.push_back(t);
+    }
+
+    std::vector<sf::Text> glowLayers;
+    for (int i = 1; i <= 4; ++i)
+    {
+        sf::Text g = title;
+        float s = 1.0f + i * 0.06f;
+        g.setScale(titleScale * s, titleScale * s);
+        sf::Uint8 a = static_cast<sf::Uint8>(80 / i);
+        g.setFillColor(sf::Color(matrixNeon.r, matrixNeon.g, matrixNeon.b, a));
+        glowLayers.push_back(g);
+    }
+
+    float colorAnim = (std::sin(animTime * 1.5f) + 1.f) * 0.5f;
+    sf::Color animatedNeon(
+        0,
+        static_cast<sf::Uint8>(180 + 75 * colorAnim),
+        static_cast<sf::Uint8>(80 + 50 * colorAnim)
+    );
+    title.setFillColor(animatedNeon);
 
     sf::Text playText;
     playText.setFont(FontManager::f_pixelify);
@@ -95,13 +132,11 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     {
         playText.setFillColor(sf::Color::White);
         playText.setScale(1.1f, 1.1f);
-        quitText.setFillColor(sf::Color(150, 150, 150));
-        quitText.setScale(1.f, 1.f);
+        quitText.setFillColor(sf::Color(50, 180, 50));
     }
     else
     {
-        playText.setFillColor(sf::Color(150, 150, 150));
-        playText.setScale(1.f, 1.f);
+        playText.setFillColor(sf::Color(50, 180, 50));
         quitText.setFillColor(sf::Color::White);
         quitText.setScale(1.1f, 1.1f);
     }
@@ -110,13 +145,13 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     selector.setFont(FontManager::f_pixelify);
     selector.setString(">");
     selector.setCharacterSize(32);
-    selector.setFillColor(sf::Color::White);
-    if (selectedIndex == 0)
-        selector.setPosition(worldPlay + sf::Vector2f(-80.f, -10.f));
-    else
-        selector.setPosition(worldQuit + sf::Vector2f(-80.f, -10.f));
+    selector.setFillColor(sf::Color(0, 255, 100));
+    selector.setPosition(
+        selectedIndex == 0 ? worldPlay + sf::Vector2f(-80.f, -10.f)
+        : worldQuit + sf::Vector2f(-80.f, -10.f)
+    );
 
-    float blinkValue = (std::sin(blinkTime) + 1.f) * 0.5f; // 0  1
+    float blinkValue = (std::sin(blinkTime) + 1.f) * 0.5f;
     sf::Uint8 blinkAlpha = static_cast<sf::Uint8>(80.f + blinkValue * 175.f);
 
     sf::Text hint;
@@ -125,25 +160,21 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     hint.setCharacterSize(20);
     hint.setOrigin(hint.getLocalBounds().width / 2, hint.getLocalBounds().height / 2);
     hint.setPosition(worldHint);
-    hint.setFillColor(sf::Color(200, 200, 200, blinkAlpha));
+    hint.setFillColor(sf::Color(0, 255, 100, blinkAlpha));
 
-    struct Pixel
-    {
-        sf::Vector2f pixPos;
-        float speed;
-    };
+    struct Pixel { sf::Vector2f pixPos; float speed; };
     static std::vector<Pixel> pixels;
 
     if (pixels.empty())
     {
-        const int PIXEL_COUNT = 60;
+        const int PIXEL_COUNT = 80;
         pixels.reserve(PIXEL_COUNT);
         for (int i = 0; i < PIXEL_COUNT; ++i)
         {
             Pixel p;
             p.pixPos.x = static_cast<float>(std::rand() % winSize.x);
             p.pixPos.y = static_cast<float>(std::rand() % winSize.y);
-            p.speed = 30.f + static_cast<float>(std::rand() % 40);
+            p.speed = 80.f + static_cast<float>(std::rand() % 60);
             pixels.push_back(p);
         }
     }
@@ -151,26 +182,17 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     for (auto& px : pixels)
     {
         px.pixPos.y += px.speed * Time::DeltaTime();
-        if (px.pixPos.y > static_cast<float>(winSize.y) + 2.f)
+        if (px.pixPos.y > static_cast<float>(winSize.y))
         {
-            px.pixPos.y = -2.f;
+            px.pixPos.y = 0.f;
             px.pixPos.x = static_cast<float>(std::rand() % winSize.x);
         }
     }
 
     if (!startTransition)
     {
-        if (up && !prevUp)
-        {
-            selectedIndex--;
-            if (selectedIndex < 0) selectedIndex = 1;
-        }
-        if (down && !prevDown)
-        {
-            selectedIndex++;
-            if (selectedIndex > 1) selectedIndex = 0;
-        }
-
+        if (up && !prevUp) selectedIndex = selectedIndex == 0 ? 1 : 0;
+        if (down && !prevDown) selectedIndex = selectedIndex == 0 ? 1 : 0;
         if (enter && !prevEnter)
         {
             if (selectedIndex == 0)
@@ -179,10 +201,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
                 flashTimer = 0.f;
                 fadeAlpha = 0.f;
             }
-            else
-            {
-                window.close();
-            }
+            else window.close();
         }
     }
 
@@ -195,15 +214,15 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         sf::Vector2f worldPos = window.mapPixelToCoords(
             sf::Vector2i(static_cast<int>(px.pixPos.x), static_cast<int>(px.pixPos.y))
         );
-
         sf::RectangleShape dot;
         dot.setSize(sf::Vector2f(2.f, 2.f));
         dot.setPosition(worldPos);
-        dot.setFillColor(sf::Color(255, 255, 255, 120));
+        dot.setFillColor(sf::Color(0, 255, 100, 150));
         window.draw(dot);
     }
 
-    window.draw(shadow);
+    for (auto& g : glowLayers) window.draw(g);
+    for (auto& t : outlineCopies) window.draw(t);
     window.draw(title);
     window.draw(playText);
     window.draw(quitText);
@@ -213,13 +232,10 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         window.draw(hint);
     }
 
-
     if (startTransition && flashTimer < FLASH_DURATION)
     {
         flashTimer += Time::DeltaTime();
         float t = flashTimer / FLASH_DURATION;
-        if (t > 1.f) t = 1.f;
-
         float x = 2.f * t - 1.f;
         float intensity = 1.f - x * x;
         sf::Uint8 alpha = static_cast<sf::Uint8>(255.f * intensity);
@@ -227,9 +243,8 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         sf::RectangleShape flashRect;
         flashRect.setSize(worldSize);
         flashRect.setPosition(worldTopLeft);
-        flashRect.setFillColor(sf::Color(255, 255, 255, alpha));
+        flashRect.setFillColor(sf::Color(0, 255, 100, alpha));
         window.draw(flashRect);
-
         return;
     }
 
