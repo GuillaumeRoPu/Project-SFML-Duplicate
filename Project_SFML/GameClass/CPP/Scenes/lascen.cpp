@@ -83,8 +83,8 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	}
 
 
-	float pBlockerAngle = blocker->_phc->angle;
-	blocker->transform->position.RotateAroundCenter(p->transform->position, 1.3f, pBlockerAngle);
+	int pBlockerAngle = blocker->_phc->angle;
+	blocker->transform->position.RotateAroundCenter(p->transform->position, 1.f, pBlockerAngle + 90);
 	blocker->transform->rotation = pBlockerAngle;
 	PlayerHealthBlocker* healthBlocker = blocker->GetComponent<PlayerHealthBlocker>();
 
@@ -95,13 +95,13 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	pBlocker.setFillColor(sf::Color::Green);
 	pBlocker.setOrigin({ blockerSize.x/2, blockerSize.y/2});
 	pBlocker.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
-	pBlocker.setRotation(pBlockerAngle + 90);
+	pBlocker.setRotation(pBlockerAngle);
 
 	sf::RectangleShape pBlockerBackground(blockerSize);
 	pBlockerBackground.setFillColor(sf::Color::Red);
 	pBlockerBackground.setOrigin({ blockerSize.x/2, blockerSize.y/2 });
 	pBlockerBackground.setPosition({ blocker->transform->position.x() * pixelPerPoint, blocker->transform->position.y() * pixelPerPoint });
-	pBlockerBackground.setRotation(pBlockerAngle + 90);
+	pBlockerBackground.setRotation(pBlockerAngle);
 
 
 	window.draw(pshape);
