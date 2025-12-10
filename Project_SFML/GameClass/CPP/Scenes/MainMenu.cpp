@@ -36,9 +36,9 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     static bool prevDown = false;
     static bool prevEnter = false;
 
-    bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-    bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-    bool enter = sf::Keyboard::isKeyPressed(sf::Keyboard::Enter);
+    bool up = input.getButton().up;
+    bool down = input.getButton().down;
+    bool enter = input.getButton().enter;
 
     sf::Vector2u winSize = window.getSize();
 

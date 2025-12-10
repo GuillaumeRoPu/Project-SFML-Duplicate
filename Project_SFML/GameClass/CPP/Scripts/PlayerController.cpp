@@ -73,19 +73,31 @@ void PlayerController::BounceOnBorder(float borderX, float borderY, int playerSi
 {
 	if (transform().position.x() * pixelPerPoint - playerSize < -borderX / 2) {
 		if (_rb->velocity.x() <= 0)
+		{
 			_rb->velocity = Vector2(-_rb->velocity.x(), _rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.x() * pixelPerPoint + playerSize > borderX / 2) {
 		if (_rb->velocity.x() >= 0)
+		{
 			_rb->velocity = Vector2(-_rb->velocity.x(), _rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.y() * pixelPerPoint - playerSize < -borderY / 2) {
 		if (_rb->velocity.y() <= 0)
+		{
 			_rb->velocity = Vector2(_rb->velocity.x(), -_rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.y() * pixelPerPoint + playerSize > borderY / 2) {
 		if (_rb->velocity.y() >= 0)
+		{
 			_rb->velocity = Vector2(_rb->velocity.x(), -_rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 }
 

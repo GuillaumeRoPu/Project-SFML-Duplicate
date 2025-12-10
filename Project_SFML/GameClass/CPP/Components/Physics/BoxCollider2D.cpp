@@ -12,13 +12,6 @@ void BoxCollider2D::Start()
 
 void BoxCollider2D::ApplyRotation()
 {
-	if (transform().rotation != _lastRotation)
-	{
-		_lastRotation = transform().rotation;
-	}
-	else
-		return;
-
 	bounds.setSize(owner->transform->scale);
 
 	Rect boxBounds({ transform().position.x() + bounds.center().x(),
