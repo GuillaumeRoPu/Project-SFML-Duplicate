@@ -26,6 +26,7 @@ public:
 	void BounceOnBorder(float borderX, float borderY, int playerSize);
 	void Heal(int amount);
 	void TakeDamage(int amount);
+	void SpawnDeathParticle();
 private:
 	void Awake() override;
 	void Update() override;

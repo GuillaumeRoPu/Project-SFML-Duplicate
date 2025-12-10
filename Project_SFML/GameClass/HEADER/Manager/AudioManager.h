@@ -39,6 +39,6 @@ public:
 public:
 	static void Initialize();
 	static void LoadBuffer(std::string path);
-	static void PlaySound(AudioParameter audio);
+	static void PlaySound(AudioParameter audio, float volume = -1, float pitch = -1);
 	static void SoloSounds(std::list<AudioParameter> audios);
 };

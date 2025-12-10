@@ -28,7 +28,7 @@ void EnemyController::Start()
 
 void EnemyController::SpawnBullet()
 {
-	AudioManager::PlaySound(AudioManager::shoot);
+	AudioManager::PlaySound(AudioManager::shoot, -1, Random::Range(.9f, 1.1f));
 	auto manager = scene().FindFirstObjectByType<BulletManager>();
 	manager->GetComponent<BulletManagerController>()->SpawnBullet(transform().position);
 }
