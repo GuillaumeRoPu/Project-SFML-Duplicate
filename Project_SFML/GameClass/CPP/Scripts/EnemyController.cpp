@@ -8,10 +8,10 @@
 
 void EnemyController::Update() 
 {
-	timer += Time::DeltaTime();
-	if (timer >= cooldown) 
+	_cooldownTimer += Time::DeltaTime();
+	if (_cooldownTimer >= _cooldown) 
 	{
-		timer = 0;
+		_cooldownTimer = 0;
 		SpawnBullet();
 	}
 }
@@ -22,15 +22,15 @@ void EnemyController::Start()
 	_collider = owner->GetComponent<CircleCollider2D>();
 	_player = scene().FindFirstObjectByType<Player>();
 	_health = owner->GetComponent<HealthComponent>();
-	cooldown = 0.4f;
-	timer = 0;
-	_health->SetMaxHealth(baseHealth);
+	//cooldown = 0.4f;
+	_cooldownTimer = 0;
+	_health->SetMaxHealth(_basehealth);
 	_rb->velocity = Vector2(0.1f,0.0f);
 }
 
 void EnemyController::SpawnBullet()
 {
-	AudioManager::PlaySound(AudioManager::shoot, -1, Random::Range(.9f, 1.1f));
+	AudioManager::PlaySound(AudioManager::shoot, 20, (float)Random::Range(19, 21) / 20);
 	auto manager = scene().FindFirstObjectByType<BulletManager>();
 	auto bullet = manager->GetComponent<BulletManagerController>();
 	bullet->SpawnBullet(transform().position, _bulletSpeed, _bulletAcceleration, _bulletDamage, _bulletScale, _bulletColor, _bulletCanPredictPlayerPos, _bulletCanTrack, _bulletmaxTrackDistance);
@@ -109,7 +109,7 @@ Bullet* EnemyController::InstantiateBullet()
 	return scene().CreateGameObject<Bullet>();
 }
 
-void EnemyController::SetupBullet(float bulletSpeed, float bulletAcceleration, float scale, int damage, sf::Color color, bool canPredictPlayerPosition, bool canTrack, float maxTrackingDistance)
+void EnemyController::SetupBulletProperties(float bulletSpeed, float bulletAcceleration, float scale, int damage, sf::Color color, bool canPredictPlayerPosition, bool canTrack, float maxTrackingDistance)
 {
 	_bulletSpeed = bulletSpeed;
 	_bulletAcceleration = bulletAcceleration;
@@ -119,5 +119,13 @@ void EnemyController::SetupBullet(float bulletSpeed, float bulletAcceleration, f
 	_bulletDamage = damage;
 	_bulletCanTrack = canTrack;
 	_bulletmaxTrackDistance = maxTrackingDistance;
+}
+
+void EnemyController::SetupEnemyProperties(int health, float scale, float cooldown, sf::Color color)
+{
+	_basehealth = health;
+	transform().setLocalScale(Vector2(scale, scale));
+	_cooldown = cooldown;
+	this->color = color;
 }
 
