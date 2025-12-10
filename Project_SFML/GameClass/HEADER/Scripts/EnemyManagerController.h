@@ -13,6 +13,7 @@ public:
 	void SpawnEnemy();
 	void DestroyEnemy(GameObject* enemy);
 	Enemy* InstantiateEnemy();
+	void ChooseEnemyBullets(Enemy* newEnemy);
 
 public:
 	std::list<Enemy*> _allEnemies;

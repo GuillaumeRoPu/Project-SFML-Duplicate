@@ -11,13 +11,26 @@ void BulletManagerController::Awake()
 	_player = owner->scene->FindFirstObjectByType<Player>();
 }
 
-void BulletManagerController::SpawnBullet(Vector2 position)
+void BulletManagerController::SpawnBullet(Vector2 position, float bulletSpeed, float acceleration, int damage, float scale, sf::Color color, bool canPredictPlayerPosition, bool canTrack, float maxTrackingDistance)
 {
 	Bullet* newBullet = InstantiateBullet();
 
 	Vector2 direction = Vector2::Edge(position, _player->transform->position);
 	newBullet->transform->position.RotateAroundCenter(position, .5f, Vector2::Angle(Vector2::right(), direction.normalized()));
 	newBullet->_controller->controller = this;
+	newBullet->_controller->SetColor(color);
+	newBullet->_controller->SetBulletSpeed(bulletSpeed);
+	newBullet->_controller->SetScale(scale);
+	newBullet->_controller->SetAcceleration(acceleration);
+	newBullet->_controller->SetDamage(damage);
+	if (canPredictPlayerPosition) 
+	{
+		newBullet->_controller->PredictsPlayerMovement();
+	}
+	if (canTrack) 
+	{
+		newBullet->_controller->BulletCanTrack(maxTrackingDistance);
+	}
 	_allBullets.push_back(newBullet);
 }
 

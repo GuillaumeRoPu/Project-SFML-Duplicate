@@ -39,18 +39,26 @@ void BulletController::Start()
 
 void BulletController::Update() 
 {
+
+}
+
+void BulletController::FixedUpdate() 
+{
 	timer += Time::DeltaTime();
 	Vector2 magnitudeWithPlayer = Vector2::Edge(transform().position, _player->transform->position);
 	if (_isTracking && magnitudeWithPlayer.magnitude() >= _maxDistance)
 	{
 		direction = magnitudeWithPlayer.normalized();
-		_rb->velocity = direction * _rb->velocity.magnitude();
+		_rb->velocity = direction * (_rb->velocity.magnitude() + _acceleration * Time::FixedDeltaTime());
 	}
-	else if (_isTracking) 
+	else if (_isTracking)
 	{
 		_isTracking = false;
 	}
-
+	if(!_isTracking)
+	{
+		_rb->velocity += direction * _acceleration * Time::FixedDeltaTime();
+	}
 }
 
 void BulletController::OnTriggerEnter2D(Collider2D* other) 
@@ -61,7 +69,7 @@ void BulletController::OnTriggerEnter2D(Collider2D* other)
 	{
 		controller->DestroyBullet(owner);
 		if (p && timer >= 0.05f)
-			p->TakeDamage(1);
+			p->TakeDamage(_damage);
 	}
 }
 
@@ -135,5 +143,30 @@ bool BulletController::TryGetInterceptDirection(Vector2 shooterPos, Vector2 targ
 
 	direction = dir.normalized();
 	return true;
+}
+
+void BulletController::SetBulletSpeed(float bulletSpeed) 
+{
+	_bulletSpeed = bulletSpeed;
+}
+
+void BulletController::SetColor(sf::Color color) 
+{
+	_color = color;
+}
+
+void BulletController::SetDamage(int damage) 
+{
+	_damage = damage;
+}
+
+void BulletController::SetScale(float scale) 
+{
+	transform().setLocalScale(Vector2(scale,scale));
+}
+
+void BulletController::SetAcceleration(float accel) 
+{
+	_acceleration = accel;
 }
 
