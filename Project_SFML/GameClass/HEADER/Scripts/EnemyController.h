@@ -20,7 +20,7 @@ private:
     void SpawnDeathParticle();
     
 public:
-    void Setup(float damage, float cooldown, float bulletSpeed);
+    void SetupBullet(float bulletSpeed, float bulletAcceleration, float scale, int damage, sf::Color color, bool canPredictPlayerPosition, bool canTrack, float maxTrackingDistance);
     void SpawnBullet();
     Bullet* InstantiateBullet();
     void BounceOnBorder(float borderX, float borderY);
@@ -36,6 +36,17 @@ public:
     Scene* _scene;
     float cooldown;
     float timer;
+
+private:
+    //Bullet Data
+    float _bulletScale;
+    float _bulletSpeed;
+    float _bulletAcceleration;
+    int _bulletDamage;
+    sf::Color _bulletColor;
+    bool _bulletCanPredictPlayerPos;
+    bool _bulletCanTrack;
+    float _bulletmaxTrackDistance;
     int baseHealth = 70; // player go at 70 speed at almost maxCap
 };
 

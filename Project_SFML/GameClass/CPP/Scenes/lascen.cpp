@@ -61,9 +61,9 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	}
 
 	for (Bullet* bullet : bulletManager->_bulletManagerController->_allBullets) {
-		sf::CircleShape grocaca(10);
-		grocaca.setFillColor(sf::Color::Yellow);
-		grocaca.setOrigin({ 10,10 });
+		sf::CircleShape grocaca(bullet->transform->scale.x() * pixelPerPoint / 2);
+		grocaca.setFillColor(bullet->_controller->_color);
+		grocaca.setOrigin({ bullet->transform->scale.x() * pixelPerPoint / 2, bullet->transform->scale.x() * pixelPerPoint / 2 });
 		grocaca.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
 
 		if (bullet->active)
@@ -71,9 +71,9 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 			window.draw(grocaca);
 		}
 
-		grocaca.setRadius(10-1);
+		grocaca.setRadius((bullet->transform->scale.x()) * pixelPerPoint / 2 - 1);
 		grocaca.setFillColor(sf::Color::Black);
-		grocaca.setOrigin({ 10 - 1,10 - 1 });
+		grocaca.setOrigin({ (bullet->transform->scale.x()) * pixelPerPoint / 2 - 1, (bullet->transform->scale.x()) * pixelPerPoint / 2 - 1});
 		grocaca.setPosition(sf::Vector2f(bullet->transform->position.x() * pixelPerPoint, bullet->transform->position.y() * pixelPerPoint));
 
 		if (bullet->active)

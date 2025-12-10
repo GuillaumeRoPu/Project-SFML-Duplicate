@@ -32,7 +32,8 @@ void EnemyController::SpawnBullet()
 {
 	AudioManager::PlaySound(AudioManager::shoot, -1, Random::Range(.9f, 1.1f));
 	auto manager = scene().FindFirstObjectByType<BulletManager>();
-	manager->GetComponent<BulletManagerController>()->SpawnBullet(transform().position);
+	auto bullet = manager->GetComponent<BulletManagerController>();
+	bullet->SpawnBullet(transform().position, _bulletSpeed, _bulletAcceleration, _bulletDamage, _bulletScale, _bulletColor, _bulletCanPredictPlayerPos, _bulletCanTrack, _bulletmaxTrackDistance);
 }
 
 void EnemyController::OnTriggerEnter2D(Collider2D* other)
@@ -108,8 +109,15 @@ Bullet* EnemyController::InstantiateBullet()
 	return scene().CreateGameObject<Bullet>();
 }
 
-void EnemyController::Setup(float damage, float cooldown, float bulletSpeed)
+void EnemyController::SetupBullet(float bulletSpeed, float bulletAcceleration, float scale, int damage, sf::Color color, bool canPredictPlayerPosition, bool canTrack, float maxTrackingDistance)
 {
-
+	_bulletSpeed = bulletSpeed;
+	_bulletAcceleration = bulletAcceleration;
+	_bulletScale = scale;
+	_bulletColor = color;
+	_bulletCanPredictPlayerPos = canPredictPlayerPosition;
+	_bulletDamage = damage;
+	_bulletCanTrack = canTrack;
+	_bulletmaxTrackDistance = maxTrackingDistance;
 }
 
