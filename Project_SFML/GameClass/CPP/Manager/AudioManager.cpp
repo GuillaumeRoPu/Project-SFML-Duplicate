@@ -27,16 +27,20 @@ void AudioManager::LoadBuffer(std::string path)
 	}
 }
 
-void AudioManager::PlaySound(AudioParameter audio)
+void AudioManager::PlaySound(AudioParameter audio, float volume, float pitch)
 {
 	if (!_canPlay)
 		return;
 
+	float vol = volume >= 0 ? volume : audio.volume;
+	float pit = pitch >= 0 ? pitch : audio.pitch;
+
 	sf::Sound sound;
 	sound.setBuffer(buffers[audio.path]);
 	sfx.push_back(sound);
-	sfx.back().setVolume(audio.volume);
+	sfx.back().setVolume(vol);
 	sfx.back().setPlayingOffset(audio.start);
+	sfx.back().setPitch(pit);
 	sfx.back().play();
 
 	for (auto it = sfx.begin(); it != sfx.end(); )
@@ -61,6 +65,7 @@ void AudioManager::SoloSounds(std::list<AudioParameter> audios)
 		sfx.push_back(sound);
 		sfx.back().setVolume(audio.volume);
 		sfx.back().setPlayingOffset(audio.start);
+		sfx.back().setPitch(audio.pitch);
 		sfx.back().play();
 	}
 }

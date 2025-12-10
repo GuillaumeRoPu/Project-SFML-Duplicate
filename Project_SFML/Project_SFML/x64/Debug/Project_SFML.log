@@ -1,4 +1,25 @@
-﻿  lascen.cpp
+﻿  Bullet.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/Bullet.cpp')
+  
+  BulletManager.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/BulletManager.cpp')
+  
+  Enemy.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/Enemy.cpp')
+  
+  EnemyManager.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Objects/EnemyManager.cpp')
+  
+  Player.cpp
+  MainMenu.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scenes/MainMenu.cpp')
+  
+  lascen.cpp
 C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
   (compiler le fichier source 'GameClass/CPP/Scenes/lascen.cpp')
   
@@ -19,4 +40,29 @@ C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scen
 C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(108,30): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
 C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(109,46): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
 C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\CPP\Scenes\lascen.cpp(109,30): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  BulletController.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/BulletController.cpp')
+  
+  BulletManagerController.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/BulletManagerController.cpp')
+  
+  EnemyController.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/EnemyController.cpp')
+  
+  EnemyManagerController.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/EnemyManagerController.cpp')
+  
+  PlayerController.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'GameClass/CPP/Scripts/PlayerController.cpp')
+  
+  Project_SFML.cpp
+C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\GameClass\HEADER\Scene.h(21,46): warning C4267: 'return' : conversion de 'size_t' en 'int', perte possible de données
+  (compiler le fichier source 'Project_SFML.cpp')
+  
+  Génération de code en cours...
   Project_SFML.vcxproj -> C:\Users\jotot\Documents\Coding\C++\Project_SFML\Project_SFML\x64\Debug\Project_SFML.exe
