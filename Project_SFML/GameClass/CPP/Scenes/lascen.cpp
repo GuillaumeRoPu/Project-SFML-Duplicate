@@ -120,4 +120,28 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	score.setString("score : " + std::to_string(p->GetComponent<PlayerController>()->score));
 	score.setPosition(window.mapPixelToCoords({ 650, 0 }));
 	window.draw(score);
+
+
+	//FADE
+	if (fadeAlpha > 0.f)
+	{
+		fadeAlpha -= 200.f * Time::DeltaTime();
+		if (fadeAlpha < 0.f) fadeAlpha = 0.f;
+
+		sf::Vector2u winSize = window.getSize();
+
+		sf::Vector2f worldTopLeft = window.mapPixelToCoords(sf::Vector2i(0, 0));
+		sf::Vector2f worldBottomRight = window.mapPixelToCoords(
+			sf::Vector2i(static_cast<int>(winSize.x), static_cast<int>(winSize.y))
+		);
+
+		sf::Vector2f worldSize(worldBottomRight.x - worldTopLeft.x,
+			worldBottomRight.y - worldTopLeft.y);
+
+		sf::RectangleShape fadeRect;
+		fadeRect.setSize(worldSize);
+		fadeRect.setPosition(worldTopLeft);
+		fadeRect.setFillColor(sf::Color(0, 0, 0, (sf::Uint8)fadeAlpha));
+		window.draw(fadeRect);
+	}
 }
