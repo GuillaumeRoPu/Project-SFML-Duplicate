@@ -8,7 +8,6 @@
 #include <vector>
 #include <cstdlib>
 
-
 MainMenu::MainMenu()
 {
 }
@@ -88,6 +87,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     };
 
     std::vector<sf::Text> outlineCopies;
+    outlineCopies.reserve(offsets.size());
     for (auto& off : offsets)
     {
         sf::Text t = outline;
@@ -95,13 +95,49 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         outlineCopies.push_back(t);
     }
 
-    std::vector<sf::Text> glowLayers;
-    for (int i = 1; i <= 4; ++i)
+    struct TitleState
     {
+        sf::Vector2f pos;
+        float scale;
+    };
+    static std::vector<TitleState> trail;
+    static float trailTimer = 0.f;
+
+    const std::size_t trailSize = 6;
+    const float trailSampleInterval = 0.09f;
+
+    trailTimer += Time::DeltaTime();
+
+    if (trail.empty())
+    {
+        trail.resize(trailSize);
+        for (std::size_t i = 0; i < trailSize; ++i)
+        {
+            trail[i].pos = snappedTitlePos;
+            trail[i].scale = titleScale;
+        }
+    }
+
+    if (trailTimer >= trailSampleInterval)
+    {
+        trailTimer -= trailSampleInterval;
+        trail.insert(trail.begin(), TitleState{ snappedTitlePos, titleScale });
+        if (trail.size() > trailSize)
+            trail.pop_back();
+    }
+
+    std::vector<sf::Text> glowLayers;
+    glowLayers.reserve(trail.size());
+    for (std::size_t i = 0; i < trail.size(); ++i)
+    {
+        const TitleState& st = trail[i];
         sf::Text g = title;
-        float s = 1.0f + i * 0.06f;
-        g.setScale(titleScale * s, titleScale * s);
-        sf::Uint8 a = static_cast<sf::Uint8>(80 / i);
+        g.setPosition(st.pos);
+        float s = st.scale * (1.0f + static_cast<float>(i + 1) * 0.02f);
+        g.setScale(s, s);
+        float falloff = 1.f - static_cast<float>(i) / static_cast<float>(trail.size());
+        if (falloff < 0.f) falloff = 0.f;
+        sf::Uint8 a = static_cast<sf::Uint8>(20.f + 60.f * falloff);
         g.setFillColor(sf::Color(matrixNeon.r, matrixNeon.g, matrixNeon.b, a));
         glowLayers.push_back(g);
     }
@@ -133,10 +169,12 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         playText.setFillColor(sf::Color::White);
         playText.setScale(1.1f, 1.1f);
         quitText.setFillColor(sf::Color(50, 180, 50));
+        quitText.setScale(1.f, 1.f);
     }
     else
     {
         playText.setFillColor(sf::Color(50, 180, 50));
+        playText.setScale(1.f, 1.f);
         quitText.setFillColor(sf::Color::White);
         quitText.setScale(1.1f, 1.1f);
     }
@@ -147,8 +185,8 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     selector.setCharacterSize(32);
     selector.setFillColor(sf::Color(0, 255, 100));
     selector.setPosition(
-        selectedIndex == 0 ? worldPlay + sf::Vector2f(-80.f, -10.f)
-        : worldQuit + sf::Vector2f(-80.f, -10.f)
+        selectedIndex == 0 ? worldPlay + sf::Vector2f(-95.f, -10.f)
+        : worldQuit + sf::Vector2f(-95.f, -10.f)
     );
 
     float blinkValue = (std::sin(blinkTime) + 1.f) * 0.5f;
@@ -162,7 +200,11 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     hint.setPosition(worldHint);
     hint.setFillColor(sf::Color(0, 255, 100, blinkAlpha));
 
-    struct Pixel { sf::Vector2f pixPos; float speed; };
+    struct Pixel
+    {
+        sf::Vector2f pixPos;
+        float speed;
+    };
     static std::vector<Pixel> pixels;
 
     if (pixels.empty())
@@ -201,7 +243,10 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
                 flashTimer = 0.f;
                 fadeAlpha = 0.f;
             }
-            else window.close();
+            else
+            {
+                window.close();
+            }
         }
     }
 
@@ -214,6 +259,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         sf::Vector2f worldPos = window.mapPixelToCoords(
             sf::Vector2i(static_cast<int>(px.pixPos.x), static_cast<int>(px.pixPos.y))
         );
+
         sf::RectangleShape dot;
         dot.setSize(sf::Vector2f(2.f, 2.f));
         dot.setPosition(worldPos);
@@ -221,8 +267,34 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         window.draw(dot);
     }
 
-    for (auto& g : glowLayers) window.draw(g);
-    for (auto& t : outlineCopies) window.draw(t);
+    for (auto& g : glowLayers)
+        window.draw(g);
+
+    for (auto& t : outlineCopies)
+        window.draw(t);
+
+    static const int sparkleCount = 8;
+    for (int i = 0; i < sparkleCount; ++i)
+    {
+        float angle = sparkleTime * 2.f + i * 0.8f;
+        float radius = 40.f + 5.f * std::sin(sparkleTime * 3.f + i);
+        sf::Vector2f offset(
+            std::cos(angle) * radius,
+            std::sin(angle) * radius * 0.5f
+        );
+
+        sf::Vector2f pixPos = snappedTitlePos + offset;
+        sf::Vector2f worldPixPos(
+            std::round(pixPos.x),
+            std::round(pixPos.y)
+        );
+
+        sf::RectangleShape px(sf::Vector2f(3.f, 3.f));
+        px.setPosition(worldPixPos);
+        px.setFillColor(sf::Color(0, 255, 100, 220));
+        window.draw(px);
+    }
+
     window.draw(title);
     window.draw(playText);
     window.draw(quitText);
@@ -236,6 +308,8 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     {
         flashTimer += Time::DeltaTime();
         float t = flashTimer / FLASH_DURATION;
+        if (t > 1.f) t = 1.f;
+
         float x = 2.f * t - 1.f;
         float intensity = 1.f - x * x;
         sf::Uint8 alpha = static_cast<sf::Uint8>(255.f * intensity);
@@ -245,6 +319,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
         flashRect.setPosition(worldTopLeft);
         flashRect.setFillColor(sf::Color(0, 255, 100, alpha));
         window.draw(flashRect);
+
         return;
     }
 
