@@ -12,10 +12,11 @@ public:
 	BulletManager* bulletManager;
 	Player* p;
 	Blocker* blocker;
+	float fadeAlpha = 255.f;
+
 
 public:
 	lascen();
 	void PlayScene(sf::RenderWindow& window, InputSystem& input) override;
 	
-
 };
