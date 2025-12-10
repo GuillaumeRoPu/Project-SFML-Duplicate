@@ -91,7 +91,7 @@ void PlayerController::BounceOnBorder(float borderX, float borderY, int playerSi
 
 void PlayerController::TakeDamage(int amount)
 {
-	AudioManager::PlaySound(AudioManager::touch);
+	//AudioManager::PlaySound(AudioManager::touch);
 	_health->TakeDamage(amount);
 	if (_health->IsDead())
 	{

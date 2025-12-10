@@ -1,6 +1,6 @@
 #pragma once
 #include "Components/Component.h"
-
+#include "Manager\LayerManager.h"
 #include "Components/Transform.h"
 #include "Components/Physics/Collider2D.h"
 
@@ -25,6 +25,8 @@ public:
 
     // Tag of the game object
     std::string tag = "Untagged";
+
+    LayerMask layer = 0;
 
     Scene* scene;
 

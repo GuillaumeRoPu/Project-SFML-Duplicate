@@ -16,8 +16,10 @@ lascen::lascen()
 	GameObject* limit = CreateGameObject<GameObject>();
 	limit->transform->scale = Vector2(16, 16);
 	limit->name = "Limit";
+	limit->layer = LayerManager::GetLayerByName("Limit");
 	BoxCollider2D* boxLimit = limit->AddComponent<BoxCollider2D>();
 	boxLimit->isTrigger = true;
+	boxLimit->includeLayers += LayerManager::GetLayerByName("Limit").value;
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)

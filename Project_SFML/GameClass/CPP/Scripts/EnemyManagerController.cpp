@@ -12,8 +12,8 @@ void EnemyManagerController::Update()
 
 void EnemyManagerController::Start()
 {
-	_cooldown = 5;
-	_timer = 0;
+	_cooldown = 5.f;
+	_timer = 0.f;
 }
 
 void EnemyManagerController::Awake()

@@ -32,9 +32,13 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     // Fixed Update : Physics
     while (accumulator >= Time::FixedDeltaTime())
     {
+        int collisionCalcul = 0;
+        int nbObject = 0;
         for (auto& obj : SceneObjects)
         {
             if (!obj.get()->active) continue;
+
+            nbObject++;
 
             obj->FixedUpdate();
 
@@ -49,7 +53,6 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
                 auto* target = obj.get()->GetComponent<Collider2D>();
                 if (target)
                 {
-                    target->ApplyRotation();
 
                     for (auto& coll : SceneObjects) // Boucle sur tout les autres objets
                     {
@@ -59,10 +62,21 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
                         auto* collider = coll.get()->GetComponent<Collider2D>();
 
+                        if (target->includeLayers.value != 0)
+                        {
+                            if ((target->includeLayers.value & coll.get()->layer.value) == 0)
+                            {
+                                continue;
+                            }
+                        }
+
+                        target->ApplyRotation();
+
                         if (collider != nullptr) // Regarder s'il a un collider
                         {
                             collider->ApplyRotation();
                             target->UpdateCollision(coll.get()); // Créé la collision
+                            collisionCalcul++;
                         }
                     }
                 }
@@ -70,6 +84,8 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
             }
         }
 
+        std::cout << "Nb Collision : " << collisionCalcul << std::endl;
+        std::cout << "Nb Objects : " << nbObject << std::endl;
         accumulator -= Time::UnscaledFixedDeltaTime();
 
     }
