@@ -44,4 +44,16 @@
 # debug folder
 Project_SFML/Project_SFML/x64/Debug
 *.user
+*.tlog
+*.log
+*.idb
+*.tlog
+*.idb
+Project_SFML/Project_SFML/x64/Debug/Project_SFML.log
+*.tlog
+*.log
+*.idb
+*.tlog
+*.log
+*.idb
 Project_SFML/Project_SFML/x64/Debug
