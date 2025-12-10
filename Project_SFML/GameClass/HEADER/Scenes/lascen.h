@@ -12,6 +12,7 @@ public:
 	BulletManager* bulletManager;
 	Player* p;
 	Blocker* blocker;
+
 public:
 	lascen();
 	void PlayScene(sf::RenderWindow& window, InputSystem& input) override;

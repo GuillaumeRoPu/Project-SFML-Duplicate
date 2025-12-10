@@ -2,6 +2,7 @@
 
 #include "Components/Scripting.h"
 #include "Components/Physics/BoxCollider2D.h"
+#include "Scripts/HealthComponent.h"
 #include "Objects/Player.h"
 #include "Scene.h"
 #include <list>
@@ -18,6 +19,7 @@ class EnemyController : public Scripting
 private:
     void SpawnDeathParticle();
 public:
+    void Setup(float damage, float cooldown, float bulletSpeed);
     void SpawnBullet();
     Bullet* InstantiateBullet();
 
@@ -26,6 +28,7 @@ public:
     EnemyManagerController* controller;
     Rigidbody2D* _rb;
     BoxCollider2D* _collider;
+    HealthComponent* _health;
     Player* _player;
     Bullet* _bullet;
     Scene* _scene;

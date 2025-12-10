@@ -3,7 +3,7 @@
 
 InputSystem::InputSystem()
 {
-    button.any = button.left = button.right = button.up = button.down = button.rotateRight = button.rotateLeft = button.lshift = false;
+    button.any = button.left = button.right = button.up = button.down = button.rotateRight = button.rotateLeft = button.enter = button.lshift = false;
 }
 
 void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
@@ -20,6 +20,14 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
                 window.close();
                 break;
 
+            case sf::Keyboard::LShift:
+                button.lshift = true;
+                break;
+
+            case sf::Keyboard::Enter:
+                button.enter = true;
+                break;
+
             case sf::Keyboard::Right:
                 button.right = true;
                 break;
@@ -34,10 +42,6 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
 
             case sf::Keyboard::Down:
                 button.down = true;
-                break;
-
-            case sf::Keyboard::LShift:
-                button.lshift = true;
                 break;
 
             case sf::Keyboard::Q:
@@ -57,6 +61,15 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
         const sf::Event::KeyEvent& keyReleased = event.key;
         switch (keyReleased.code)
         {
+
+            case sf::Keyboard::Enter:
+                button.enter = false;
+                break;
+
+            case sf::Keyboard::LShift:
+                button.lshift = false;
+                break;
+
             case sf::Keyboard::Right:
                 button.right = false;
                 break;
@@ -71,10 +84,6 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
 
             case sf::Keyboard::Down:
                 button.down = false;
-                break;
-
-            case sf::Keyboard::LShift:
-                button.lshift = false;
                 break;
 
             case sf::Keyboard::Q:
@@ -108,5 +117,5 @@ InputSystem::Button InputSystem::getButton()
 
 std::list<bool> InputSystem::GetAllButton()
 {
-    return { button.left, button.right, button.down, button.up, button.lshift, button.rotateRight, button.rotateLeft };
+    return { button.left, button.right, button.down, button.up };
 }

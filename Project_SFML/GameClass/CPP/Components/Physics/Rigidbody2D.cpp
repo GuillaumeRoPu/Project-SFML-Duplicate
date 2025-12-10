@@ -29,7 +29,7 @@ void Rigidbody2D::AddForce(Vector2 force, ForceMode2D type)
     switch (type)
     {
     case ForceMode2D::Force:
-        appliedForce += force / mass * Time::DeltaTime();
+        appliedForce += force / mass * Time::UnscaledDeltaTime();
         break;
 
     case ForceMode2D::Impulse:

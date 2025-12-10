@@ -1,4 +1,13 @@
 #include "Objects\GameObject.h"
+#include "Scene.h"
+
+void GameObject::InitID()
+{
+    if (_ID == -1)
+    {
+        _ID = scene->ObjectCount();
+    }
+}
 
 void GameObject::Awake()
 {

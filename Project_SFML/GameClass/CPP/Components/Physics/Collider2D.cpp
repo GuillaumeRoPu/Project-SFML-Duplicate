@@ -3,6 +3,7 @@
 #include "Components/Physics/CircleCollider2D.h"
 #include "Components/Physics/PolygonCollider2D.h"
 #include "Objects/GameObject.h"
+#include "Scene.h"
 
 bool Collider2D::findIntersection(Collider2D* firstCollider, Collider2D* secondCollider)
 {

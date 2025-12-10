@@ -2,6 +2,8 @@
 #include "Components/Transform.h"
 #include "Components/Physics/Rigidbody2D.h"
 #include "Objects/Bullet.h"
+#include "Components/Camera.h"
+#include "Manager\AudioManager.h"
 
 lascen::lascen()
 {
@@ -20,8 +22,6 @@ lascen::lascen()
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 {
-	//window.clear(sf::Color(0,125,125,255));
-	window.clear(sf::Color::Black);
 
 	Scene::PlayScene(window, input);
 
@@ -29,31 +29,29 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	blocker->_phc->BlockerInputTreatment(input);
 
 	//Boucle
-
 	int playerSize = 25;
 	p->_pc->BounceOnBorder(window.getSize().x, window.getSize().y, playerSize);
 
 
 	sf::CircleShape pshape(playerSize);
 	pshape.setOrigin(playerSize, playerSize);
+
 	pshape.setFillColor(sf::Color::White);
 	sf::Vector2f playerPosition = { p->transform->position.x() * pixelPerPoint, p->transform->position.y() * pixelPerPoint };
 	pshape.setPosition(playerPosition);
 
 	for (Enemy* enemy : enemyManager->_enemyManagerController->_allEnemies) {
-		sf::RectangleShape grocaca(sf::Vector2f(20, 20));
-		grocaca.setFillColor(sf::Color::White);
-		grocaca.setOrigin({ 10,10 });
-		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
+		sf::ConvexShape grocaca(3);
+		sf::Vector2 pos(enemy->transform->position.x(), enemy->transform->position.y());
+		grocaca.setRotation(Vector2::Angle(Vector2::right(), p->transform->position - enemy->transform->position));
+		grocaca.setOutlineColor(sf::Color::White);
+		grocaca.setOutlineThickness(1);
+		grocaca.setPoint(0, sf::Vector2f(-enemy->transform->scale.x() / 2, -enemy->transform->scale.y() / 2) * pixelPerPoint);
+		grocaca.setPoint(1, sf::Vector2f(enemy->transform->scale.y() / 2, 0) * pixelPerPoint);
+		grocaca.setPoint(2, sf::Vector2f(-enemy->transform->scale.x() / 2, enemy->transform->scale.y() / 2) * pixelPerPoint);
 
-		if (enemy->active)
-		{
-			window.draw(grocaca);
-		}
-
-		grocaca.setSize(sf::Vector2f(18, 18));
 		grocaca.setFillColor(sf::Color::Black);
-		grocaca.setOrigin({ 10-1,10-1 });
+		grocaca.setOrigin({ enemy->transform->scale.x()/2, enemy->transform->scale.y()/2 });
 		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
 
 		if (enemy->active)
@@ -107,11 +105,19 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
 
 	window.draw(pshape);
-	pshape.setRadius(playerSize-1);
-	pshape.setOrigin(playerSize-1, playerSize-1);
+	pshape.setRadius(playerSize - 1);
+	pshape.setOrigin(playerSize - 1, playerSize - 1);
 	pshape.setFillColor(sf::Color::Black);
 	window.draw(pshape);
 
 	window.draw(pBlockerBackground);
 	window.draw(pBlocker);
+
+
+	// UI
+	sf::Text score;
+	score.setFont(FontManager::f_pixelify);
+	score.setString("score : " + std::to_string(p->GetComponent<PlayerController>()->score));
+	score.setPosition(window.mapPixelToCoords({ 650, 0 }));
+	window.draw(score);
 }

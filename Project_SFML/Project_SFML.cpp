@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "InputSystem.h"
 #include "Manager/FontManager.h"
+#include "Manager/AudioManager.h"
 #include "Manager/SceneManager.h"
 #include "Engine/FryEngine.h"
 #include "Engine\Time.h"
@@ -8,6 +9,7 @@
 
 #pragma region  INCLUT TES SCENES ICI
 #include "Scenes/lascen.h"
+#include "Scenes/MainMenu.h"
 
 #pragma endregion
 
@@ -19,8 +21,11 @@ int main()
     // Initialisation du moteur
     fry::Random::Init();
 
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
     // Creation de la fenetre
-    sf::RenderWindow window(sf::VideoMode({ 800,800 }), "2D Game");
+    sf::RenderWindow window(sf::VideoMode({ 800,800 }), "Retro 2D Game", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
@@ -38,8 +43,11 @@ int main()
     sf::Clock clock;
 
     FontManager::InitFonts();
+    AudioManager::Initialize();
 
     // Build tes scènes ici
+
+    SceneManager::BuildScene<MainMenu>();
     SceneManager::BuildScene<lascen>();
 
     // Class pour gerer les inputs
@@ -51,7 +59,7 @@ int main()
 
         sf::Text t_fps;
         t_fps.setFont(FontManager::f_pixelify);
-        t_fps.setFillColor(sf::Color::Black);
+        t_fps.setFillColor(sf::Color::White);
         t_fps.setString("FPS : " + std::to_string((int)fps));
 
         //---------- Events ----------//
@@ -85,7 +93,7 @@ float GetSmoothedFPS()
     static std::deque<float> history;
     static const size_t maxSamples = 100;
 
-    float fps = (Time::DeltaTime() > 0) ? 1.0f / Time::DeltaTime() : 0.0f;
+    float fps = (Time::UnscaledDeltaTime() > 0) ? 1.0f / Time::UnscaledDeltaTime() : 0.0f;
     history.push_back(fps);
     if (history.size() > maxSamples)
         history.pop_front();
