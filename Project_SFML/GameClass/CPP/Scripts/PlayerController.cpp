@@ -20,6 +20,7 @@ void PlayerController::Update()
 	_tDashTimer += Time::DeltaTime();
 	if (_isDashing && _tDashTimer > _tDashDuration) {
 		_isDashing = false;
+		rb->damping = 1;
 		rb->velocity = rb->velocity.normalize() * _acceleration;
 	}
 
@@ -64,7 +65,8 @@ void PlayerController::Dash(Vector2 dir)
 	if (_tDashTimer > _tDashCooldown) {
 		_tDashTimer = 0;
 		_isDashing = true;
-		rb->velocity = rb->velocity.normalize() * _dashForce;
+		rb->damping = 0;
+		rb->velocity = dir * _dashForce;
 	}
 }
 
