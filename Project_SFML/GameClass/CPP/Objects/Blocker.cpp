@@ -6,4 +6,6 @@ Blocker::Blocker()
 
 	_bc = AddComponent<BoxCollider2D>();
 	_phc = AddComponent<PlayerHealthBlocker>();
+
+	layer = LayerManager::GetLayerByName("Player");
 }

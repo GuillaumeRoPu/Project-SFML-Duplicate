@@ -108,6 +108,74 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
     {
 
     }
+
+    if (sf::Joystick::isConnected(0))
+    {
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::X) < -90)
+        {
+            button.left = true;
+            button.right = false;
+        }
+        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::X) > 90)
+        {
+            button.left = false;
+            button.right = true;
+        }
+        else
+        {
+            button.left = false;
+            button.right = false;
+        }
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Y) > 90)
+        {
+            button.down = true;
+            button.up = false;
+        }
+        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::Y) < -90)
+        {
+            button.down = false;
+            button.up = true;
+        }
+        else
+        {
+            button.down = false;
+            button.up = false;
+        }
+
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Z) > 90)
+        {
+            button.rotateLeft = true;
+            button.rotateRight = false;
+        }
+        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::Z) < -90)
+        {
+            button.rotateLeft = false;
+            button.rotateRight = true;
+        }
+        else
+        {
+            button.rotateLeft = false;
+            button.rotateRight = false;
+        }
+
+        if (sf::Joystick::isButtonPressed(0, 7))
+        {
+            button.enter = true;
+        }
+        else
+        {
+            button.enter = true;
+        }
+
+        if (sf::Joystick::isButtonPressed(0, 0))
+        {
+            button.lshift = true;
+        }
+        else
+        {
+            button.lshift = false;
+        }
+    }
 }
 
 InputSystem::Button InputSystem::getButton()
@@ -117,5 +185,5 @@ InputSystem::Button InputSystem::getButton()
 
 std::list<bool> InputSystem::GetAllButton()
 {
-    return { button.left, button.right, button.down, button.up };
+    return { button.left, button.right, button.down, button.up, button.enter, button.lshift, button.rotateLeft, button.rotateRight };
 }

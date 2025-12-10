@@ -29,11 +29,12 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
     float frameTime = Time::DeltaTime();
     accumulator += frameTime;
 
+    int collisionCalcul = 0;
+    int nbObject = 0;
     // Fixed Update : Physics
     while (accumulator >= Time::FixedDeltaTime())
     {
-        int collisionCalcul = 0;
-        int nbObject = 0;
+        
         for (auto& obj : SceneObjects)
         {
             if (!obj.get()->active) continue;
@@ -83,12 +84,12 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
                 
             }
         }
-
-        std::cout << "Nb Collision : " << collisionCalcul << std::endl;
-        std::cout << "Nb Objects : " << nbObject << std::endl;
         accumulator -= Time::UnscaledFixedDeltaTime();
 
     }
+
+    std::cout << "Nb Collision : " << collisionCalcul << std::endl;
+    std::cout << "Nb Objects : " << nbObject << std::endl;
 
     //// Crée la collision entre un game object ayant un rigidbody et tout les colliders de la scène
     //// Dessine tout les game object ayant un sprite renderer
