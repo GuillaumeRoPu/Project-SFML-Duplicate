@@ -41,8 +41,8 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	pshape.setPosition(playerPosition);
 
 	for (Enemy* enemy : enemyManager->_enemyManagerController->_allEnemies) {
+		enemy->_controller->BounceOnBorder(window.getSize().x, window.getSize().y);
 		sf::ConvexShape grocaca(3);
-		sf::Vector2 pos(enemy->transform->position.x(), enemy->transform->position.y());
 		grocaca.setRotation(Vector2::Angle(Vector2::right(), p->transform->position - enemy->transform->position));
 		grocaca.setOutlineColor(sf::Color::White);
 		grocaca.setOutlineThickness(1);

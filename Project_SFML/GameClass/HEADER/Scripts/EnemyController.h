@@ -18,21 +18,24 @@ class EnemyController : public Scripting
     void OnTriggerEnter2D(Collider2D* other) override;
 private:
     void SpawnDeathParticle();
+    
 public:
     void Setup(float damage, float cooldown, float bulletSpeed);
     void SpawnBullet();
     Bullet* InstantiateBullet();
+    void BounceOnBorder(float borderX, float borderY);
 
 public:
 
     EnemyManagerController* controller;
     Rigidbody2D* _rb;
-    BoxCollider2D* _collider;
+    CircleCollider2D* _collider;
     HealthComponent* _health;
     Player* _player;
     Bullet* _bullet;
     Scene* _scene;
     float cooldown;
     float timer;
+    int baseHealth = 70; // player go at 70 speed at almost maxCap
 };
 

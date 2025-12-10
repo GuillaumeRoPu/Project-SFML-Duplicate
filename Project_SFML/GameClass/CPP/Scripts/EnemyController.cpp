@@ -19,11 +19,13 @@ void EnemyController::Update()
 void EnemyController::Start() 
 {
 	_rb = owner->GetComponent<Rigidbody2D>();
-	_collider = owner->GetComponent<BoxCollider2D>();
+	_collider = owner->GetComponent<CircleCollider2D>();
 	_player = scene().FindFirstObjectByType<Player>();
 	_health = owner->GetComponent<HealthComponent>();
 	cooldown = 0.4f;
 	timer = 0;
+	_health->SetMaxHealth(baseHealth);
+	_rb->velocity = Vector2(0.1f,0.0f);
 }
 
 void EnemyController::SpawnBullet()
@@ -33,22 +35,31 @@ void EnemyController::SpawnBullet()
 	manager->GetComponent<BulletManagerController>()->SpawnBullet(transform().position);
 }
 
-void EnemyController::OnTriggerEnter2D(Collider2D* other) 
+void EnemyController::OnTriggerEnter2D(Collider2D* other)
 {
 	PlayerController* _player = other->owner->GetComponent<PlayerController>();
 	if (_player != nullptr) {
-		_player->Heal(1);
-		_health->TakeDamage(5);
-		owner->active = false;
+		
+		_health->TakeDamage(_player->speed);
 		std::cout << "Touched Player" << std::endl;
 
 		if (_health->IsDead())
+		{
+			owner->active = false;
+
+			_player->Heal(1);
 			_player->score++;
 
-		SpawnDeathParticle();
+			SpawnDeathParticle();
 
-		AudioManager::PlaySound(AudioManager::destroy);
-		controller->DestroyEnemy(owner);
+			AudioManager::PlaySound(AudioManager::destroy);
+			
+			controller->DestroyEnemy(owner);
+		}
+		else {
+			_rb->damping = 1.0f;
+			_rb->velocity += _player->rb->velocity * 3;
+		}
 	}
 }
 
@@ -70,6 +81,26 @@ void EnemyController::SpawnDeathParticle()
 	particle->burstCount = 20;
 	particle->size = .05f;
 	particle->burstTime = 0.f;
+}
+
+void EnemyController::BounceOnBorder(float borderX, float borderY)
+{
+	if (transform().position.x() * pixelPerPoint < -borderX / 2) {
+		if (_rb->velocity.x() <= 0)
+			_rb->velocity = Vector2(-_rb->velocity.x(), _rb->velocity.y());
+	}
+	if (transform().position.x() * pixelPerPoint > borderX / 2) {
+		if (_rb->velocity.x() >= 0)
+			_rb->velocity = Vector2(-_rb->velocity.x(), _rb->velocity.y());
+	}
+	if (transform().position.y() * pixelPerPoint < -borderY / 2) {
+		if (_rb->velocity.y() <= 0)
+			_rb->velocity = Vector2(_rb->velocity.x(), -_rb->velocity.y());
+	}
+	if (transform().position.y() * pixelPerPoint > borderY / 2) {
+		if (_rb->velocity.y() >= 0)
+			_rb->velocity = Vector2(_rb->velocity.x(), -_rb->velocity.y());
+	}
 }
 
 Bullet* EnemyController::InstantiateBullet() 

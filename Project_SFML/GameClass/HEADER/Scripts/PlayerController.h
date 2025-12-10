@@ -9,8 +9,10 @@ class PlayerController : public Scripting
 {
 public:
 	int score = 0;
+	int speed;
+	Rigidbody2D* rb;
 private:
-	Rigidbody2D* _rb;
+	
 	HealthComponent* _health;
 	float _acceleration = 10.0f;
 
@@ -18,8 +20,7 @@ private:
 	float _tDashCooldown = 2.0f;
 	float _tDashDuration = 0.2f;
 	float _tDashTimer = 0.0f;
-	float _dashForce = 1500.0f;
-	Vector2 _dashDir = { 0.0f,0.0f };
+	float _dashForce = 25.0f;
 
 public:
 	void PlayerInputTreatment(InputSystem& input);
