@@ -11,7 +11,7 @@ Player::Player()
 
 	name = "Player";
 	_health = AddComponent<HealthComponent>();
-	_health->SetMaxHealth(10, true);
+	_health->SetMaxHealth(50, true);
 
 	layer = LayerManager::GetLayerByName("Player");
 }

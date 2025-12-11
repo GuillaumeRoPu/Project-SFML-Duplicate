@@ -1,7 +1,8 @@
 #include "Scenes/MainMenu.h"
 #include "Manager/FontManager.h"
 #include "Manager/SceneManager.h"
-#include "Scenes/lascen.h"
+#include "Manager/AudioManager.h"
+#include "Scripts\MusicController.h"
 #include "Engine/Time.h"
 #include <SFML/Graphics.hpp>
 #include <cmath>
@@ -10,6 +11,8 @@
 
 MainMenu::MainMenu()
 {
+    GameObject* sceneController = CreateGameObject<GameObject>();
+    MusicController* music = sceneController->AddComponent<MusicController>();
 }
 
 void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
@@ -75,7 +78,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
     sf::Text title;
     title.setFont(FontManager::f_pixelify);
-    title.setString("2D Game");
+    title.setString("Speed Hitting");
     title.setCharacterSize(68);
     title.setOrigin(title.getLocalBounds().width / 2, title.getLocalBounds().height / 2);
     title.setPosition(snappedTitlePos);
@@ -101,7 +104,7 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
     struct TitleState
     {
         sf::Vector2f pos;
-        float scale;
+        float scale = .0f;
     };
     static std::vector<TitleState> trail;
     static float trailTimer = 0.f;
@@ -236,12 +239,16 @@ void MainMenu::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
     if (!startTransition)
     {
-        if (up && !prevUp) selectedIndex = selectedIndex == 0 ? 1 : 0;
-        if (down && !prevDown) selectedIndex = selectedIndex == 0 ? 1 : 0;
+        if (up && !prevUp || down && !prevDown)
+        {
+            selectedIndex = selectedIndex == 0 ? 1 : 0;
+            AudioManager::PlaySound(AudioManager::select);
+        }
         if (enter && !prevEnter)
         {
             if (selectedIndex == 0)
             {
+                AudioManager::PlayMusic(AudioManager::start, false);
                 startTransition = true;
                 flashTimer = 0.f;
                 fadeAlpha = 0.f;

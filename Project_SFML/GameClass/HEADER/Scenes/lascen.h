@@ -7,6 +7,10 @@
 
 class lascen : public Scene
 {
+	float _healDuration = 30;
+	float _healTimer = 0;
+
+	int _healAmount = 25;
 public:
 	EnemyManager* enemyManager;
 	BulletManager* bulletManager;

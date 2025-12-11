@@ -16,7 +16,7 @@ void BulletManagerController::SpawnBullet(Vector2 position, float bulletSpeed, f
 	Bullet* newBullet = InstantiateBullet();
 
 	Vector2 direction = Vector2::Edge(position, _player->transform->position);
-	newBullet->transform->position.RotateAroundCenter(position, .5f, Vector2::Angle(Vector2::right(), direction.normalized()));
+	newBullet->transform->position.RotateAroundCenter(position, scale, Vector2::Angle(Vector2::right(), direction.normalized()));
 	newBullet->_controller->controller = this;
 	newBullet->_controller->SetColor(color);
 	newBullet->_controller->SetBulletSpeed(bulletSpeed);

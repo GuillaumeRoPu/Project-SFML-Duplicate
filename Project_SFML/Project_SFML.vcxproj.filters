@@ -150,6 +150,9 @@
     <ClCompile Include="GameClass\CPP\Engine\LayerMask.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="GameClass\CPP\Scripts\MusicController.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameClass\HEADER\Components\Physics\BoxCollider2D.h">
@@ -275,6 +278,9 @@
     <ClInclude Include="GameClass\HEADER\Manager\LayerManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="GameClass\HEADER\Scripts\MusicController.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameClass\TrucRandom\squigam.png">
@@ -283,5 +289,73 @@
     <Image Include="GameClass\TrucRandom\fat-chibi-squid-game-gaurd-dance-xaiversobased.gif">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Project_SFML\x64\Debug\AudioManager.obj" />
+    <Object Include="Project_SFML\x64\Debug\Blocker.obj" />
+    <Object Include="Project_SFML\x64\Debug\BoxCollider2D.obj" />
+    <Object Include="Project_SFML\x64\Debug\Bullet.obj" />
+    <Object Include="Project_SFML\x64\Debug\BulletController.obj" />
+    <Object Include="Project_SFML\x64\Debug\BulletManager.obj" />
+    <Object Include="Project_SFML\x64\Debug\BulletManagerController.obj" />
+    <Object Include="Project_SFML\x64\Debug\Camera.obj" />
+    <Object Include="Project_SFML\x64\Debug\CircleCollider2D.obj" />
+    <Object Include="Project_SFML\x64\Debug\Collider2D.obj" />
+    <Object Include="Project_SFML\x64\Debug\Component.obj" />
+    <Object Include="Project_SFML\x64\Debug\Enemy.obj" />
+    <Object Include="Project_SFML\x64\Debug\EnemyController.obj" />
+    <Object Include="Project_SFML\x64\Debug\EnemyManager.obj" />
+    <Object Include="Project_SFML\x64\Debug\EnemyManagerController.obj" />
+    <Object Include="Project_SFML\x64\Debug\FontManager.obj" />
+    <Object Include="Project_SFML\x64\Debug\GameObject.obj" />
+    <Object Include="Project_SFML\x64\Debug\gmtest.obj" />
+    <Object Include="Project_SFML\x64\Debug\Gradient.obj" />
+    <Object Include="Project_SFML\x64\Debug\Health.obj" />
+    <Object Include="Project_SFML\x64\Debug\HealthComponent.obj" />
+    <Object Include="Project_SFML\x64\Debug\InputSystem.obj" />
+    <Object Include="Project_SFML\x64\Debug\lascen.obj" />
+    <Object Include="Project_SFML\x64\Debug\Lerp.obj" />
+    <Object Include="Project_SFML\x64\Debug\Mathf.obj" />
+    <Object Include="Project_SFML\x64\Debug\ParticleSystem.obj" />
+    <Object Include="Project_SFML\x64\Debug\Physics.obj" />
+    <Object Include="Project_SFML\x64\Debug\Player.obj" />
+    <Object Include="Project_SFML\x64\Debug\PlayerController.obj" />
+    <Object Include="Project_SFML\x64\Debug\PlayerHealthBlocker.obj" />
+    <Object Include="Project_SFML\x64\Debug\PolygonCollider2D.obj" />
+    <Object Include="Project_SFML\x64\Debug\Project_SFML.obj" />
+    <Object Include="Project_SFML\x64\Debug\Random.obj" />
+    <Object Include="Project_SFML\x64\Debug\RectTransform.obj" />
+    <Object Include="Project_SFML\x64\Debug\Rigidbody2D.obj" />
+    <Object Include="Project_SFML\x64\Debug\Scene.obj" />
+    <Object Include="Project_SFML\x64\Debug\SceneManager.obj" />
+    <Object Include="Project_SFML\x64\Debug\SpriteRenderer.obj" />
+    <Object Include="Project_SFML\x64\Debug\Text.obj" />
+    <Object Include="Project_SFML\x64\Debug\Time.obj" />
+    <Object Include="Project_SFML\x64\Debug\Transform.obj" />
+    <Object Include="Project_SFML\x64\Debug\Vector2.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\pixelify_regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Project_SFML\x64\Debug\lascen.obj.enc" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.exe.recipe" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.ilk" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\CL.command.1.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\Cl.items.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\CL.read.1.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\CL.write.1.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\link.command.1.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\link.read.1.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\link.secondary.1.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\link.write.1.tlog" />
+    <None Include="Project_SFML\x64\Debug\Project_SFML.tlog\Project_SFML.lastbuildstate" />
+    <None Include="Project_SFML\x64\Debug\vc143.idb" />
+    <None Include="Project_SFML\x64\Debug\vc143.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Project_SFML\x64\Debug\Project_SFML.Build.CppClean.log" />
+    <Text Include="Project_SFML\x64\Debug\Project_SFML.log" />
+    <Text Include="Project_SFML\x64\Debug\Project_SFML.vcxproj.FileListAbsolute.txt" />
   </ItemGroup>
 </Project>
