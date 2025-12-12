@@ -5,6 +5,7 @@
 #include "Scripts\MusicController.h"
 #include "Components/Camera.h"
 #include "Manager\AudioManager.h"
+#include "Manager\SceneManager.h"
 
 lascen::lascen()
 {
@@ -129,6 +130,16 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	else
 	{
 		_healTimer -= Time::DeltaTime();
+	}
+
+	// Time before end of the game
+	if (p->GetComponent<HealthComponent>()->IsDead())
+	{
+		_gameoverTime += Time::UnscaledDeltaTime();
+		if (_gameoverTime >= _gameoverDuration)
+		{
+			window.close();
+		}
 	}
 
 

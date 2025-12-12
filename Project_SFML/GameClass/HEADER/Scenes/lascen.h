@@ -11,6 +11,9 @@ class lascen : public Scene
 	float _healTimer = 0;
 
 	int _healAmount = 25;
+
+	float _gameoverDuration = 8;
+	float _gameoverTime = 0;
 public:
 	EnemyManager* enemyManager;
 	BulletManager* bulletManager;

@@ -42,7 +42,6 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 	if (_player != nullptr) {
 		
 		_health->TakeDamage(_player->speed/2);
-		std::cout << "Touched Player" << std::endl;
 
 		if (_health->IsDead())
 		{

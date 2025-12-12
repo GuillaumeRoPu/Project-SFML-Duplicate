@@ -32,7 +32,7 @@ int main()
 
     // Met l'icône de ton jeu ici !
     sf::Image image;
-    if (!image.loadFromFile("GameClass/TrucRandom/squigam.png"))
+    if (!image.loadFromFile("res/Images/logo.png"))
     {
         // Error handling...
         std::cerr << "Failed to load icon image!" << std::endl;
