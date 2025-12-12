@@ -29,6 +29,7 @@ public:
 	void SetDamage(int damage);
 	void SetScale(float scale);
 	void SetAcceleration(float accel);
+	void SetSpread(float spread);
 
 public:
 	BulletManagerController* controller;
@@ -47,4 +48,7 @@ private:
 	int _damage = 1;
 	float _acceleration = 0;
 	float _totalAccel = 0;
+
+	//Spread Values
+	float _spread;
 };

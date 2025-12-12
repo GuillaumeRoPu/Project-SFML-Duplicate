@@ -9,6 +9,7 @@
 
 class Bullet;
 class EnemyManagerController;
+enum class EnemyType;
 
 class EnemyController : public Scripting
 {
@@ -21,10 +22,12 @@ private:
     
 public:
     void SetupBulletProperties(float bulletSpeed, float bulletAcceleration, float scale, int damage, sf::Color color, bool canPredictPlayerPosition, bool canTrack, float maxTrackingDistance);
-    void SetupEnemyProperties(int health, float scale, float cooldown, sf::Color color);
+    void SetupEnemyProperties(int health, float scale, float cooldown, sf::Color color, EnemyType type);
     void SpawnBullet();
     Bullet* InstantiateBullet();
     void BounceOnBorder(float borderX, float borderY);
+    void SetupBurstProperties(float delayBetweenShots, int numberOfShots);
+    void SetupShotgunProperties(float spread, int numberOfShots);
 
 public:
 
@@ -49,8 +52,26 @@ private:
     float _bulletmaxTrackDistance;
 
     //Enemy Data
-    int _basehealth = 10; // player go at 70 speed at almost maxCap
+    int _basehealth; // player go at 70 speed at almost maxCap
     float _cooldown;
     float _cooldownTimer;
+
+    EnemyType _type;
+
+    //Burst Type Data
+    float _littleCooldown;
+    float _littleCooldownTimer;
+    int _numberofBulletsInString;
+    int _currentNumberShot;
+
+    //Shotgun Type Data
+    int _numberOfBullets;
+    float _spread;
 };
 
+enum class EnemyType
+{
+    Classic,
+    Burst,
+    Shotgun,
+};

@@ -24,11 +24,25 @@ void BulletController::Start()
 		if (!TryGetInterceptDirection(transform().position, _player->transform->position, _player->_rb->velocity, _bulletSpeed))
 		{
 			direction = Vector2::Edge(transform().position, _player->transform->position).normalized();
+			if (_spread != 0)
+			{
+				float theta = Mathf::atan2(direction.y(), direction.x());
+				float offset = Random::Range((float)(-1), (float)1) * _spread;
+				float angle = theta + offset;
+				direction = Vector2(Mathf::cos(angle), Mathf::sin(angle));
+			}
 		}
 	}
 	else 
 	{
 		direction = Vector2::Edge(transform().position, _player->transform->position).normalized();
+		if (_spread != 0)
+		{
+			float theta = Mathf::atan2(direction.y(), direction.x());
+			float offset = Random::Range((float)(-1), (float)1) * _spread;
+			float angle = theta + offset;
+			direction = Vector2(Mathf::cos(angle), Mathf::sin(angle));
+		}
 	}
 
 	
@@ -170,5 +184,10 @@ void BulletController::SetScale(float scale)
 void BulletController::SetAcceleration(float accel) 
 {
 	_acceleration = accel;
+}
+
+void BulletController::SetSpread(float spread) 
+{
+	_spread = spread;
 }
 
