@@ -3,7 +3,7 @@
 
 InputSystem::InputSystem()
 {
-    button.any = button.left = button.right = button.up = button.down = button.rotateRight = button.rotateLeft = button.enter = button.lshift = false;
+    button.anyKey = button.left = button.right = button.up = button.down = button.rotateRight = button.rotateLeft = button.enter = button.lshift = false;
 }
 
 void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
@@ -12,7 +12,7 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
     if (event.type == sf::Event::KeyPressed)
     {
         const sf::Event::KeyEvent& keyPressed = event.key;
-        button.any = true;
+        button.anyKey = true;
         switch (keyPressed.code)
         {
             // Ferme la fenêtre
@@ -57,7 +57,7 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
     // Regarde quand une touche est laché
     if (event.type == sf::Event::KeyReleased)
     {
-        button.any = false;
+        button.anyKey = false;
         const sf::Event::KeyEvent& keyReleased = event.key;
         switch (keyReleased.code)
         {
@@ -98,7 +98,10 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
         for (bool b : GetAllButton())
         {
             if (b)
-                button.any = true;
+            {
+                button.anyKey = true;
+                break;
+            }
         }
 
     }
@@ -109,14 +112,16 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
 
     }
 
-    if (sf::Joystick::isConnected(0))
+
+    if (sf::Joystick::isConnected(0) && !button.anyKey)
     {
-        if (sf::Joystick::getAxisPosition(0, sf::Joystick::X) < -90)
+
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::X) < -20)
         {
             button.left = true;
             button.right = false;
         }
-        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::X) > 90)
+        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::X) > 20)
         {
             button.left = false;
             button.right = true;
@@ -126,12 +131,12 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
             button.left = false;
             button.right = false;
         }
-        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Y) > 90)
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Y) > 20)
         {
             button.down = true;
             button.up = false;
         }
-        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::Y) < -90)
+        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::Y) < -20)
         {
             button.down = false;
             button.up = true;
@@ -142,12 +147,12 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
             button.up = false;
         }
 
-        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Z) > 90)
+        if (sf::Joystick::getAxisPosition(0, sf::Joystick::Z) > 20)
         {
             button.rotateLeft = true;
             button.rotateRight = false;
         }
-        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::Z) < -90)
+        else if (sf::Joystick::getAxisPosition(0, sf::Joystick::Z) < -20)
         {
             button.rotateLeft = false;
             button.rotateRight = true;
@@ -164,7 +169,7 @@ void InputSystem::CheckEventInput(sf::Event event, sf::RenderWindow& window)
         }
         else
         {
-            button.enter = true;
+            button.enter = false;
         }
 
         if (sf::Joystick::isButtonPressed(0, 0))

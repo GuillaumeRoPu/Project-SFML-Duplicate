@@ -26,7 +26,7 @@ int main()
     settings.antialiasingLevel = 8;
 
     // Creation de la fenetre
-    sf::RenderWindow window(sf::VideoMode({ 800,800 }), "Retro 2D Game", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode({ 800,800 }), "Speed Hitting : Retro 2D Game", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 

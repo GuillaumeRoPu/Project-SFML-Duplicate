@@ -21,6 +21,5 @@ public:
 protected:
 	Rigidbody2D* body = nullptr;
 	std::vector<Collider2D*> _collision;
-	float _lastRotation = INFINITY;
 
 };

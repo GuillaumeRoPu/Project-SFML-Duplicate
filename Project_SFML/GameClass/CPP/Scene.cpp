@@ -88,8 +88,8 @@ void Scene::PlayScene(sf::RenderWindow& window, InputSystem& input)
 
     }
 
-    std::cout << "Nb Collision : " << collisionCalcul << std::endl;
-    std::cout << "Nb Objects : " << nbObject << std::endl;
+    //std::cout << "Nb Collision : " << collisionCalcul << std::endl;
+    //std::cout << "Nb Objects : " << nbObject << std::endl;
 
     //// Crée la collision entre un game object ayant un rigidbody et tout les colliders de la scène
     //// Dessine tout les game object ayant un sprite renderer

@@ -20,12 +20,6 @@ void PolygonCollider2D::Start()
 
 void PolygonCollider2D::ApplyRotation()
 {
-	if (transform().rotation != _lastRotation)
-	{
-		_lastRotation = transform().rotation;
-	}
-	else
-		return;
 
 	OBBvertices.clear();
 	for (int i = 0; i < vertices.size(); i++)

@@ -2,6 +2,7 @@
 #include "Components/Transform.h"
 #include "Components/Physics/Rigidbody2D.h"
 #include "Objects/Bullet.h"
+#include "Scripts\MusicController.h"
 #include "Components/Camera.h"
 #include "Manager\AudioManager.h"
 
@@ -20,6 +21,10 @@ lascen::lascen()
 	BoxCollider2D* boxLimit = limit->AddComponent<BoxCollider2D>();
 	boxLimit->isTrigger = true;
 	boxLimit->includeLayers += LayerManager::GetLayerByName("Limit").value;
+
+	GameObject* sceneController = CreateGameObject<GameObject>();
+	MusicController* music = sceneController->AddComponent<MusicController>();
+	music->gameMusic = true;
 }
 
 void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
@@ -115,6 +120,17 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	window.draw(pBlockerBackground);
 	window.draw(pBlocker);
 
+	// Time before heal
+	if (_healTimer <= 0)
+	{
+		p->GetComponent<HealthComponent>()->Heal(20);
+		_healTimer = _healDuration;
+	}
+	else
+	{
+		_healTimer -= Time::DeltaTime();
+	}
+
 
 	// UI
 	sf::Text score;
@@ -122,6 +138,15 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	score.setString("score : " + std::to_string(p->GetComponent<PlayerController>()->score));
 	score.setPosition(window.mapPixelToCoords({ 650, 0 }));
 	window.draw(score);
+
+	sf::Text healTimer;
+	healTimer.setFont(FontManager::f_pixelify);
+	healTimer.setString("Temps restant avant le prochain soin : " + std::to_string((int)_healTimer));
+	healTimer.setCharacterSize(23);
+	healTimer.setOrigin(healTimer.getLocalBounds().width / 2, healTimer.getLocalBounds().height / 2);
+	healTimer.setPosition(window.mapPixelToCoords({ 400, 700 }));
+	if (_healTimer <= 10)
+		window.draw(healTimer);
 
 
 	//FADE

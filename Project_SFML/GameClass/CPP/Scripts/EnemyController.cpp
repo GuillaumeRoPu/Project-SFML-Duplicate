@@ -41,7 +41,7 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 	PlayerController* _player = other->owner->GetComponent<PlayerController>();
 	if (_player != nullptr) {
 		
-		_health->TakeDamage(_player->speed);
+		_health->TakeDamage(_player->speed/2);
 		std::cout << "Touched Player" << std::endl;
 
 		if (_health->IsDead())
@@ -60,6 +60,7 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 		else {
 			_rb->damping = 1.0f;
 			_rb->velocity += _player->rb->velocity * 3;
+			AudioManager::PlaySound(AudioManager::collision);
 		}
 	}
 }
@@ -88,19 +89,31 @@ void EnemyController::BounceOnBorder(float borderX, float borderY)
 {
 	if (transform().position.x() * pixelPerPoint < -borderX / 2) {
 		if (_rb->velocity.x() <= 0)
+		{
 			_rb->velocity = Vector2(-_rb->velocity.x(), _rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.x() * pixelPerPoint > borderX / 2) {
 		if (_rb->velocity.x() >= 0)
+		{
 			_rb->velocity = Vector2(-_rb->velocity.x(), _rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.y() * pixelPerPoint < -borderY / 2) {
 		if (_rb->velocity.y() <= 0)
+		{
 			_rb->velocity = Vector2(_rb->velocity.x(), -_rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.y() * pixelPerPoint > borderY / 2) {
 		if (_rb->velocity.y() >= 0)
+		{
 			_rb->velocity = Vector2(_rb->velocity.x(), -_rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 }
 

@@ -45,7 +45,7 @@ void PlayerController::PlayerInputTreatment(InputSystem& input)
 	}
 	Vector2 dir = { x,y };
 	dir.normalize();
-	
+
 	Move(dir);
 
 	if (input.getButton().lshift) {
@@ -74,19 +74,31 @@ void PlayerController::BounceOnBorder(float borderX, float borderY, int playerSi
 {
 	if (transform().position.x() * pixelPerPoint - playerSize < -borderX / 2) {
 		if (rb->velocity.x() <= 0)
+		{
 			rb->velocity = Vector2(-rb->velocity.x(), rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.x() * pixelPerPoint + playerSize > borderX / 2) {
 		if (rb->velocity.x() >= 0)
+		{
 			rb->velocity = Vector2(-rb->velocity.x(), rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.y() * pixelPerPoint - playerSize < -borderY / 2) {
 		if (rb->velocity.y() <= 0)
+		{
 			rb->velocity = Vector2(rb->velocity.x(), -rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 	if (transform().position.y() * pixelPerPoint + playerSize > borderY / 2) {
 		if (rb->velocity.y() >= 0)
+		{
 			rb->velocity = Vector2(rb->velocity.x(), -rb->velocity.y());
+			AudioManager::PlaySound(AudioManager::collision);
+		}
 	}
 }
 

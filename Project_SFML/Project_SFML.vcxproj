@@ -189,6 +189,7 @@
     <ClInclude Include="GameClass\HEADER\Objects\BulletManager.h" />
     <ClInclude Include="GameClass\HEADER\Scenes\MainMenu.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\BulletController.h" />
+    <ClCompile Include="GameClass\CPP\Scripts\MusicController.cpp" />
     <ClCompile Include="Project_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +226,7 @@
     <ClInclude Include="GameClass\HEADER\Scripts\EnemyController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\EnemyManagerController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\HealthComponent.h" />
+    <ClInclude Include="GameClass\HEADER\Scripts\MusicController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\PlayerController.h" />
     <ClInclude Include="GameClass\HEADER\Scripts\PlayerHealthBlocker.h" />
     <ClInclude Include="GameClass\HEADER\System\Health.h" />

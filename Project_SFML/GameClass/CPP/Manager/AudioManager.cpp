@@ -3,15 +3,16 @@
 
 std::map<std::string, sf::SoundBuffer> AudioManager::buffers;
 std::list<sf::Sound> AudioManager::sfx;
+std::unique_ptr<sf::Music> AudioManager::currentMusic = std::make_unique<sf::Music>();
 bool AudioManager::_canPlay = true;
 
 void AudioManager::Initialize()
 {
 	LoadBuffer(shoot.path);
 	LoadBuffer(destroy.path);
-	LoadBuffer(touch.path);
 	LoadBuffer(defeat.path);
 	LoadBuffer(collision.path);
+	LoadBuffer(select.path);
 }
 
 void AudioManager::LoadBuffer(std::string path)
@@ -50,6 +51,21 @@ void AudioManager::PlaySound(AudioParameter audio, float volume, float pitch)
 		else
 			it++;
 	}
+}
+
+void AudioManager::PlayMusic(AudioParameter audio, bool loop , float volume, float pitch)
+{
+	if (!currentMusic->openFromFile(audio.path))
+	{
+		std::cout << "Error : The music can't be open." << std::endl;
+	}
+
+	currentMusic->setVolume(volume >= 0 ? volume : audio.volume);
+	currentMusic->setPitch(pitch >= 0 ? pitch : audio.pitch);
+	currentMusic->setPlayingOffset(audio.start);
+	currentMusic->setLoop(loop);
+
+	currentMusic->play();
 }
 
 void AudioManager::SoloSounds(std::list<AudioParameter> audios)
