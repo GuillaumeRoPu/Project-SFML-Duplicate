@@ -135,6 +135,18 @@ void PlayerController::SpawnDeathParticle()
 	particle->burstTime = 0.f;
 }
 
+float PlayerController::DashtoDashTimerFloat()
+{
+	if (_tDashTimer < _tDashCooldown) 
+	{
+		return Mathf::Lerp(0, 1, _tDashTimer / _tDashCooldown);
+	}
+	else 
+	{
+		return 1;
+	}
+}
+
 void PlayerController::Heal(int amount)
 {
 	_health->Heal(amount);

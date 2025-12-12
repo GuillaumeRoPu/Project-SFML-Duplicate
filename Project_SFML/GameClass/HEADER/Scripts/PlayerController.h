@@ -28,6 +28,8 @@ public:
 	void Heal(int amount);
 	void TakeDamage(int amount);
 	void SpawnDeathParticle();
+	float DashtoDashTimerFloat();
+
 private:
 	void Awake() override;
 	void Update() override;

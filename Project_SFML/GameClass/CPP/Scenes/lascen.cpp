@@ -117,6 +117,14 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 	pshape.setOrigin(playerSize - 1, playerSize - 1);
 	pshape.setFillColor(sf::Color::Black);
 	window.draw(pshape);
+	pshape.setRadius(playerSize / 3);
+	pshape.setOrigin(playerSize / 3, playerSize / 3);
+	pshape.setFillColor(sf::Color(255, 255, 255, p->_pc->DashtoDashTimerFloat() * 0.5f * 255));
+	if (p->_pc->DashtoDashTimerFloat() == 1) 
+	{
+		pshape.setFillColor(sf::Color(255, 255, 255, 255));
+	}
+	window.draw(pshape);
 
 	window.draw(pBlockerBackground);
 	window.draw(pBlocker);

@@ -8,11 +8,19 @@ void EnemyManagerController::Update()
 		_timer = 0;
 		SpawnEnemy();
 	}
+	if (Time::timeScale < 1.0f && Time::timeScale != 0) 
+	{
+		Time::timeScale = Mathf::Lerp(Time::timeScale, 1, (1-Time::timeScale)*0.1f);
+		if (Time::timeScale > 0.99f) 
+		{
+			Time::timeScale = 1;
+		}
+	}
 }
 
 void EnemyManagerController::Start()
 {
-	_cooldown = 5.f;
+	_cooldown = 3.f;
 	_timer = 0.f;
 }
 
@@ -52,30 +60,37 @@ Enemy* EnemyManagerController::InstantiateEnemy()
 
 void EnemyManagerController::ChooseEnemyBullets(Enemy* newEnemy)
 {
-	int random = Random::Range(0, 4);
+	int random = Random::Range(0, 5);
 	if (random == 0) 
 	{
 		newEnemy->_controller->SetupBulletProperties(0.5f, 10, 0.5f, 2, sf::Color::Yellow, false, false, 3);
-		newEnemy->_controller->SetupEnemyProperties(50, 0.5f, 0.8f, sf::Color::White);
+		newEnemy->_controller->SetupEnemyProperties(50, 0.5f, 0.8f, sf::Color::White, EnemyType::Classic);
 	}
 	else if (random == 1) 
 	{
 		newEnemy->_controller->SetupBulletProperties(2, 5, 0.2f, 1, sf::Color::Cyan, true, false, 3);
-		newEnemy->_controller->SetupEnemyProperties(40, 0.3f, 0.1f, sf::Color::White);
+		newEnemy->_controller->SetupEnemyProperties(40, 0.3f, 0.1f, sf::Color::White, EnemyType::Classic);
 	}
 	else if (random == 2)
 	{
-		newEnemy->_controller->SetupBulletProperties(5, 0, 1, 3, sf::Color::Magenta, false, true, 3);
-		newEnemy->_controller->SetupEnemyProperties(70, 1, 1, sf::Color::White);
+		newEnemy->_controller->SetupBulletProperties(5, 0, 1, 3, sf::Color::Magenta, false, true, 5);
+		newEnemy->_controller->SetupEnemyProperties(70, 1, 2, sf::Color::White, EnemyType::Burst);
+		newEnemy->_controller->SetupBurstProperties(0.2f, 5);
 	}
 	else if (random == 3)
 	{
 		newEnemy->_controller->SetupBulletProperties(10, 0, 0.5f, 1, sf::Color::Green, true, false, 3);
-		newEnemy->_controller->SetupEnemyProperties(20, 0.2f, 1.5f, sf::Color::White);
+		newEnemy->_controller->SetupEnemyProperties(20, 0.2f, 1.5f, sf::Color::White, EnemyType::Classic);
 	}
 	else if (random == 4)
 	{
-		newEnemy->_controller->SetupBulletProperties(1, 40, 2, 4, sf::Color::Blue, false, false, 3);
-		newEnemy->_controller->SetupEnemyProperties(100, 2, 2, sf::Color::White);
+		newEnemy->_controller->SetupBulletProperties(1, 40, 2, 4, sf::Color(255,125,0), false, false, 3);
+		newEnemy->_controller->SetupEnemyProperties(100, 2, 2, sf::Color::White, EnemyType::Classic);
+	}
+	else if (random == 5)
+	{
+		newEnemy->_controller->SetupBulletProperties(5, 0, 0.5f, 4, sf::Color(255, 125, 255), false, false, 3);
+		newEnemy->_controller->SetupEnemyProperties(100, 0.5f, 2, sf::Color::White, EnemyType::Shotgun);
+		newEnemy->_controller->SetupShotgunProperties(10, 5);
 	}
 }
