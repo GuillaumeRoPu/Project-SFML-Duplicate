@@ -79,17 +79,17 @@ void EnemyManagerController::ChooseEnemyBullets(Enemy* newEnemy)
 	}
 	else if (random == 3)
 	{
-		newEnemy->_controller->SetupBulletProperties(10, 0, 0.5f, 1, sf::Color::Green, true, false, 3);
+		newEnemy->_controller->SetupBulletProperties(10, 0, 0.5f, 10, sf::Color::Green, true, false, 3);
 		newEnemy->_controller->SetupEnemyProperties(20, 0.2f, 1.5f, sf::Color::White, EnemyType::Classic);
 	}
 	else if (random == 4)
 	{
-		newEnemy->_controller->SetupBulletProperties(1, 40, 2, 4, sf::Color(255,125,0), false, false, 3);
+		newEnemy->_controller->SetupBulletProperties(1, 40, 2, 5, sf::Color(255,125,0), false, false, 3);
 		newEnemy->_controller->SetupEnemyProperties(100, 2, 2, sf::Color::White, EnemyType::Classic);
 	}
 	else if (random == 5)
 	{
-		newEnemy->_controller->SetupBulletProperties(5, 0, 0.5f, 4, sf::Color(255, 125, 255), false, false, 3);
+		newEnemy->_controller->SetupBulletProperties(5, 0, 0.5f, 3, sf::Color(255, 125, 255), false, false, 3);
 		newEnemy->_controller->SetupEnemyProperties(100, 0.5f, 2, sf::Color::White, EnemyType::Shotgun);
 		newEnemy->_controller->SetupShotgunProperties(10, 5);
 	}
