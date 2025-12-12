@@ -17,7 +17,7 @@ void Rigidbody2D::FixedUpdate()
     velocity += appliedForce * Time::FixedDeltaTime();
     owner->transform->position += velocity * Time::FixedDeltaTime();
 
-    velocity -= velocity * damping * Time::DeltaTime();
+    velocity -= velocity * damping * Time::FixedDeltaTime();
 
     appliedForce = Vector2(0, 0);
 }

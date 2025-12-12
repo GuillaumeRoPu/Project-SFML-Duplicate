@@ -24,7 +24,7 @@ void PlayerController::Update()
 		rb->velocity = rb->velocity.normalize() * _acceleration;
 	}
 
-	speed = (int)rb->velocity.magnitude() * 10;
+	speed = rb->velocity.magnitude() * 10;
 }
 
 void PlayerController::PlayerInputTreatment(InputSystem& input)
@@ -56,7 +56,7 @@ void PlayerController::PlayerInputTreatment(InputSystem& input)
 void PlayerController::Move(Vector2 dir)
 {
 	if (!_isDashing) {
-		rb->velocity += dir * _acceleration * Time::FixedDeltaTime();
+		rb->velocity += dir * _acceleration * Time::DeltaTime();
 	}
 }
 
