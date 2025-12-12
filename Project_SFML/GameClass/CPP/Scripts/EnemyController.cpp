@@ -87,7 +87,7 @@ void EnemyController::OnTriggerEnter2D(Collider2D* other)
 
 			owner->active = false;
 
-			_player->Heal(1);
+			_player->Heal(5);
 			_player->score++;
 
 			SpawnDeathParticle();

@@ -39,6 +39,8 @@ public:
 	sf::Color _color = sf::Color::Yellow;
 
 private:
+	float _lifetime = 5;
+	float _lifeTimeTimer = 0;
 	float _bulletSpeed = 1;
 	Vector2 direction;
 	float timer;
