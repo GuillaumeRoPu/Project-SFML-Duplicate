@@ -55,7 +55,7 @@ void EnemyManagerController::ChooseEnemyBullets(Enemy* newEnemy)
 	int random = Random::Range(0, 4);
 	if (random == 0) 
 	{
-		newEnemy->_controller->SetupBulletProperties(0.5f, 10, 0.5f, 1, sf::Color::Yellow, false, false, 3);
+		newEnemy->_controller->SetupBulletProperties(0.5f, 10, 0.5f, 2, sf::Color::Yellow, false, false, 3);
 		newEnemy->_controller->SetupEnemyProperties(50, 0.5f, 0.8f, sf::Color::White);
 	}
 	else if (random == 1) 
@@ -65,7 +65,7 @@ void EnemyManagerController::ChooseEnemyBullets(Enemy* newEnemy)
 	}
 	else if (random == 2)
 	{
-		newEnemy->_controller->SetupBulletProperties(5, 0, 1, 1, sf::Color::Magenta, false, true, 3);
+		newEnemy->_controller->SetupBulletProperties(5, 0, 1, 3, sf::Color::Magenta, false, true, 3);
 		newEnemy->_controller->SetupEnemyProperties(70, 1, 1, sf::Color::White);
 	}
 	else if (random == 3)
@@ -75,7 +75,7 @@ void EnemyManagerController::ChooseEnemyBullets(Enemy* newEnemy)
 	}
 	else if (random == 4)
 	{
-		newEnemy->_controller->SetupBulletProperties(1, 40, 2, 1, sf::Color::Blue, false, false, 3);
+		newEnemy->_controller->SetupBulletProperties(1, 40, 2, 4, sf::Color::Blue, false, false, 3);
 		newEnemy->_controller->SetupEnemyProperties(100, 2, 2, sf::Color::White);
 	}
 }
