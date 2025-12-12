@@ -52,14 +52,14 @@ void lascen::PlayScene(sf::RenderWindow& window, InputSystem& input)
 		enemy->_controller->BounceOnBorder(window.getSize().x, window.getSize().y);
 		sf::ConvexShape grocaca(3);
 		grocaca.setRotation(Vector2::Angle(Vector2::right(), p->transform->position - enemy->transform->position));
-		grocaca.setOutlineColor(sf::Color::White);
+		grocaca.setOutlineColor(enemy->_controller->color);
 		grocaca.setOutlineThickness(1);
 		grocaca.setPoint(0, sf::Vector2f(-enemy->transform->scale.x() / 2, -enemy->transform->scale.y() / 2) * pixelPerPoint);
 		grocaca.setPoint(1, sf::Vector2f(enemy->transform->scale.y() / 2, 0) * pixelPerPoint);
 		grocaca.setPoint(2, sf::Vector2f(-enemy->transform->scale.x() / 2, enemy->transform->scale.y() / 2) * pixelPerPoint);
 
 		grocaca.setFillColor(sf::Color::Black);
-		grocaca.setOrigin({ enemy->transform->scale.x()/2, enemy->transform->scale.y()/2 });
+		grocaca.setOrigin({enemy->transform->scale.x()/2, enemy->transform->scale.y()/2 });
 		grocaca.setPosition(sf::Vector2f(enemy->transform->position.x() * pixelPerPoint, enemy->transform->position.y() * pixelPerPoint));
 
 		if (enemy->active)
