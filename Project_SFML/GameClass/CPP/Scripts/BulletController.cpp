@@ -45,15 +45,27 @@ void BulletController::Start()
 		}
 	}
 
-	
-	_rb->velocity = direction * _bulletSpeed;
+	if (_spread != 0) 
+	{
+		float offset = Random::Range((float)(-0.1), (float)0.1) * _spread;
+		_rb->velocity = direction * _bulletSpeed - direction * offset;
+	}
+	else 
+	{
+		_rb->velocity = direction * _bulletSpeed;
+	}
+
 	_rb->damping = 0;
 	timer = 0;
 }
 
 void BulletController::Update() 
 {
-
+	_lifeTimeTimer += Time::DeltaTime();
+	if (_lifeTimeTimer >= _lifetime) 
+	{
+		controller->DestroyBullet(owner);
+	}
 }
 
 void BulletController::FixedUpdate() 
